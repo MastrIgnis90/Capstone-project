@@ -1,3 +1,0 @@
-module Capstone {
-	exports test;
-}
