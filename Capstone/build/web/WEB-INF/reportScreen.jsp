@@ -138,18 +138,19 @@
                                     <th scope="col">Order Number</th>
                                     <th scope="col">Order</th>
                                     <th scope="col">Note</th>
-                                    <th scope="col">Delivery Time</th>
-                                    <th scope="col">Type</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">0001</th>
-                                    <td>One white</td>
-                                    <td></td>
-                                    <td>5:00 PM</td>
-                                    <td>Subscription</td>
-                                </tr>          
+                                <%-- 
+                                    Dynically print table of daily report production 
+                                --%>
+                                <c:forEach var='order' items='${requestScope.dailyReportProductionList}' varStatus='i'>
+                                    <tr>
+                                        <th scope="row">${order.orderNum}</th>
+                                        <td>${order.product}</td>
+                                        <td>${order.note}</td>
+                                    </tr>
+                                </c:forEach>        
                             </tbody>
                         </table>
                     </div>
