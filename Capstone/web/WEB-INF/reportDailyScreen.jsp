@@ -25,8 +25,8 @@
         
         <div class="container-fluid">
         
-        <%-- side navigation menu --%>
         <div class="row">
+            <%-- side navigation menu --%>
             <div class="col-lg-2">
                 <ul class="nav navbar-light bg-light navbar-expand-lg" style="height: 100%;">
                     <div class="collapse navbar-collapse flex-column" id="sidemenu">
