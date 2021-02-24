@@ -51,6 +51,10 @@ public class CommericalCustomer {
         return email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public int getPhonenumber() {
         return phonenumber;
     }
