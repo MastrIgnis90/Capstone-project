@@ -124,11 +124,8 @@
                         </select>
                     </div>
                     <div class="col-lg-4">
-                        <button type="button" class="btn btn-outline-dark pr-4 pl-4 mr-2">
-                            Print
-                        </button>
                         <button type="button" class="btn btn-outline-dark pr-2 pl-2">
-                            Download
+                            Print
                         </button>
                     </div>
                 </div>
