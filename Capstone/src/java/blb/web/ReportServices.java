@@ -12,13 +12,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.itextpdf.text.*;
 
 /**
  *
  * @author Sebastian Wild
  */
-@WebServlet(name = "Test", urlPatterns = {"/Test"})
-public class Test extends HttpServlet {
+@WebServlet(name = "ReportServices", urlPatterns = {"/ReportServices"})
+public class ReportServices extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,11 +32,23 @@ public class Test extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            request.getRequestDispatcher("/WEB-INF/index.html").forward(request, response);
+        String data = request.getParameter("report");
+        String action = request.getParameter("action");
+        if(action.equals("retrive")) {
+            if(data.equals("delivery")){
+                
+            } else if(data.equals("production")) {
+                
+            }
+            request.setAttribute("reveal", true);
+            request.setAttribute("table", data);
+        } else if(action.equals("print")) {
+            
         }
+        
+        
+        
+        request.getRequestDispatcher("/WEB-INF/ReportPage.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
