@@ -30,6 +30,11 @@
         
     </head>
     <body>
+        <%-- Get the production report date from the ArrayList sent from backend --%>
+        <c:forEach var='order' items='${requestScope.dailyReportProductionList}' begin='0' end='1'>
+            <c:set var='reportDate' value='${order.date}'></c:set>
+        </c:forEach>  
+        
         <header>
             <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark p-lg-8">
                 <span class="navbar-brand">Bridgeland Bread</span>
@@ -91,7 +96,7 @@
                             </span>
                         </button>
                         <span class="ml-2 mr-2 p-2">
-                            <strong class="h3" #id="report_date">Thursday February 21, 2021</strong>
+                            <strong class="h3" #id="report_date"><c:out value='${reportDate}'/></strong>
                         </span>
                         <button type="button" class="btn btn-outline-dark rounded">
                             <span class="material-icons">
@@ -102,8 +107,8 @@
                     <div class="col-4">
                         <div class="btn-group">
                             <button type="button" class="btn btn-secondary">Day</button>
-                            <button type="button" class="btn btn-light">Week</button>
-                            <button type="button" class="btn btn-light">Month</button>
+                            <button type="button" class="btn btn-light" onclick="getWeeklyProductionReport(\"<c:out value='${reportDate}'/>\")>Week</button>
+                            <button type="button" class="btn btn-light" onclick="getMonthlyProductionReport(\"<c:out value='${reportDate}'/>\")>Month</button>
                         </div>
                     </div>
                 </div>
@@ -111,20 +116,20 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <label for="sortbyOptions">Sort by:</label>
-                        <select class="selectpicker" name="sortbyOptions" id="sortbyOptions">
+                        <select class="selectpicker" name="sortbyOptions" id="sortbyOptions" onchange="getSortedProductionReport(\"<c:out value='${reportDate}'/>\")>
                             <option>Order Number</option>
                             <option>Order</option>
                             <option>Note</option>
                             <option>Delivery Time</option>
                             <option>Type</option>
                         </select>
-                        <select class="selectpicker pl-2" name="asc_or_desc" id="asc_or_desc">
+                        <select class="selectpicker pl-2" name="asc_or_desc" id="asc_or_desc" onchange="getSortedProductionReport(\"<c:out value='${reportDate}'/>\")>
                             <option>Ascending</option>
                             <option>Descending</option>
                         </select>
                     </div>
                     <div class="col-lg-4">
-                        <button type="button" class="btn btn-outline-dark pr-2 pl-2" onclick="printDailyReportPDF()">
+                        <button type="button" class="btn btn-outline-dark pr-2 pl-2" onclick="printDailyReportPDF(\"<c:out value='${reportDate}'/>\")">
                             Print
                         </button>
                     </div>
