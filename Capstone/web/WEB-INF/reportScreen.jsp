@@ -124,7 +124,7 @@
                         </select>
                     </div>
                     <div class="col-lg-4">
-                        <button type="button" class="btn btn-outline-dark pr-2 pl-2">
+                        <button type="button" class="btn btn-outline-dark pr-2 pl-2" onclick="printDailyReportPDF()">
                             Print
                         </button>
                     </div>
