@@ -15,14 +15,11 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <%@include file="includes/externalCSSLinks.html"%>
         <title>Bridgeland Bread - Daily Report</title>
-        <c:import url="/WEB-INF/javascript/reportScreen.js"/>
+        <%@include file="javascript/jsReportScreenFunction.html"%>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">   
     </head>
     <body>
-        <%-- Get the production report date from the ArrayList sent from backend --%>
-        <c:forEach var='order' items='${requestScope.dailyReportProductionList}' begin='0' end='1'>
-            <c:set var='reportDate' value='${order.date}'></c:set>
-        </c:forEach>  
+        <c:set var='reportDate' value='${requestScope.reportDate}'/>    
         
         <%@include file="includes/header.html"%>
         
@@ -77,18 +74,26 @@
                     
                     <%-- Button to get previous day production report --%>
                     <div class="col-lg-6 col-md-2 d-flex justify-content-center">
-                        <button type="button" class="btn btn-outline-dark rounded">
+                        <button type="button" 
+                                class="btn btn-outline-dark rounded"
+                                onclick="getPreviousProductionReport('<c:out value='${reportDate}'/>')"
+                        >
                             <span class="material-icons">
                                 keyboard_arrow_left
                             </span>
                         </button>
                         <%-- production report date --%>
                         <span class="ml-2 mr-2 p-2">
-                            <strong class="h3" #id="report_date"><c:out value='${reportDate}'/></strong>
+                            <strong class="h3" #id="report_date">
+                                <c:out value='${reportDate}'/>
+                            </strong>
                         </span>
                         
                         <%-- Button to get the next day production report --%>
-                        <button type="button" class="btn btn-outline-dark rounded">
+                        <button type="button" 
+                                class="btn btn-outline-dark rounded"
+                                onclick="getNextProductionReport('<c:out value='${reportDate}'/>')"
+                        >
                             <span class="material-icons">
                                 keyboard_arrow_right
                             </span>
@@ -99,8 +104,8 @@
                     <div class="col-4">
                         <div class="btn-group">
                             <button type="button" class="btn btn-secondary">Day</button>
-                            <button type="button" class="btn btn-light" onclick="getWeeklyProductionReport(\"<c:out value='${reportDate}'/>\")>Week</button>
-                            <button type="button" class="btn btn-light" onclick="getMonthlyProductionReport(\"<c:out value='${reportDate}'/>\")>Month</button>
+                            <button type="button" class="btn btn-light" onclick="getWeeklyProductionReport('<c:out value='${reportDate}'/>')">Week</button>
+                            <button type="button" class="btn btn-light" onclick="getMonthlyProductionReport('<c:out value='${reportDate}'/>')">Month</button>
                         </div>
                     </div>
                 </div>
@@ -109,20 +114,18 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <label for="sortbyOptions">Sort by:</label>
-                        <select class="selectpicker" name="sortbyOptions" id="sortbyOptions" onchange="getSortedProductionReport(\"<c:out value='${reportDate}'/>\")>
+                        <select class="selectpicker" name="sortbyOptions" id="sortbyOptions" onchange="getSortedProductionReport('<c:out value='${reportDate}'/>')">
                             <option>Order Number</option>
                             <option>Order</option>
                             <option>Note</option>
-                            <option>Delivery Time</option>
-                            <option>Type</option>
                         </select>
-                        <select class="selectpicker pl-2" name="ascDesc" id="ascDesc" onchange="getSortedProductionReport(\"<c:out value='${reportDate}'/>\")>
+                        <select class="selectpicker pl-2" name="ascDesc" id="ascDesc" onchange="getSortedProductionReport('<c:out value='${reportDate}'/>')">
                             <option>Ascending</option>
                             <option>Descending</option>
                         </select>
                     </div>
                     <div class="col-lg-4">
-                        <button type="button" class="btn btn-outline-dark pr-2 pl-2" onclick="printDailyReportPDF(\"<c:out value='${reportDate}'/>\")">
+                        <button type="button" class="btn btn-outline-dark pr-2 pl-2" onclick="printDailyReportPDF('<c:out value='${reportDate}'/>')">
                             Print
                         </button>
                     </div>
