@@ -8,7 +8,7 @@
  */
 function printDailyReportPDF(date) 
 {
-    window.location="/Capstone/reportServices?action=print&dailyReportDate=" + date;
+    window.location="/Capstone/ReportServices?action=print&dailyReportDate=" + date;
     alert("Your daily report is now printing.");
 }
 
@@ -20,7 +20,7 @@ function printDailyReportPDF(date)
  */
 function getPreviousProductionReport(date) 
 {
-    window.location="/Capstone/reportServices?getPreviousReport=true&dailyReportDate=" + date;
+    window.location="/Capstone/ReportServices?getPreviousReport=true&dailyReportDate=" + date;
 }
 
 /* 
@@ -31,7 +31,7 @@ function getPreviousProductionReport(date)
  */
 function getNextProductionReport(date) 
 {
-    window.location="/Capstone/reportServices?getNextDailyReport=true&dailyReportDate=" + date;
+    window.location="/Capstone/ReportServices?getNextDailyReport=true&dailyReportDate=" + date;
 }
 
 /*
@@ -45,7 +45,7 @@ function getSortedProductionReport(date)
     let sortOption = document.getElementById("sortbyOptions").value;
     let ascDec = document.getElementById("ascDesc").value;
     
-    window.location="/Capstone/reportServices?sortDailyReport=true&dailyReportDate=" + date + "&sortDailyReportBy=" + sortOption + "&orderOfSortDailyReport=" + ascDec;
+    window.location="/Capstone/ReportServices?sortDailyReport=true&dailyReportDate=" + date + "&sortDailyReportBy=" + sortOption + "&orderOfSortDailyReport=" + ascDec;
 }
 
 /* 
@@ -198,7 +198,7 @@ function getWeeklyProductionReport(date)
   const startDate = getStartDate(currentDate, day);
   const endDate = getEndDate(currentDate, day);
   
-  window.location="/Capstone/reportServices?getWeeklyReport=true&startDate=" + startdate + "&endDate=" + endDate;
+  window.location="/Capstone/ReportServices?getWeeklyReport=true&startDate=" + startdate + "&endDate=" + endDate;
 }
 
 /* 
@@ -213,7 +213,7 @@ function getMonthlyProductionReport(date)
     let splitString = date.split(' ');
     let month = splitString[1];
     let year = splitString[3];
-    window.location="/Capstone/reportServices?getMonthlyReport=true&month=" + month + "&year=" + year;
+    window.location="/Capstone/ReportServices?getMonthlyReport=true&month=" + month + "&year=" + year;
 }
 
 </script>
