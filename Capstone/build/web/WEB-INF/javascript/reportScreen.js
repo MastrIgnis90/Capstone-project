@@ -31,12 +31,14 @@ function getNextProductionReport(date)
     window.location="/Capstone/reportServices?getNextDailyReport=true&dailyReportDate=" + date;
 }
 
-/* 
+/*
  * Send a request to get a sorted production report 
  */
 function getSortedProductionReport(date) 
 {
-    window.location="/Capstone/reportServices?getNextDailyReport=true&dailyReportDate=" + date;
+    // TODO need to implement
+
+    window.location="/Capstone/reportServices?sortDailyReport=true&dailyReportDate=" + date;
 }
 
 /* 

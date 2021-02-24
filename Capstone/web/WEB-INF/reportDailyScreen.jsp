@@ -13,18 +13,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css"
-            integrity="sha512-ARJR74swou2y0Q2V9k0GbzQ/5vJ2RBSoCWokg4zkfM29Fb3vZEQyv0iWBMW/yvKgyHSR/7D64pFMmU8nYmbRkg=="
-            crossorigin="anonymous" />
-        
+        <%@include file="includes/externalCSSLinks.html"%>
         <title>Bridgeland Bread - Daily Report</title>
-        
         <c:import url="/WEB-INF/javascript/reportScreen.js"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">   
     </head>
@@ -34,16 +24,11 @@
             <c:set var='reportDate' value='${order.date}'></c:set>
         </c:forEach>  
         
-        <header>
-            <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark p-lg-8">
-                <span class="navbar-brand">Bridgeland Bread</span>
-                <button class="navbar-toggler" data-toggle="collapse" data-target="#sidemenu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </nav>
-        </header>
+        <%@include file="includes/header.html"%>
         
         <div class="container-fluid">
+        
+        <%-- sidemenu --%>
         <div class="row">
             <div class="col-lg-2">
                 <ul class="nav navbar-light bg-light navbar-expand-lg" style="height: 100%;">
@@ -58,7 +43,7 @@
                             <span class="material-icons md-dark p-2">
                                 local_shipping
                             </span>
-                            <a class="nav-link text-dark" href="BridgelandBreadDeliverySchedule.html">Delivery
+                            <a class="nav-link text-dark" href="#">Delivery
                                 Schedule</a>
                         </li>
                         <li class="nav-item d-flex flex-row">
@@ -82,27 +67,35 @@
                     </div>
                 </ul>
             </div>
-
+            
+            <%-- Daily Production Report Section --%>
             <div class="col-lg-10">
                 <div class="row mb-lg-4 p-lg-4 flex-wrap flex-md-nowrap">
                     <div class="col-2 mt-2">
                         <p class="h4 font-weight-light">Report</p>
                     </div>
+                    
+                    <%-- Button to get previous day production report --%>
                     <div class="col-lg-6 col-md-2 d-flex justify-content-center">
                         <button type="button" class="btn btn-outline-dark rounded">
                             <span class="material-icons">
                                 keyboard_arrow_left
                             </span>
                         </button>
+                        <%-- production report date --%>
                         <span class="ml-2 mr-2 p-2">
                             <strong class="h3" #id="report_date"><c:out value='${reportDate}'/></strong>
                         </span>
+                        
+                        <%-- Button to get the next day production report --%>
                         <button type="button" class="btn btn-outline-dark rounded">
                             <span class="material-icons">
                                 keyboard_arrow_right
                             </span>
                         </button>
                     </div>
+                        
+                    <%-- Button group to go to weekly or monthly view of production report --%>
                     <div class="col-4">
                         <div class="btn-group">
                             <button type="button" class="btn btn-secondary">Day</button>
@@ -111,7 +104,8 @@
                         </div>
                     </div>
                 </div>
-
+                
+                <%-- Sort options for production report --%>
                 <div class="row">
                     <div class="col-lg-8">
                         <label for="sortbyOptions">Sort by:</label>
@@ -122,7 +116,7 @@
                             <option>Delivery Time</option>
                             <option>Type</option>
                         </select>
-                        <select class="selectpicker pl-2" name="asc_or_desc" id="asc_or_desc" onchange="getSortedProductionReport(\"<c:out value='${reportDate}'/>\")>
+                        <select class="selectpicker pl-2" name="ascDesc" id="ascDesc" onchange="getSortedProductionReport(\"<c:out value='${reportDate}'/>\")>
                             <option>Ascending</option>
                             <option>Descending</option>
                         </select>
@@ -133,7 +127,8 @@
                         </button>
                     </div>
                 </div>
-
+                
+                <%-- Display the day production report --%>
                 <div class="row">
                     <div class="col pt-4 mr-5">
                         <table class="table table-striped">
@@ -163,19 +158,6 @@
         </div>
     </div>
     </div>
-        
-    <!-- Bootstrap JS Libraries -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"
-        integrity="sha512-yDlE7vpGDP7o2eftkCiPZ+yuUyEcaBwoJoIhdXv71KZWugFqEphIS3PU60lEkFaz8RxaVsMpSvQxMBaKVwA5xg=="
-        crossorigin="anonymous"></script>
+    <%@include file="includes/externalJSLibrary.html"%>
     </body>
 </html>
