@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/Capstone"/>
+<Context path="/Capstone">
+    <Resource name="jdbc/bridgelandbakery" auth="Container"
+        driverClassName="com.mysql.cj.jdbc.Driver"
+        url="jdbc:mysql://localhost:3306/bridgelandbakery?autoReconnect=true" 
+        username="root" password="password"
+        maxActive="100" maxIdle="30" maxWait="10000"
+        logAbandoned="true" removeAbandoned="true"
+        removeAbandonedTimeout="60" type="javax.sql.DataSource"
+    />
+    
+</Context>

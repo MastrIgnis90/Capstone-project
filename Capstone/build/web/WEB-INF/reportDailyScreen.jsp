@@ -170,7 +170,7 @@
                                     <tr>
                                         <th scope="row">${order.orderNum}</th>
                                         <td>${order.product}</td>
-                                        <td>${order.note}</td>
+                                        <td>${order.notes}</td>
                                     </tr>
                                 </c:forEach>        
                             </tbody>

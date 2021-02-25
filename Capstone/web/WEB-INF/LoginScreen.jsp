@@ -13,7 +13,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <%@include file="includes/externalCSSLinks.html"%>
-        <title>TESTING - Login</title>
+        <title>Bridgeland Bread - Login</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">   
     </head>
     <body>
