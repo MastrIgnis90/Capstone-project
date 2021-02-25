@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.sql.*;
 
 /**
  *
@@ -23,19 +24,27 @@ public class DBOperations {
     //columns 1 and 3 in the report
     public ArrayList getDailyReportProductionList (String date){
         
+        
         ArrayList<Order> dailyReportProductionList = new ArrayList <> ();
         
         ConnectionPool cp = ConnectionPool.getInstance();
         
-        String sql = "SELECT * FROM bridgelandbakery.order WHERE delivery_date = ? ";
+        //String sql = "SELECT * FROM bridgelandbakery.orders WHERE delivery_date = '?';";
+        String sql =  "SELECT * FROM bridgelandbakery.orders WHERE delivery_date = STR_TO_DATE('" + date + "' , '%Y-%m-%d');";
         
-         try {
+         try {             
             Connection conn = cp.getConnection();
-            PreparedStatement st = conn.prepareStatement(sql);
-            st.setString(1, date);
+            //PreparedStatement st = conn.prepareStatement(sql);
+            //st.setString(1, date);
+            
+            //ResultSet rs = st.executeQuery(sql);
+            
+            Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
+            
             while(rs.next()){
                 Order order = new Order(rs.getInt(1), rs.getString(8));
+                dailyReportProductionList.add(order);
             }
             rs.close();
             st.close();
@@ -55,7 +64,7 @@ public class DBOperations {
         
         ConnectionPool cp = ConnectionPool.getInstance();
         
-        String sql = "SELECT * FROM bridgelandbakery.orderitems WHERE order_id = ? ";
+        String sql = "SELECT * FROM bridgelandbakery.orderitems WHERE order_id = ? ;";
 
          try {
             Connection conn = cp.getConnection();

@@ -8,5 +8,5 @@
         logAbandoned="true" removeAbandoned="true"
         removeAbandonedTimeout="60" type="javax.sql.DataSource"
     />
-    
+
 </Context>
