@@ -5,6 +5,7 @@
  */
 package blb.web;
 
+import blb.database.DBOperations;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -37,6 +38,7 @@ public class LoginServices extends HttpServlet {
         String action = request.getParameter("action");
         String username = request.getParameter("email");
         String password = request.getParameter("password");
+        DBOperations dbops = new DBOperations();
         
         
             
@@ -45,9 +47,10 @@ public class LoginServices extends HttpServlet {
             request.setAttribute("message", "Both username and password are required");
             request.getRequestDispatcher("/WEB-INF/Login.jsp").forward(request, response);
         } else if(username.trim().equals("john@john") && password.trim().equals("password")){//!!!!!!!!! CHANGE TO DBOPS!!!!!!!
-            //request.setAttribute("dailyReportProductionList", dbops.getProductionList());
-            SimpleDateFormat sdf = new SimpleDateFormat("EEEE d, MMMM y");
-            request.setAttribute("reportDate", sdf.format(new Date()).toString());
+            
+            String date = new SimpleDateFormat("EEEE d, MMMM y").format(new Date());
+            request.setAttribute("reportDate", date);
+            request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
             request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);// !!!! change to correct report page!!!!
             
             
