@@ -5,30 +5,40 @@
  */
 package blb.database;
 
-import javax.sql.DataSource;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 /**
  *
- * @author Sebastian Wild
+ * @author Sebastian Wild, Alexander Peluso
+ * Update Feb 22, 2021
+ * Section of code dedicated to the creation of the needed connection pools for 
+ * the app, it will connect directly to the database, consists of 4 methods that 
+ * control the different connections, from creation, connection, and termination.
+ * There is one private constructor.
  */
 public class ConnectionPool {
     private static ConnectionPool pool = null;
     private static DataSource dataSource = null;
     
+    
+    //private constructor, with an exception catch, in case there is a problem.
     private ConnectionPool() {
+        
         try {
             InitialContext ic = new InitialContext();
-            dataSource = (DataSource) ic.lookup("java:/comp/env/jdbc/BridgelandBread");
-        } catch (NamingException ex) {
+            dataSource = (DataSource) ic.lookup("java:/comp/env/jdbc/bridgelandbakery"); 
+        }
+        catch (NamingException ex) {
             ex.printStackTrace();
         }
     }
     
+    //The static instance creation
     public static synchronized ConnectionPool getInstance() {
-        if(pool==null) {
+        if (pool==null) {
             pool = new ConnectionPool();
         }
         
@@ -38,7 +48,8 @@ public class ConnectionPool {
     public Connection getConnection() {
         try {
             return dataSource.getConnection();
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             ex.printStackTrace();
             return null;
         }
@@ -47,8 +58,10 @@ public class ConnectionPool {
     public void freeConnection(Connection conn) {
         try {
             conn.close();
-        } catch (SQLException ex) {
-        ex.printStackTrace();
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
-    }
+    
 }

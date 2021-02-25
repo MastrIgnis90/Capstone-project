@@ -4,21 +4,19 @@
  * and open the template in the editor.
  */
 package blb.database;
-import java.sql.*;
+
+import java.util.ArrayList;
+
 /**
  *
- * @author Sebastian Wild
+ * @author Sebastian Wild, Alexander Peluso
+ * Updated: Feb 22, 2021
  */
 public class DBOperations {
-    public void test() {
-        try {
-            ConnectionPool cp = ConnectionPool.getInstance();
-            Connection conn = cp.getConnection();
-            PreparedStatement ps = conn.prepareStatement("Select * from customers");
-            ResultSet rs  = ps.executeQuery();
-            
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+    
+    public ArrayList getOrdersforDelivery(){
+        ArrayList<Object> orders = new ArrayList<>();
+        return orders;
     }
+    
 }

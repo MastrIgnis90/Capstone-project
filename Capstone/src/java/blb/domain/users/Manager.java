@@ -9,6 +9,15 @@ package blb.domain.users;
  *
  * @author Sebastian Wild
  */
-public class Manager {
+public class Manager extends User{
     
+    public Manager(){
+        
+    }
+    
+    public Manager(String username, String password){
+        //super(username, password);
+    }
+    
+    //mutators and accessor for the basic information are in the User class
 }
