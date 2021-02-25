@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/Capstone">
+<<<<<<< HEAD
     <Resource name="jdbc/finalProjectFall2020" auth="Container"
         driverClassName="com.mysql.cj.jdbc.Driver"
         url="jdbc:mysql://localhost:3306/finalProjectFall2020?autoReconnect=true" 
+=======
+    <Resource name="jdbc/bridgelandbakery" auth="Container"
+        driverClassName="com.mysql.cj.jdbc.Driver"
+        url="jdbc:mysql://localhost:3306/bridgelandbakery?autoReconnect=true" 
+>>>>>>> 57424452dbe0bc734a5cf5f2a45fd2a7ca39b059
         username="root" password="password"
         maxActive="100" maxIdle="30" maxWait="10000"
         logAbandoned="true" removeAbandoned="true"

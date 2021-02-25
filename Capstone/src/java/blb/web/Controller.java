@@ -34,7 +34,7 @@ public class Controller extends HttpServlet {
         String action = request.getParameter("action");
         boolean getPreviousReport = Boolean.parseBoolean(request.getParameter("getPreviousReport"));
         if(action==null) {
-            request.getRequestDispatcher("/WEB-INF/Login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/LoginScreen.jsp").forward(request, response);
         } else if(action.equals("Login")) {
             request.getRequestDispatcher("LoginServices").forward(request, response);
         } else if(getPreviousReport) {
