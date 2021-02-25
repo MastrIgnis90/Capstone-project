@@ -5,10 +5,18 @@
  */
 package blb.database;
 
+import java.util.ArrayList;
+
 /**
  *
- * @author Sebastian Wild
+ * @author Sebastian Wild, Alexander Peluso
+ * Updated: Feb 22, 2021
  */
 public class DBOperations {
+    
+    public ArrayList getOrdersforDelivery(){
+        ArrayList<Object> orders = new ArrayList<>();
+        return orders;
+    }
     
 }

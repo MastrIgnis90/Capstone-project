@@ -9,6 +9,6 @@ package blb.domain.orders;
  *
  * @author Sebastian Wild
  */
-public class StandingOrder {
+public class StandingOrder extends Order{
     
 }
