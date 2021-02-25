@@ -35,33 +35,26 @@ public class LoginServices extends HttpServlet {
             throws ServletException, IOException {
         
         String action = request.getParameter("action");
-        String username = request.getParameter("username");
+        String username = request.getParameter("email");
         String password = request.getParameter("password");
         
         
-        if(action==null||username==null||password==null){
+            
+           
+        if(username.trim().equals("") || password.trim().equals("")){// nothing supplied
+            request.setAttribute("message", "Both username and password are required");
             request.getRequestDispatcher("/WEB-INF/Login.jsp").forward(request, response);
+        } else if(username.trim().equals("john@john") && password.trim().equals("password")){//!!!!!!!!! CHANGE TO DBOPS!!!!!!!
+            //request.setAttribute("dailyReportProductionList", dbops.getProductionList());
+            SimpleDateFormat sdf = new SimpleDateFormat("EEEE d, MMMM y");
+            request.setAttribute("reportDate", sdf.format(new Date()).toString());
+            request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);// !!!! change to correct report page!!!!
             
             
-        } else if(action.equals("Login")){
-            if(username.trim().equals("") || password.trim().equals("")){// nothing supplied
-                request.setAttribute("message", "Both username and password are required");
-                request.getRequestDispatcher("/WEB-INF/Login.jsp").forward(request, response);
-                
-                
-            }else if(username.trim().equals("john") && password.trim().equals("password")){//!!!!!!!!! CHANGE TO DBOPS!!!!!!!
-                //request.setAttribute("dailyReportProductionList", dbops.getProductionList());
-                SimpleDateFormat sdf = new SimpleDateFormat("EEEE d, MMMM y");
-                request.setAttribute("reportDate", sdf.format(new Date()).toString());
-                request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);// !!!! change to correct report page!!!!
-            
-            
-            } else { //invalid username or password
-                request.setAttribute("message", "Invalid username or password");
-                request.getRequestDispatcher("/WEB-INF/Login.jsp").forward(request, response);
-            }
+        } else { //invalid username or password
+            request.setAttribute("message", "Invalid username or password");
+            request.getRequestDispatcher("/WEB-INF/Login.jsp").forward(request, response);
         }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

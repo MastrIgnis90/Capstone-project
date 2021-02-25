@@ -89,7 +89,8 @@ public class ReportServices extends HttpServlet {
             
             //orders = dbops.getList(date);
             //request.setAttribute("dailyReportProductionList", orders);
-            request.setAttribute("dailyReportDate", date);
+            System.out.println(date);
+            request.setAttribute("reportDate", date);
             request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
         }
     }
