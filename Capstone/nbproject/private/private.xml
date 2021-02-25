@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Sebastian%20Wild/Documents/NetBeansProjects/Capstone-project/Capstone/src/java/blb/web/LoginServices.java</file>
-            <file>file:/C:/Users/Sebastian%20Wild/Documents/NetBeansProjects/Capstone-project/Capstone/src/java/blb/domain/orders/Order.java</file>
-            <file>file:/C:/Users/Sebastian%20Wild/Documents/NetBeansProjects/Capstone-project/Capstone/src/java/blb/utils/GeneratePDF.java</file>
-            <file>file:/C:/Users/Sebastian%20Wild/Documents/NetBeansProjects/Capstone-project/Capstone/src/java/blb/web/Controller.java</file>
-            <file>file:/C:/Users/Sebastian%20Wild/Documents/NetBeansProjects/Capstone-project/Capstone/src/java/blb/web/ReportServices.java</file>
+            <file>file:/C:/Users/612600/Documents/NetBeansProjects/Capstone-project/Capstone/web/WEB-INF/reportDailyScreen.jsp</file>
+            <file>file:/C:/Users/612600/Documents/NetBeansProjects/Capstone-project/Capstone/web/WEB-INF/javascript/jsReportScreenFunction.html</file>
+            <file>file:/C:/Users/612600/Documents/NetBeansProjects/Capstone-project/Capstone/src/java/blb/web/ReportServices.java</file>
+            <file>file:/C:/Users/612600/Documents/NetBeansProjects/Capstone-project/Capstone/web/WEB-INF/Login.jsp</file>
         </group>
     </open-files>
 </project-private>
