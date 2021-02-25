@@ -1,28 +1,14 @@
 <%-- 
-<<<<<<< HEAD
-    Document   : ReportPage
-    Created on : Feb. 23, 2021, 4:08:25 p.m.
-    Author     : Sebastian Wild
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-=======
     Document   : reportDailyScreen
     Created on : Feb 23, 2021, 4:17:28 PM
     Author     : Nhu Phan
 --%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
->>>>>>> master
->>>>>>> 1dcb34108ace2817fdb02e6a42a2c3c895a8c46e
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -197,24 +183,3 @@
     <%@include file="includes/externalJSLibrary.html"%>
     </body>
 </html>
-=======
->>>>>>> 1dcb34108ace2817fdb02e6a42a2c3c895a8c46e
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <form method="post" action="Controller">
-            <select name="report">
-                <option value="delivery">delivery</option>
-                <option value="production"> production</option>
-            </select><br/>
-            <input type="submit" name="action" value="Wednesday 24, February 2021"><br/>
-            <input type="submit" name="action" value="print">
-            ${requestScope.reportDate}
-            
-        </form>
-    </body>
-</html>
-<<<<<<< HEAD
-=======
->>>>>>> master
->>>>>>> 1dcb34108ace2817fdb02e6a42a2c3c895a8c46e
