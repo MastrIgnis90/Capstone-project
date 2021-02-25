@@ -5,6 +5,7 @@
  */
 package blb.database;
 
+import blb.domain.orders.Order;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
