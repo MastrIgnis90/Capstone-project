@@ -45,7 +45,7 @@
                                 local_shipping
                             </span>
                             <a class="nav-link text-dark" 
-                               href="NavigationServices?goToDeliverySchedule=true&loginUserEmail=${sessionScope.email}"
+                               href="Controller?goToDeliverySchedule=true&loginUserEmail=${sessionScope.email}"
                             >
                                 Delivery Schedule
                             </a>
@@ -55,7 +55,7 @@
                                 people
                             </span>
                             <a class="nav-link text-dark" 
-                               href="NavigationServices?goToManageClients=true&loginUserEmail=${sessionScope.email}"
+                               href="Controller?goToManageClients=true&loginUserEmail=${sessionScope.email}"
                             >
                                 Manage Clients
                             </a>
@@ -65,7 +65,7 @@
                                 breakfast_dining
                             </span>
                             <a class="nav-link text-dark" 
-                               href="NavigationServices?goToManageProducts=true&loginUserEmail=${sessionScope.email}"
+                               href="Controller?goToManageProducts=true&loginUserEmail=${sessionScope.email}"
                             >
                                 Manage Products
                             </a>
