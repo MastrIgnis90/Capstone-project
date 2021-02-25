@@ -5,6 +5,8 @@
  */
 package blb.web;
 
+import blb.domain.orders.Order;
+import blb.utils.GeneratePDF;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -13,6 +15,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.itextpdf.text.*;
+import java.io.ByteArrayOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletOutputStream;
 
 /**
  *
@@ -32,23 +43,55 @@ public class ReportServices extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String data = request.getParameter("report");
+        
+        boolean getPreviousReport = Boolean.parseBoolean(request.getParameter("getPreviousReport"));
+        boolean getDailyReport = Boolean.parseBoolean(request.getParameter("getDailyReport"));
+        boolean getNextDailyReport = Boolean.parseBoolean(request.getParameter("getNextDailyReport"));
+        boolean sortDailyReport = Boolean.parseBoolean(request.getParameter("sortDailyReport"));
+        String date = request.getParameter("dailyReportDate");
         String action = request.getParameter("action");
-        if(action.equals("retrive")) {
-            if(data.equals("delivery")){
+        ArrayList<Order> orders = new ArrayList<>();
+        if(action!=null){
+            response.setContentType("application/pdf;charset=UTF-8");
+            response.addHeader("Content-Disposition", "inline; filename=" + "orders.pdf");
+            ServletOutputStream out = response.getOutputStream();
+            ByteArrayOutputStream baos = GeneratePDF.getpdfFile(orders);
+            baos.writeTo(out);
+        } else {
+        
+            if(getDailyReport) {
+                //orders = dbops.getList();
+                request.setAttribute("dailyReportProductionList", orders);
+                request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
+            } else if(getPreviousReport || getNextDailyReport){
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("EEEE d, MMMM y");
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(sdf.parse(date));
+                    
+                    if(getPreviousReport){
+                        c.add(Calendar.DATE, -1);
+                    } else if (getNextDailyReport) {
+                        c.add(Calendar.DATE, 1);
+                    }
+                    
+                    date = sdf.format(c.getTime());
                 
-            } else if(data.equals("production")) {
+                } catch (ParseException ex) {
+                    Logger.getLogger(ReportServices.class.getName()).log(Level.SEVERE, null, ex);
+                } 
+            } else if(sortDailyReport) {
+                String sortDailyReportBy = request.getParameter("sortDailyReportBy");
+                String orderOfSortDailyReport = request.getParameter("orderOfSortDailyReport");
                 
+                //order = dbops.getList(date, sortDailyReportBy, orderOfSortDailyReport);
             }
-            request.setAttribute("reveal", true);
-            request.setAttribute("table", data);
-        } else if(action.equals("print")) {
             
+            //orders = dbops.getList(date);
+            //request.setAttribute("dailyReportProductionList", orders);
+            request.setAttribute("dailyReportDate", date);
+            request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
         }
-        
-        
-        
-        request.getRequestDispatcher("/WEB-INF/ReportPage.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

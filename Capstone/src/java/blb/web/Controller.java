@@ -32,18 +32,14 @@ public class Controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        boolean getPreviousReport = Boolean.parseBoolean(request.getParameter("getPreviousReport"));
         if(action==null) {
             request.getRequestDispatcher("/WEB-INF/Login.jsp").forward(request, response);
-        } else {
-             switch(action) {
-                 case "Login": request.getRequestDispatcher("LoginServices").forward(request, response);
-                 case "Report": request.getRequestDispatcher("/WEB-INF/ReportPage.jsp").forward(request, response);
-                 case "Retrive": request.getRequestDispatcher("ReportServices").forward(request, response);
-             }
-        }
-        
-        
-        
+        } else if(action.equals("Login")) {
+            request.getRequestDispatcher("LoginServices").forward(request, response);
+        } else if(getPreviousReport) {
+                    request.getRequestDispatcher("ReportServices").forward(request, response);
+        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

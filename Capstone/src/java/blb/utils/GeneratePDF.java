@@ -11,6 +11,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -27,7 +28,7 @@ import java.util.logging.Logger;
 public class GeneratePDF {//unfinished
     public static ByteArrayOutputStream getpdfFile(ArrayList<Order> orders){
         
-        Document doc = new Document();
+        Document doc = new Document(PageSize.A4.rotate());
         ByteArrayOutputStream baus = new ByteArrayOutputStream();
         
         try {
@@ -36,24 +37,29 @@ public class GeneratePDF {//unfinished
             
             PdfPCell hcell;
             
-            hcell = new PdfPCell(new Phrase("Order #", headFont));
-            hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            table.addCell(hcell);
-            
-            hcell= new PdfPCell(new Phrase("Type", headFont));
-            hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            table.addCell(hcell);
-            
-            hcell = new PdfPCell(new Phrase("Order", headFont));
+            hcell = new PdfPCell(new Phrase("Order Number", headFont));
             hcell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            hcell.setVerticalAlignment(Element.ALIGN_CENTER);
             table.addCell(hcell);
             
-            hcell = new PdfPCell(new Phrase("Special Instructions", headFont));
+            hcell= new PdfPCell(new Phrase("Order", headFont));
             hcell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            hcell.setVerticalAlignment(Element.ALIGN_CENTER);
+            table.addCell(hcell);
+            
+            hcell = new PdfPCell(new Phrase("Note", headFont));
+            hcell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            hcell.setVerticalAlignment(Element.ALIGN_CENTER);
             table.addCell(hcell);
             
             hcell = new PdfPCell(new Phrase("Delivery Time", headFont));
-            hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            hcell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            hcell.setVerticalAlignment(Element.ALIGN_CENTER);
+            table.addCell(hcell);
+            
+            hcell = new PdfPCell(new Phrase("Type", headFont));
+            hcell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            hcell.setVerticalAlignment(Element.ALIGN_CENTER);
             table.addCell(hcell);
             
             for (Order order: orders) {
@@ -64,17 +70,17 @@ public class GeneratePDF {//unfinished
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
                 
-                cell = new PdfPCell(new Phrase(order.getStatus()));
-                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(cell);
-                
                 cell = new PdfPCell(new Phrase(order.getProduct().toString()));
                 cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
                 
                 cell = new PdfPCell(new Phrase(order.getNotes()));
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(cell);
+                
+                cell = new PdfPCell(new Phrase(order.getOrderDate()));
                 cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
@@ -96,7 +102,7 @@ public class GeneratePDF {//unfinished
             Logger.getLogger(GeneratePDF.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return null;
+        return baus;
     }
     
 }

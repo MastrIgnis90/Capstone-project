@@ -7,6 +7,8 @@ package blb.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,15 +37,26 @@ public class LoginServices extends HttpServlet {
         String action = request.getParameter("action");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        
+        
         if(action==null||username==null||password==null){
             request.getRequestDispatcher("/WEB-INF/Login.jsp").forward(request, response);
+            
+            
         } else if(action.equals("Login")){
-            if(username.equals("") || password.equals("")){
+            if(username.trim().equals("") || password.trim().equals("")){// nothing supplied
                 request.setAttribute("message", "Both username and password are required");
                 request.getRequestDispatcher("/WEB-INF/Login.jsp").forward(request, response);
-            }else if(username.equals("john") && password.equals("password")){//!!!!!!!!! CHANGE TO DBOPS!!!!!!!
-                request.getRequestDispatcher("/WEB-INF/MainPage.jsp").forward(request, response);
-            } else {
+                
+                
+            }else if(username.trim().equals("john") && password.trim().equals("password")){//!!!!!!!!! CHANGE TO DBOPS!!!!!!!
+                //request.setAttribute("dailyReportProductionList", dbops.getProductionList());
+                SimpleDateFormat sdf = new SimpleDateFormat("EEEE d, MMMM y");
+                request.setAttribute("reportDate", sdf.format(new Date()).toString());
+                request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);// !!!! change to correct report page!!!!
+            
+            
+            } else { //invalid username or password
                 request.setAttribute("message", "Invalid username or password");
                 request.getRequestDispatcher("/WEB-INF/Login.jsp").forward(request, response);
             }
