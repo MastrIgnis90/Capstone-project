@@ -32,7 +32,7 @@ public class GeneratePDF {//unfinished
         ByteArrayOutputStream baus = new ByteArrayOutputStream();
         
         try {
-            PdfPTable table = new PdfPTable(5);
+            PdfPTable table = new PdfPTable(3);
             Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
             
             PdfPCell hcell;
@@ -52,16 +52,6 @@ public class GeneratePDF {//unfinished
             hcell.setVerticalAlignment(Element.ALIGN_CENTER);
             table.addCell(hcell);
             
-            hcell = new PdfPCell(new Phrase("Delivery Time", headFont));
-            hcell.setHorizontalAlignment(Element.ALIGN_LEFT);
-            hcell.setVerticalAlignment(Element.ALIGN_CENTER);
-            table.addCell(hcell);
-            
-            hcell = new PdfPCell(new Phrase("Type", headFont));
-            hcell.setHorizontalAlignment(Element.ALIGN_LEFT);
-            hcell.setVerticalAlignment(Element.ALIGN_CENTER);
-            table.addCell(hcell);
-            
             for (Order order: orders) {
                 PdfPCell cell;
                 
@@ -70,22 +60,12 @@ public class GeneratePDF {//unfinished
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
                 
-                cell = new PdfPCell(new Phrase(order.getProduct().toString()));
-                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell = new PdfPCell(new Phrase(order.getProduct()));
+                cell.setVerticalAlignment(Element.ALIGN_LEFT);
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
                 
                 cell = new PdfPCell(new Phrase(order.getNotes()));
-                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(cell);
-                
-                cell = new PdfPCell(new Phrase(order.getOrderDate()));
-                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(cell);
-                
-                cell = new PdfPCell(new Phrase(order.getOrderDate()));
                 cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
