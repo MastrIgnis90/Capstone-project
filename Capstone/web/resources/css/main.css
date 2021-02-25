@@ -1,0 +1,81 @@
+/* 
+    Main css file for Bridgeland Bakery Capstone Project
+    Created on : Feb 23, 2021, 4:16:28 PM
+    Author     : Nhu Phan
+*/
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+html {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  height: 100vh;
+}
+
+
+/* Google Material Icons Rules for sizing the icon. */
+.material-icons.md-16 {
+  font-size: 16px;
+}
+.material-icons.md-18 {
+  font-size: 18px;
+}
+.material-icons.md-24 {
+  font-size: 24px;
+}
+.material-icons.md-36 {
+  font-size: 36px;
+}
+.material-icons.md-48 {
+  font-size: 48px;
+}
+
+/* Google Material Icons Rules for using icons as black on a light background. */
+.material-icons.md-dark {
+  color: rgba(0, 0, 0, 0.54);
+}
+.material-icons.md-dark.md-inactive {
+  color: rgba(0, 0, 0, 0.26);
+}
+
+/* Google Material Icons Rules for using icons as white on a dark background. */
+.material-icons.md-light {
+  color: rgba(255, 255, 255, 1);
+}
+.material-icons.md-light.md-inactive {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+#sidemenu {
+  height: 100%;
+}
+
+a:hover {
+  font-weight: bolder;
+}
+
+/* Small Devices */
+@media (min-width: 547px) {
+  .h3 {
+    font-size: 1rem;
+  }
+}
+
+/* Medium Devices */
+
+@media (min-width: 768px) {
+  .h3 {
+    font-size:1.25rem
+  }
+}
+
+/* Large Devices */
+@media (min-width: 992px) {
+  .h3 {
+    font-size: 1.75rem;
+  }
+}
+
+#LoginScreen {
+  background-image: url("../images/logScreenImage.jpg");
+  background-size: cover;
+}
