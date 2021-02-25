@@ -10,7 +10,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,15 +32,16 @@ public class DBOperations {
         
         ConnectionPool cp = ConnectionPool.getInstance();
         
-        String sql = "SELECT * FROM bridgelandbakery.order WHERE delivery_date = ? ";
+        String sql = "select order_id, product_name, order_notes from orders natural join orderitems natural join products where delivery_date = ?";
         
          try {
             Connection conn = cp.getConnection();
             PreparedStatement st = conn.prepareStatement(sql);
-            st.setString(1, date);
-            ResultSet rs = st.executeQuery(sql);
+            st.setString(1, parseDate(date));
+            ResultSet rs = st.executeQuery();
             while(rs.next()){
-                Order order = new Order(rs.getInt(1), rs.getString(8));
+                Order order = new Order(rs.getInt(1), rs.getString(2), rs.getString(3));
+                dailyReportProductionList.add(order);
             }
             rs.close();
             st.close();
@@ -43,6 +49,8 @@ public class DBOperations {
         }
         catch (SQLException ex) {
             ex.printStackTrace();
+        } catch (ParseException ex) {
+            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return dailyReportProductionList;
@@ -73,5 +81,12 @@ public class DBOperations {
             ex.printStackTrace();
         }
         return order;
+    }
+    
+    private String parseDate(String date) throws ParseException {
+            Date dateObj = new SimpleDateFormat("EEEE d, MMMM y").parse(date);
+            date = new SimpleDateFormat("yyyy-MM-dd").format(dateObj);
+        
+        return date;
     }
 }
