@@ -30,11 +30,10 @@
             <jsp:include page="includes/managerSideNavigationMenu.jsp" />
             
             <%-- Weekly Production Report Section --%>
-            <%-- Weekly Production Report Section --%>
                         <div class="col-lg-10">
                 <div class="row mb-lg-4 p-lg-4 flex-wrap flex-md-nowrap">
                     <div class="col-2 mt-2">
-                        <p class="h4 font-weight-light">Report</p>
+                        <p class="h4 font-weight-light">Weekly Report</p>
                     </div>
                     <div class="col-lg-6 col-md-2 d-flex justify-content-center">
                         <button type="button" 
