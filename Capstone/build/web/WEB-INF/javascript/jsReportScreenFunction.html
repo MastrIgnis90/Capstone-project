@@ -33,6 +33,28 @@ function getNextProductionReport(date)
     window.location="/Capstone/ReportServices?getNextDailyReport=true&dailyReportDate=" + date;
 }
 
+/* 
+ * Send a request to get the previous week production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getPreviousWeeklyProductionReport(date) 
+{
+    window.location="/Capstone/reportServices?getPreviousWeeklyReport=true&dailyReportDate=" + date;
+}
+
+/* 
+ * Send a request to get the next week production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getNextWeeklyProductionReport(date) 
+{
+    window.location="/Capstone/reportServices?getNextWeeklyReport=true&dailyReportDate=" + date;
+}
+
 /*
  * Send a request to get a sorted production report 
  * 
