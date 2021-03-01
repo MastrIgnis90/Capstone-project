@@ -15,74 +15,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <%@include file="includes/externalCSSLinks.html"%>
-        <title>TESTING - Daily Report Screen</title>
+        <title>Bridgeland Bread - Weekly Report Screen</title>
         <%@include file="javascript/jsReportScreenFunction.html"%>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">   
     </head>
     <body>
-                
+        <%-- get daily report date, get the start and end date of week that daily report date belongs to --%> 
+        <c:set var='reportDate' value='${requestScope.reportDate}'/> 
+        <c:set var='startDate' value='${requestScope.startDate}'/>
+        <c:set var='endDate' value='${requestScope.endDate}'/>
+        
+        <%-- page header --%>     
         <%@include file="includes/header.html"%>
             
         <div class="container-fluid">
                 
         <div class="row">
-            <%-- side navigation menu --%>
-            <div class="col-lg-2">
-                <ul class="nav navbar-light bg-light navbar-expand-lg" style="height: 100%;">
-                    <div class="collapse navbar-collapse flex-column" id="sidemenu">
-                        <li class="nav-item d-flex flex-row mt-lg-4">
-                            <span class="material-icons md-dark p-2">
-                                assignment
-                            </span>
-                            <a class="nav-link active" 
-                               style="color: black;font-weight: bolder;"
-                            >
-                                Report
-                            </a>
-                        </li>
-                        <li class="nav-item d-flex flex-row">
-                            <span class="material-icons md-dark p-2">
-                                local_shipping
-                            </span>
-                            <a class="nav-link text-dark" 
-                               href="Controller?goToDeliverySchedule=true&loginUserEmail=${sessionScope.email}"
-                            >
-                                Delivery Schedule
-                            </a>
-                        </li>
-                        <li class="nav-item d-flex flex-row">
-                            <span class="material-icons md-dark p-2">
-                                people
-                            </span>
-                            <a class="nav-link text-dark" 
-                               href="Controller?goToManageClients=true&loginUserEmail=${sessionScope.email}"
-                            >
-                                Manage Clients
-                            </a>
-                        </li>
-                        <li class="nav-item d-flex flex-row">
-                            <span class="material-icons md-dark p-2">
-                                breakfast_dining
-                            </span>
-                            <a class="nav-link text-dark" 
-                               href="Controller?goToManageProducts=true&loginUserEmail=${sessionScope.email}"
-                            >
-                                Manage Products
-                            </a>
-                        </li>
-                        <li class="nav-item d-flex flex-row">
-                            <span class="material-icons md-dark p-2">
-                                perm_identity
-                            </span>
-                            <a class="nav-link text-dark" 
-                               href="Controller?logout=true&loginUserEmail=${sessionScope.email}"
-                            >
-                                Log Out
-                            </a>
-                        </li>
-                    </div>
-                </ul>
-            </div>
+            <%-- manager side navigation menu --%>
+            <jsp:include page="includes/managerSideNavigationMenu.jsp" />
             
             <%-- Weekly Production Report Section --%>
                         <div class="col-lg-10">
@@ -97,7 +47,7 @@
                             </span>
                         </button>
                         <span class="ml-2 mr-2 p-2">
-                            <strong class="h4" #id="report_date">Monday Feb 21 - Sunday Feb 28, 2021</strong>
+                            <strong class="h5" #id="report_date">${startDate} - ${endDate}</strong>
                         </span>
                         <button type="button" class="btn btn-outline-dark rounded">
                             <span class="material-icons">
@@ -106,8 +56,13 @@
                         </button>
                     </div>
                     <div class="col-4">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-light">Day</button>
+                        <div class="btn-group">                            
+                            <button type="button" 
+                                    class="btn btn-light"
+                                    onclick="getReportDetails(${reportDate})"
+                            >
+                                Day
+                            </button>
                             <button type="button" class="btn btn-secondary">Week</button>
                             <button type="button" class="btn btn-light">Month</button>
                         </div>
@@ -117,7 +72,7 @@
                 <div class="row">
                     <div class="col-10 d-flex justify-content-end">
                         <button type="button" class="btn btn-outline-dark pr-2 pl-2">
-                            Download
+                            Print
                         </button>
                     </div>
                 </div>
@@ -148,16 +103,16 @@
                                     </td>
                                     
                                 <%-- 
-                                    Dynically print table of daily report production 
+                                    Dynically print table of weekly report production 
                                 --%>
-                                <c:forEach var='order' items='${requestScope.weekReportProductionList}' varStatus='i'>
+                                <c:forEach var='report' items='${requestScope.weekReportProductionList}' varStatus='i'>
                                     <td>
                                         <div class="card">
                                             <div class="card-body">
-                                                <p class="card-text">${order.totalOrderNumber} Orders</p>
+                                                <p class="card-text">${report.totalOrderNumber} Orders</p>
                                                 <button type="button" 
                                                         class="btn btn-outline-dark"
-                                                        onclick="getReportDetails(${order.orderDate})"
+                                                        onclick="getReportDetails(${report.reportDate})"
                                                 >
                                                     Details
                                                 </button>

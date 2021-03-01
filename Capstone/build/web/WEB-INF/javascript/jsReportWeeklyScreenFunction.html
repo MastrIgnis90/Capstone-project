@@ -1,0 +1,12 @@
+<script language="Javascript">
+/* 
+ * Send a request to redirect user to the daily report page of the date selected in weekly report screen.
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getReportDetails(date) 
+{
+    window.location="/Capstone/ReportServices?getDailyReport=true&dailyReportDate=" + date;
+}
+</script>
