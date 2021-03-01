@@ -19,12 +19,7 @@
         <%@include file="javascript/jsReportScreenFunction.html"%>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">   
     </head>
-    <body>
-        <%-- get daily report date, get the start and end date of week that daily report date belongs to --%> 
-        <c:set var='reportDate' value='${requestScope.reportDate}'/> 
-        <c:set var='startDate' value='${requestScope.startDate}'/>
-        <c:set var='endDate' value='${requestScope.endDate}'/>
-        
+    <body>        
         <%-- page header --%>     
         <%@include file="includes/header.html"%>
             
@@ -35,21 +30,28 @@
             <jsp:include page="includes/managerSideNavigationMenu.jsp" />
             
             <%-- Weekly Production Report Section --%>
+            <%-- Weekly Production Report Section --%>
                         <div class="col-lg-10">
                 <div class="row mb-lg-4 p-lg-4 flex-wrap flex-md-nowrap">
                     <div class="col-2 mt-2">
                         <p class="h4 font-weight-light">Report</p>
                     </div>
                     <div class="col-lg-6 col-md-2 d-flex justify-content-center">
-                        <button type="button" class="btn btn-outline-dark rounded">
+                        <button type="button" 
+                                class="btn btn-outline-dark rounded"
+                                onclick="getPreviousWeeklyProductionReport('${requestScope.startDate}')"
+                        >
                             <span class="material-icons">
                                 keyboard_arrow_left
                             </span>
                         </button>
                         <span class="ml-2 mr-2 p-2">
-                            <strong class="h5" #id="report_date">${startDate} - ${endDate}</strong>
+                            <strong class="h5" #id="report_date">${requestScope.startDate} - ${requestScope.endDate}</strong>
                         </span>
-                        <button type="button" class="btn btn-outline-dark rounded">
+                        <button type="button" 
+                                class="btn btn-outline-dark rounded"
+                                onclick="getNextWeeklyProductionReport('${requestScope.startDate}')"
+                        >
                             <span class="material-icons">
                                 keyboard_arrow_right
                             </span>
@@ -59,7 +61,7 @@
                         <div class="btn-group">                            
                             <button type="button" 
                                     class="btn btn-light"
-                                    onclick="getReportDetails(${reportDate})"
+                                    onclick="getReportDetails('${requestScope.reportDate}')"
                             >
                                 Day
                             </button>
@@ -92,27 +94,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <p class="card-text">10 Orders</p>
-                                                <button type="button" class="btn btn-outline-dark">Details</button>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    
+                                <tr>                             
                                 <%-- 
                                     Dynically print table of weekly report production 
                                 --%>
-                                <c:forEach var='report' items='${requestScope.weekReportProductionList}' varStatus='i'>
+                                <c:forEach var='reportDay' items='${requestScope.weekReportProductionList}' varStatus='i'>
                                     <td>
                                         <div class="card">
                                             <div class="card-body">
-                                                <p class="card-text">${report.totalOrderNumber} Orders</p>
+                                                <p class="card-text">${reportDay.totalOrderNumber} Orders</p>
                                                 <button type="button" 
                                                         class="btn btn-outline-dark"
-                                                        onclick="getReportDetails(${report.reportDate})"
+                                                        onclick="getReportDetails('${reportDay.reportDate}')"
                                                 >
                                                     Details
                                                 </button>
