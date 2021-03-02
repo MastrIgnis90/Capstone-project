@@ -15,7 +15,7 @@ import blb.domain.users.User;
 public class Order {
     private int orderNum;   
     private User user;
-    private Product product;
+    private String product;
     private String orderDate;
     private String notes;
     private String type;
@@ -26,11 +26,25 @@ public class Order {
     }
     
     public Order(int orderNum, String note) {
+        if(note==null){
+            this.notes = "-----";
+        } else {
+            this.notes = note;
+        }
         this.orderNum = orderNum;
-        this.notes = note;
     }
     
-    public Order(User user, Product product, String orderDate, String type) {
+    public Order(int orderNum, String product, String note) {
+        if(note==null){
+            this.notes = "-----";
+        } else {
+            this.notes = note;
+        }
+        this.product = product;
+        this.orderNum = orderNum;
+    }
+    
+    /*public Order(User user, Product product, String orderDate, String type) {
         this.user = user;
         this.product = product;
         this.orderDate = orderDate;
@@ -51,7 +65,7 @@ public class Order {
         this.product = product;
         this.orderDate = orderDate;
         this.notes = "";
-    }
+    }*/
 
     public User getUser() {
         return user;
@@ -61,11 +75,11 @@ public class Order {
         this.user = user;
     }
 
-    public Product getProduct() {
+    public String getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(String product) {
         this.product = product;
     }
     
@@ -99,6 +113,10 @@ public class Order {
 
     public void setType(String type) {
         this.type = type;
+    }
+    
+    public String toString(){
+        return this.orderNum + " " + this.notes;
     }
     
 }

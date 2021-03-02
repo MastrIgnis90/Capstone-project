@@ -5,6 +5,7 @@
  */
 package blb.web;
 
+import blb.database.DBOperations;
 import blb.domain.orders.Order;
 import blb.utils.GeneratePDF;
 import java.io.IOException;
@@ -51,18 +52,21 @@ public class ReportServices extends HttpServlet {
         String date = request.getParameter("dailyReportDate");
         String action = request.getParameter("action");
         ArrayList<Order> orders = new ArrayList<>();
+        
+        DBOperations dbops = new DBOperations();
+        
+        
         if(action!=null){
             response.setContentType("application/pdf;charset=UTF-8");
             response.addHeader("Content-Disposition", "inline; filename=" + "orders.pdf");
             ServletOutputStream out = response.getOutputStream();
+            orders = dbops.getDailyReportProductionList(date);
             ByteArrayOutputStream baos = GeneratePDF.getpdfFile(orders);
             baos.writeTo(out);
         } else {
         
             if(getDailyReport) {
-                //orders = dbops.getList();
-                request.setAttribute("dailyReportProductionList", orders);
-                request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
+                
             } else if(getPreviousReport || getNextDailyReport){
                 try {
                     SimpleDateFormat sdf = new SimpleDateFormat("EEEE d, MMMM y");
@@ -87,9 +91,9 @@ public class ReportServices extends HttpServlet {
                 //order = dbops.getList(date, sortDailyReportBy, orderOfSortDailyReport);
             }
             
-            //orders = dbops.getList(date);
-            //request.setAttribute("dailyReportProductionList", orders);
-            request.setAttribute("dailyReportDate", date);
+            orders = dbops.getDailyReportProductionList(date);
+            request.setAttribute("dailyReportProductionList", orders);
+            request.setAttribute("reportDate", date);
             request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
         }
     }
