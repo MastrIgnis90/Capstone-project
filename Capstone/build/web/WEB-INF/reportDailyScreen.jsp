@@ -68,8 +68,18 @@
                     <div class="col-4">
                         <div class="btn-group">
                             <button type="button" class="btn btn-secondary">Day</button>
-                            <button type="button" class="btn btn-light" onclick="getWeeklyProductionReport('<c:out value='${reportDate}'/>')">Week</button>
-                            <button type="button" class="btn btn-light" onclick="getMonthlyProductionReport('<c:out value='${reportDate}'/>')">Month</button>
+                            <button type="button" 
+                                    class="btn btn-light" 
+                                    onclick="getWeeklyProductionReport('<c:out value='${reportDate}'/>')"
+                            >
+                                Week
+                            </button>
+                            <button type="button" 
+                                    class="btn btn-light" 
+                                    onclick="getMonthlyProductionReport('<c:out value='${reportDate}'/>')"
+                            >
+                                Month
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -78,18 +88,28 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <label for="sortbyOptions">Sort by:</label>
-                        <select class="selectpicker" name="sortbyOptions" id="sortbyOptions" onchange="getSortedProductionReport('<c:out value='${reportDate}'/>')">
+                        <select class="selectpicker" 
+                                name="sortbyOptions" 
+                                id="sortbyOptions" 
+                                onchange="getSortedProductionReport('<c:out value='${reportDate}'/>')"
+                        >
                             <option>Order Number</option>
                             <option>Order</option>
                             <option>Note</option>
                         </select>
-                        <select class="selectpicker pl-2" name="ascDesc" id="ascDesc" onchange="getSortedProductionReport('<c:out value='${reportDate}'/>')">
+                        <select class="selectpicker pl-2" 
+                                name="ascDesc" id="ascDesc" 
+                                onchange="getSortedProductionReport('<c:out value='${reportDate}'/>')"
+                        >
                             <option>Ascending</option>
                             <option>Descending</option>
                         </select>
                     </div>
                     <div class="col-lg-4">
-                        <button type="button" class="btn btn-outline-dark pr-2 pl-2" onclick="printDailyReportPDF('<c:out value='${reportDate}'/>')">
+                        <button type="button" 
+                                class="btn btn-outline-dark pr-2 pl-2" 
+                                onclick="printDailyReportPDF('<c:out value='${reportDate}'/>')"
+                        >
                             Print
                         </button>
                     </div>

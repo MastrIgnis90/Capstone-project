@@ -67,12 +67,17 @@
                         <div class="btn-group">                            
                             <button type="button" 
                                     class="btn btn-light"
-                                    onclick="getReportDetails('<c:out value='${reportDate}'>')"
+                                    onclick="getReportDetails('<c:out value='${reportDate}'/>')"
                             >
                                 Day
                             </button>
                             <button type="button" class="btn btn-secondary">Week</button>
-                            <button type="button" class="btn btn-light">Month</button>
+                            <button type="button" 
+                                    class="btn btn-light"
+                                    onclick="getMonthlyProductionReport('<c:out value='${reportDate}'/>')"
+                            >
+                                Month
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -81,7 +86,7 @@
                     <div class="col-10 d-flex justify-content-end">
                         <button type="button" 
                                 class="btn btn-outline-dark pr-2 pl-2"
-                                onclick="printWeeklyReportPDF('<c:out value='${reportDate}'>')"
+                                onclick="printWeeklyReportPDF('<c:out value='${reportDate}'/>')"
                         >
                             Print
                         </button>
