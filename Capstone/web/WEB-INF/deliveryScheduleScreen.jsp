@@ -103,7 +103,7 @@
                             </thead>
                             <tbody>
                                 <%--
-                                    Dynically print delivery schedule
+                                    Dynamically print delivery schedule
                                 --%>
                                 <c:forEach var='order' items='${requestScope.deliveryScheduleList}' varStatus='i'>
                                  <tr>

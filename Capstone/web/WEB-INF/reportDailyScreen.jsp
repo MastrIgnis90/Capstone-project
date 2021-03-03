@@ -108,7 +108,7 @@
                             </thead>
                             <tbody>
                                 <%-- 
-                                    Dynically print table of daily report production 
+                                    Dynamically print table of daily report production 
                                 --%>
                                 <c:forEach var='order' items='${requestScope.dailyReportProductionList}' varStatus='i'>
                                     <tr>

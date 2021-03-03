@@ -26,6 +26,11 @@
         <div class="container-fluid">
                 
         <div class="row">
+            <%-- get report date, start and end date attributes from server --%>
+            <c:set var='reportDate' value='${requestScope.reportDate}'/>
+            <c:set var='startDate' value='${requestScope.startDate}'/>
+            <c:set var='endDate' value='${requestScope.endDate}'/>
+            
             <%-- manager side navigation menu --%>
             <jsp:include page="includes/managerSideNavigationMenu.jsp" />
             
@@ -38,18 +43,20 @@
                     <div class="col-lg-6 col-md-2 d-flex justify-content-center">
                         <button type="button" 
                                 class="btn btn-outline-dark rounded"
-                                onclick="getPreviousWeeklyProductionReport('${requestScope.startDate}')"
+                                onclick="getPreviousWeeklyProductionReport('<c:out value='${startDate}'/>')"
                         >
                             <span class="material-icons">
                                 keyboard_arrow_left
                             </span>
                         </button>
                         <span class="ml-2 mr-2 p-2">
-                            <strong class="h5" #id="report_date">${requestScope.startDate} - ${requestScope.endDate}</strong>
+                            <strong class="h5" #id="report_date">
+                                <c:out value='${startDate}'/> - <c:out value="${endDate}"/>
+                            </strong>
                         </span>
                         <button type="button" 
                                 class="btn btn-outline-dark rounded"
-                                onclick="getNextWeeklyProductionReport('${requestScope.startDate}')"
+                                onclick="getNextWeeklyProductionReport('<c:out value='${startDate}'/>')"
                         >
                             <span class="material-icons">
                                 keyboard_arrow_right
@@ -60,7 +67,7 @@
                         <div class="btn-group">                            
                             <button type="button" 
                                     class="btn btn-light"
-                                    onclick="getReportDetails('${requestScope.reportDate}')"
+                                    onclick="getReportDetails('<c:out value='${reportDate}'>')"
                             >
                                 Day
                             </button>
@@ -72,7 +79,10 @@
 
                 <div class="row">
                     <div class="col-10 d-flex justify-content-end">
-                        <button type="button" class="btn btn-outline-dark pr-2 pl-2">
+                        <button type="button" 
+                                class="btn btn-outline-dark pr-2 pl-2"
+                                onclick="printWeeklyReportPDF('<c:out value='${reportDate}'>')"
+                        >
                             Print
                         </button>
                     </div>
@@ -95,7 +105,7 @@
                             <tbody>
                                 <tr>                             
                                 <%-- 
-                                    Dynically print table of weekly report production 
+                                    Dynamically print table of weekly report production 
                                 --%>
                                 <c:forEach var='reportDay' items='${requestScope.weekReportProductionList}' varStatus='i'>
                                     <td>
