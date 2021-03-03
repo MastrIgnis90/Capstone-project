@@ -12,7 +12,6 @@
                     assignment
                 </span>
                 <a class="nav-link text-dark" 
-                   style="color: black;font-weight: bolder;"
                    href="Controller?goToDailyReport=true&loginUserEmail=${sessionScope.email}"
                 >
                     Report
