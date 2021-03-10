@@ -38,7 +38,7 @@ public class Controller extends HttpServlet {
         } else if(action.equals("Login")) {
             request.getRequestDispatcher("LoginServices").forward(request, response);
         } else if(getPreviousReport) {
-                    request.getRequestDispatcher("ReportServices").forward(request, response);
+            request.getRequestDispatcher("ReportServices").forward(request, response);
         } 
     }
 
