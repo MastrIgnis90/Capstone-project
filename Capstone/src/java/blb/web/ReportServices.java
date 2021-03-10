@@ -7,6 +7,7 @@ package blb.web;
 
 import blb.database.DBOperations;
 import blb.domain.orders.Order;
+import blb.utils.DateHelper;
 import blb.utils.GeneratePDF;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletOutputStream;
@@ -49,52 +51,66 @@ public class ReportServices extends HttpServlet {
         boolean getDailyReport = Boolean.parseBoolean(request.getParameter("getDailyReport"));
         boolean getNextDailyReport = Boolean.parseBoolean(request.getParameter("getNextDailyReport"));
         boolean sortDailyReport = Boolean.parseBoolean(request.getParameter("sortDailyReport"));
+        boolean getWeeklyReport = Boolean.parseBoolean(request.getParameter("getWeeklyReport"));
+        boolean getNextWeeklyReport = Boolean.parseBoolean(request.getParameter("getNextWeeklyReport"));
+        boolean getPreviousWeeklyReport = Boolean.parseBoolean(request.getParameter("getPreviousWeeklyReport"));
+        boolean print = Boolean.parseBoolean(request.getParameter("print"));
+        boolean getMonthlyReport = Boolean.parseBoolean(request.getParameter("getMonthlyReport"));
         String date = request.getParameter("dailyReportDate");
-        String action = request.getParameter("action");
-        ArrayList<Order> orders = new ArrayList<>();
-        
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        ArrayList<Order> orders;
         DBOperations dbops = new DBOperations();
+        DateHelper dh = new DateHelper();
         
-        
-        if(action!=null){
+        if(print){
             response.setContentType("application/pdf;charset=UTF-8");
             response.addHeader("Content-Disposition", "inline; filename=" + "orders.pdf");
             ServletOutputStream out = response.getOutputStream();
             orders = dbops.getDailyReportProductionList(date);
             ByteArrayOutputStream baos = GeneratePDF.getpdfFile(orders);
             baos.writeTo(out);
-        } else {
-        
-            if(getDailyReport) {
-                
-            } else if(getPreviousReport || getNextDailyReport){
-                try {
-                    SimpleDateFormat sdf = new SimpleDateFormat("EEEE d, MMMM y");
-                    Calendar c = Calendar.getInstance();
-                    c.setTime(sdf.parse(date));
-                    
-                    if(getPreviousReport){
-                        c.add(Calendar.DATE, -1);
-                    } else if (getNextDailyReport) {
-                        c.add(Calendar.DATE, 1);
-                    }
-                    
-                    date = sdf.format(c.getTime());
-                
-                } catch (ParseException ex) {
-                    Logger.getLogger(ReportServices.class.getName()).log(Level.SEVERE, null, ex);
-                } 
-            } else if(sortDailyReport) {
-                String sortDailyReportBy = request.getParameter("sortDailyReportBy");
-                String orderOfSortDailyReport = request.getParameter("orderOfSortDailyReport");
-                
-                //order = dbops.getList(date, sortDailyReportBy, orderOfSortDailyReport);
-            }
             
-            orders = dbops.getDailyReportProductionList(date);
-            request.setAttribute("dailyReportProductionList", orders);
+        } else if(getDailyReport) {
+            
+            request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
             request.setAttribute("reportDate", date);
             request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
+            
+        }else if(getPreviousReport){
+            try {
+                request.setAttribute("reportDate", dh.prevDate(date));
+            } catch (ParseException ex) {
+                Logger.getLogger(ReportServices.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
+            request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
+        } else if(getNextDailyReport){
+            try {
+                request.setAttribute("reportDate", dh.nextDate(date));
+            } catch (ParseException ex) {
+                Logger.getLogger(ReportServices.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
+            request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
+        } else if(sortDailyReport) {
+            String sortDailyReportBy = request.getParameter("sortDailyReportBy");
+            String orderOfSortDailyReport = request.getParameter("orderOfSortDailyReport");
+            
+            //order = dbops.getList(date, sortDailyReportBy, orderOfSortDailyReport);
+        } else if(getWeeklyReport) {
+            try {
+                request.setAttribute("startDate", dh.weekStartDate(startDate));
+                request.setAttribute("endDate", dh.weekEndDate(endDate));
+            } catch (ParseException ex) {
+                Logger.getLogger(ReportServices.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            request.getRequestDispatcher("/WEB-INF/reportWeeklyScreen.jsp").forward(request, response);
+        }
+        
+        else if(getMonthlyReport) {
+            request.getRequestDispatcher("/WEB-INF/reportMonthlyScreen.jsp").forward(request, response);
         }
     }
 
