@@ -168,7 +168,7 @@ public class DBOperations {
 //        
 //    }
 
-    public boolean addProduct(String name, double price, String category, String description, String status) {
+    public boolean addProduct(String name, double price, String category, String description, String status ) {
         boolean result = false;
         
         String sql = "insert into products (product_name, product_price, category, product_description, product_status) "
@@ -304,11 +304,11 @@ public class DBOperations {
         return result;
     }
     
-    public boolean addEmployee(int accesslevel) {
+    public boolean addEmployee( String email, String password, int accesslevel) {
         boolean result = false;
         
-        String sql = "insert into employeeauthentication (employee_access_level) "
-                + "values (?)";
+        String sql = "insert into employeeauthentication (employee_email, employee_password, employee_access_level) "
+                + "values (?, ?, ?)";
         
         ConnectionPool cp = ConnectionPool.getInstance();
         
@@ -316,7 +316,9 @@ public class DBOperations {
             Connection conn = cp.getConnection();
             PreparedStatement stmnt = conn.prepareStatement(sql);
             
-            stmnt.setInt(1, accesslevel);
+            stmnt.setString(1, email);
+            stmnt.setString(2, password);
+            stmnt.setInt(3, accesslevel);
             
             int rowsaffected = stmnt.executeUpdate();
             
@@ -336,7 +338,7 @@ public class DBOperations {
 //    public boolean addEmployee(Employee employee) {
 //        boolean result = false;
 //        
-//        String sql = "insert into employeeauthentication (employee_access_level) "
+//        String sql = "insert into employeeauthentication (employee_email, employee_password, employee_access_level) "
 //                + "values (?)";
 //        
 //        ConnectionPool cp = ConnectionPool.getInstance();
@@ -345,7 +347,9 @@ public class DBOperations {
 //            Connection conn = cp.getConnection();
 //            PreparedStatement stmnt = conn.prepareStatement(sql);
 //            
-//            stmnt.setInt(1, employee.getAccessLevel());
+//            stmnt.setString(1, employee.getEmail();
+//            stmnt.setString(2, employee.getPassword();  
+//            stmnt.setInt(3, employee.getAccessLevel());
 //            
 //            int rowsaffected = stmnt.executeUpdate();
 //            
@@ -362,10 +366,10 @@ public class DBOperations {
 //        return result;
 //    }
     
-    public boolean updateEmployee(int id, int accesslevel) {
+    public boolean updateEmployee(int id, String email, String password, int accesslevel) {
         boolean result = false;
         
-        String sql = "update employeeauthentication set employee_access_level = ? "
+        String sql = "update employeeauthentication set employee_email=?, employee_password=?, employee_access_level = ? "
                 + "where employee_id = ?";
         
         ConnectionPool cp = ConnectionPool.getInstance();
@@ -374,9 +378,10 @@ public class DBOperations {
             Connection conn = cp.getConnection();
             PreparedStatement stmnt = conn.prepareStatement(sql);
             
-            stmnt.setInt(1, accesslevel);
-            
-            stmnt.setInt(2, id);
+            stmnt.setString(1, email);
+            stmnt.setString(2, password);
+            stmnt.setInt(3, accesslevel);
+            stmnt.setInt(4, id);
             
             int rowsaffected = stmnt.executeUpdate();
             
@@ -396,7 +401,7 @@ public class DBOperations {
 //    public boolean updateEmployee(Employee employee) {
 //        boolean result = false;
 //        
-//        String sql = "update employeeauthentication set employee_access_level = ? "
+//        String sql = "update employeeauthentication set employee_email=?, employee_password=?, employee_access_level = ? "
 //                + "where employee_id = ?";
 //        
 //        ConnectionPool cp = ConnectionPool.getInstance();
@@ -405,9 +410,10 @@ public class DBOperations {
 //            Connection conn = cp.getConnection();
 //            PreparedStatement stmnt = conn.prepareStatement(sql);
 //            
-//            stmnt.setInt(1, employee.getAccessLevel());
-//            
-//            stmnt.setInt(2, employee.getId());
+//            stmnt.setString(1, employee.getEmail();
+//            stmnt.setString(2, employee.getPassword();  
+//            stmnt.setInt(3, employee.getAccessLevel());
+//            stmnt.setInt(4, employee.getId());
 //            
 //            int rowsaffected = stmnt.executeUpdate();
 //            
