@@ -5,11 +5,13 @@
  */
 package blb.domain.users;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Sebastian Wild
  */
-public class User {
+public class User implements Serializable{
 
     private int userId;
     private String firstName;

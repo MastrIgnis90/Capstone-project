@@ -26,63 +26,8 @@
         <div class="container-fluid">
         
         <div class="row">
-            <%-- side navigation menu --%>
-            <div class="col-lg-2">
-                <ul class="nav navbar-light bg-light navbar-expand-lg" style="height: 100%;">
-                    <div class="collapse navbar-collapse flex-column" id="sidemenu">
-                        <li class="nav-item d-flex flex-row mt-lg-4">
-                            <span class="material-icons md-dark p-2">
-                                assignment
-                            </span>
-                            <a class="nav-link active" 
-                               style="color: black;font-weight: bolder;"
-                            >
-                                Report
-                            </a>
-                        </li>
-                        <li class="nav-item d-flex flex-row">
-                            <span class="material-icons md-dark p-2">
-                                local_shipping
-                            </span>
-                            <a class="nav-link text-dark" 
-                               href="Controller?goToDeliverySchedule=true&loginUserEmail=${sessionScope.email}"
-                            >
-                                Delivery Schedule
-                            </a>
-                        </li>
-                        <li class="nav-item d-flex flex-row">
-                            <span class="material-icons md-dark p-2">
-                                people
-                            </span>
-                            <a class="nav-link text-dark" 
-                               href="Controller?goToManageClients=true&loginUserEmail=${sessionScope.email}"
-                            >
-                                Manage Clients
-                            </a>
-                        </li>
-                        <li class="nav-item d-flex flex-row">
-                            <span class="material-icons md-dark p-2">
-                                breakfast_dining
-                            </span>
-                            <a class="nav-link text-dark" 
-                               href="Controller?goToManageProducts=true&loginUserEmail=${sessionScope.email}"
-                            >
-                                Manage Products
-                            </a>
-                        </li>
-                        <li class="nav-item d-flex flex-row">
-                            <span class="material-icons md-dark p-2">
-                                perm_identity
-                            </span>
-                            <a class="nav-link text-dark" 
-                               href="LoginServices?logout=true&loginUserEmail=${sessionScope.email}"
-                            >
-                                Log Out
-                            </a>
-                        </li>
-                    </div>
-                </ul>
-            </div>
+            <%-- manager side navigation menu --%>
+            <jsp:include page="includes/managerSideNavigationMenu.jsp" />
             
             <%-- Daily Production Report Section --%>
             <div class="col-lg-10">
@@ -123,8 +68,18 @@
                     <div class="col-4">
                         <div class="btn-group">
                             <button type="button" class="btn btn-secondary">Day</button>
-                            <button type="button" class="btn btn-light" onclick="getWeeklyProductionReport('<c:out value='${reportDate}'/>')">Week</button>
-                            <button type="button" class="btn btn-light" onclick="getMonthlyProductionReport('<c:out value='${reportDate}'/>')">Month</button>
+                            <button type="button" 
+                                    class="btn btn-light" 
+                                    onclick="getWeeklyProductionReport('<c:out value='${reportDate}'/>')"
+                            >
+                                Week
+                            </button>
+                            <button type="button" 
+                                    class="btn btn-light" 
+                                    onclick="getMonthlyProductionReport('<c:out value='${reportDate}'/>')"
+                            >
+                                Month
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -133,18 +88,28 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <label for="sortbyOptions">Sort by:</label>
-                        <select class="selectpicker" name="sortbyOptions" id="sortbyOptions" onchange="getSortedProductionReport('<c:out value='${reportDate}'/>')">
+                        <select class="selectpicker" 
+                                name="sortbyOptions" 
+                                id="sortbyOptions" 
+                                onchange="getSortedProductionReport('<c:out value='${reportDate}'/>')"
+                        >
                             <option>Order Number</option>
                             <option>Order</option>
                             <option>Note</option>
                         </select>
-                        <select class="selectpicker pl-2" name="ascDesc" id="ascDesc" onchange="getSortedProductionReport('<c:out value='${reportDate}'/>')">
+                        <select class="selectpicker pl-2" 
+                                name="ascDesc" id="ascDesc" 
+                                onchange="getSortedProductionReport('<c:out value='${reportDate}'/>')"
+                        >
                             <option>Ascending</option>
                             <option>Descending</option>
                         </select>
                     </div>
                     <div class="col-lg-4">
-                        <button type="button" class="btn btn-outline-dark pr-2 pl-2" onclick="printDailyReportPDF('<c:out value='${reportDate}'/>')">
+                        <button type="button" 
+                                class="btn btn-outline-dark pr-2 pl-2" 
+                                onclick="printDailyReportPDF('<c:out value='${reportDate}'/>')"
+                        >
                             Print
                         </button>
                     </div>
@@ -163,7 +128,7 @@
                             </thead>
                             <tbody>
                                 <%-- 
-                                    Dynically print table of daily report production 
+                                    Dynamically print table of daily report production 
                                 --%>
                                 <c:forEach var='order' items='${requestScope.dailyReportProductionList}' varStatus='i'>
                                     <tr>

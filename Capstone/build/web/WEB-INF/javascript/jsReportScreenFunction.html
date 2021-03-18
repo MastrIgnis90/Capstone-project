@@ -8,11 +8,11 @@
  */
 function printDailyReportPDF(date) 
 {
-    window.location="/Capstone/ReportServices?action=print&dailyReportDate=" + date;
+    window.location="/Capstone/ReportServices?print=true&dailyReportDate=" + date;
 }
 
 /* 
- * Send a request to get the previous production report 
+ * Send a request to get the previous day production report 
  * 
  * @author Nhu Phan
  * @param date The date of the daily production report
@@ -31,6 +31,28 @@ function getPreviousProductionReport(date)
 function getNextProductionReport(date) 
 {
     window.location="/Capstone/ReportServices?getNextDailyReport=true&dailyReportDate=" + date;
+}
+
+/* 
+ * Send a request to get the previous week production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getPreviousWeeklyProductionReport(date) 
+{
+    window.location="/Capstone/reportServices?getPreviousWeeklyReport=true&dailyReportDate=" + date;
+}
+
+/* 
+ * Send a request to get the next week production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getNextWeeklyProductionReport(date) 
+{
+    window.location="/Capstone/reportServices?getNextWeeklyReport=true&dailyReportDate=" + date;
 }
 
 /*
@@ -187,9 +209,9 @@ function getWeeklyProductionReport(date)
 {
   let splitString = date.split(' ');
   let day = splitString[0];
-  let month = splitString[1];
-  let lastIndex = splitString[2].length;
-  let dayNumber = splitString[2].substring(0, --lastIndex);
+  let month = splitString[2];
+  let lastIndex = splitString[1].length;
+  let dayNumber = splitString[1].substring(0, --lastIndex);
   let year = splitString[3];
   let monthIndex = getMonthNumber(month);
 
@@ -197,7 +219,7 @@ function getWeeklyProductionReport(date)
   const startDate = getStartDate(currentDate, day);
   const endDate = getEndDate(currentDate, day);
   
-  window.location="/Capstone/ReportServices?getWeeklyReport=true&startDate=" + startdate + "&endDate=" + endDate;
+  window.location="/Capstone/ReportServices?getWeeklyReport=true&startDate=" + startDate + "&endDate=" + endDate;
 }
 
 /* 
