@@ -8,6 +8,7 @@ package blb.domain.orders;
 import blb.domain.products.Product;
 import blb.domain.users.User;
 
+
 /**
  *
  * @author Sebastian Wild

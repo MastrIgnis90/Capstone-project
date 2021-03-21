@@ -5,13 +5,13 @@
  */
 package blb.domain.users;
 
-import java.io.Serializable;
+
 
 /**
  *
  * @author Sebastian Wild
  */
-public class Customer implements Serializable {
+public class Customer {
     private int customerId;
     private String firstName;
     private String lastName;
