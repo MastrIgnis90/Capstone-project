@@ -7,6 +7,7 @@ package blb.database;
 
 import blb.domain.orders.Order;
 import blb.domain.products.Product;
+import blb.domain.users.Customer;
 import blb.domain.users.Employee;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -121,9 +122,41 @@ public class DBOperations {
         return result;
     }
     
-//    public boolean addCustomer(Customer customer) {
-//        
-//    }
+    public boolean addCustomer(Customer customer) {
+        boolean result = false;
+        String sql = "insert into customer (lastname, firstname, customer_type, street_address, community, postal_code, email, phone_number, customer_status) "
+                + "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        try {
+            Connection conn = cp.getConnection();
+            PreparedStatement stmnt = conn.prepareStatement(sql);
+            
+            stmnt.setString(1, customer.getLastName());
+            stmnt.setString(2, customer.getFirstName());
+            stmnt.setString(3, Character.toString(customer.getCustomerType()));
+            stmnt.setString(4, customer.getAddress());
+            stmnt.setString(5, customer.getCommunity());
+            stmnt.setString(6, customer.getPostalCode());
+            stmnt.setString(7, customer.getEmail());
+            stmnt.setInt(8, customer.getPhoneNumber());
+            stmnt.setString(9, Character.toString(customer.getStatus()));
+            
+            int rowsaffected = stmnt.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            stmnt.close();
+            cp.freeConnection(conn);
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
     
     public boolean updateCustomer(int id,String firstname, String lastname, String address, char customertype, String postalcode, String community, String email, String password, int phonenumber, char status) {
         
@@ -335,36 +368,36 @@ public class DBOperations {
         return result;
     }
     
-//    public boolean addEmployee(Employee employee) {
-//        boolean result = false;
-//        
-//        String sql = "insert into employeeauthentication (employee_email, employee_password, employee_access_level) "
-//                + "values (?)";
-//        
-//        ConnectionPool cp = ConnectionPool.getInstance();
-//        
-//        try {
-//            Connection conn = cp.getConnection();
-//            PreparedStatement stmnt = conn.prepareStatement(sql);
-//            
-//            stmnt.setString(1, employee.getEmail();
-//            stmnt.setString(2, employee.getPassword();  
-//            stmnt.setInt(3, employee.getAccessLevel());
-//            
-//            int rowsaffected = stmnt.executeUpdate();
-//            
-//            if (rowsaffected > 0)
-//                result = true;
-//            
-//            stmnt.close();
-//            cp.freeConnection(conn);
-//            
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        }
-//        
-//        return result;
-//    }
+    public boolean addEmployee(Employee employee) {
+        boolean result = false;
+        
+        String sql = "insert into employeeauthentication (employee_email, employee_password, employee_access_level) "
+                + "values (?)";
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        try {
+            Connection conn = cp.getConnection();
+            PreparedStatement stmnt = conn.prepareStatement(sql);
+            
+            stmnt.setString(1, employee.getEmail());
+            stmnt.setString(2, employee.getPassword());  
+            stmnt.setInt(3, employee.getAccessLevel());
+            
+            int rowsaffected = stmnt.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            stmnt.close();
+            cp.freeConnection(conn);
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
     
     public boolean updateEmployee(int id, String email, String password, int accesslevel) {
         boolean result = false;
@@ -398,37 +431,37 @@ public class DBOperations {
         return result;
     }
     
-//    public boolean updateEmployee(Employee employee) {
-//        boolean result = false;
-//        
-//        String sql = "update employeeauthentication set employee_email=?, employee_password=?, employee_access_level = ? "
-//                + "where employee_id = ?";
-//        
-//        ConnectionPool cp = ConnectionPool.getInstance();
-//        
-//        try {
-//            Connection conn = cp.getConnection();
-//            PreparedStatement stmnt = conn.prepareStatement(sql);
-//            
-//            stmnt.setString(1, employee.getEmail();
-//            stmnt.setString(2, employee.getPassword();  
-//            stmnt.setInt(3, employee.getAccessLevel());
-//            stmnt.setInt(4, employee.getId());
-//            
-//            int rowsaffected = stmnt.executeUpdate();
-//            
-//            if (rowsaffected > 0)
-//                result = true;
-//            
-//            stmnt.close();
-//            cp.freeConnection(conn);
-//            
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        }
-//        
-//        return result;
-//    }
+    public boolean updateEmployee(Employee employee) {
+        boolean result = false;
+        
+        String sql = "update employeeauthentication set employee_email=?, employee_password=?, employee_access_level = ? "
+                + "where employee_id = ?";
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        try {
+            Connection conn = cp.getConnection();
+            PreparedStatement stmnt = conn.prepareStatement(sql);
+            
+            stmnt.setString(1, employee.getEmail());
+            stmnt.setString(2, employee.getPassword());  
+            stmnt.setInt(3, employee.getAccessLevel());
+            stmnt.setInt(4, employee.getEmployeeId());
+            
+            int rowsaffected = stmnt.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            stmnt.close();
+            cp.freeConnection(conn);
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
     
     
     private String parseDate(String date) throws ParseException {
@@ -437,4 +470,61 @@ public class DBOperations {
         
         return date;
     }
+    
+    public ArrayList<String> getCustomerOrdersByDate(String date) {
+        ArrayList<String> customerOrdersList = new ArrayList <> ();
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "select order_id, first_name, last_name, street_address, postal_code, community "
+                + "from customer natural join orders where delivery_date = ? order by community";
+        
+         try {
+            Connection conn = cp.getConnection();
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, parseDate(date));
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                String resultstring = rs.getInt(1) + rs.getString(1) + rs.getString(2) + rs.getString(3) + rs.getString(4) + rs.getString(5);
+                customerOrdersList.add(resultstring);
+            }
+            rs.close();
+            st.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (ParseException ex) {
+            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return customerOrdersList;
+    }
+    
+    public int deliveryCount(String date) {
+        int count = 0;
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "select count(customer_id) from customer natural join orders where delivery_date = ?";
+        
+         try {
+            Connection conn = cp.getConnection();
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, parseDate(date));
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                count = rs.getInt(1);
+            }
+            rs.close();
+            st.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (ParseException ex) {
+            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
+    
+    
 }
