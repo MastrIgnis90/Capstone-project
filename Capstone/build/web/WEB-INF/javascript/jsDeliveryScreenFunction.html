@@ -1,0 +1,28 @@
+<script language="Javascript">
+
+/* 
+ * Send a request to print a pdf of the delivery schedule for the current date
+ * 
+ * @author Nhu Phan
+ * @param date The current date of the delivery schedule
+ */
+function printDeliverySchedulePDF(date) 
+{
+    window.location="/Capstone/reportServices?action=print&deliveryScheduleDate=" + date;
+}
+
+/*
+ * Send a request to get a sorted delivery schedule
+ * 
+ * @author Nhu Phan
+ * @param date The date of the delivery schedule
+ */
+function getSortedDeliverySchedule(date) 
+{
+    let sortOption = document.getElementById("sortbyOptions").value;
+    let ascDec = document.getElementById("ascDesc").value;
+        
+    window.location="/Capstone/reportServices?sortDeliverySchedule=true&deliveryScheduleDate=" + date + "&sortDeliveryScheduleBy=" + sortOption + "&orderOfDeliverySchedule=" + ascDec;
+}
+
+</script>

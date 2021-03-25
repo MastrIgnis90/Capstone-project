@@ -45,18 +45,18 @@ public class LoginServices extends HttpServlet {
            
         if(username.trim().equals("") || password.trim().equals("")){// nothing supplied
             request.setAttribute("message", "Both username and password are required");
-            request.getRequestDispatcher("/WEB-INF/Login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/LoginScreen.jsp").forward(request, response);
         } else if(username.trim().equals("john@john") && password.trim().equals("password")){//!!!!!!!!! CHANGE TO DBOPS!!!!!!!
             
             String date = new SimpleDateFormat("EEEE d, MMMM y").format(new Date());
             request.setAttribute("reportDate", date);
             request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
-            request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);// !!!! change to correct report page!!!!
+            request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
             
             
         } else { //invalid username or password
             request.setAttribute("message", "Invalid username or password");
-            request.getRequestDispatcher("/WEB-INF/Login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/LoginScreen.jsp").forward(request, response);
         }
     }
 
