@@ -8,18 +8,40 @@
  */
 function printDailyReportPDF(date) 
 {
-    window.location="/Capstone/ReportServices?print=true&dailyReportDate=" + date;
+    window.location="/Capstone/reportServices?action=print&dailyReportDate=" + date;
 }
 
 /* 
- * Send a request to get the previous day production report 
+ * Send a request to print a pdf of the weekly production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function printWeeklyReportPDF(date) 
+{
+    window.location="/Capstone/reportServices?action=print&weeklyReportDate=" + date;
+}
+
+/* 
+ * Send a request to print a pdf of the monthly production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function printMonthlyReportPDF(date) 
+{
+    window.location="/Capstone/reportServices?action=print&monthlyReportDate=" + date;
+}
+
+/* 
+ * Send a request to get the previous production report 
  * 
  * @author Nhu Phan
  * @param date The date of the daily production report
  */
 function getPreviousProductionReport(date) 
 {
-    window.location="/Capstone/ReportServices?getPreviousReport=true&dailyReportDate=" + date;
+    window.location="/Capstone/reportServices?getPreviousReport=true&dailyReportDate=" + date;
 }
 
 /* 
@@ -30,7 +52,7 @@ function getPreviousProductionReport(date)
  */
 function getNextProductionReport(date) 
 {
-    window.location="/Capstone/ReportServices?getNextDailyReport=true&dailyReportDate=" + date;
+    window.location="/Capstone/reportServices?getNextDailyReport=true&dailyReportDate=" + date;
 }
 
 /* 
@@ -55,6 +77,28 @@ function getNextWeeklyProductionReport(date)
     window.location="/Capstone/reportServices?getNextWeeklyReport=true&dailyReportDate=" + date;
 }
 
+/* 
+ * Send a request to get the previous month production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getPreviousMonthlyProductionReport(date) 
+{
+    window.location="/Capstone/reportServices?getPreviousMonthlyReport=true&monthYear=" + date;
+}
+
+/* 
+ * Send a request to get the next month production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getNextMonthlyProductionReport(date) 
+{
+    window.location="/Capstone/reportServices?getNextMonthlyReport=true&monthYear=" + date;
+}
+
 /*
  * Send a request to get a sorted production report 
  * 
@@ -66,7 +110,7 @@ function getSortedProductionReport(date)
     let sortOption = document.getElementById("sortbyOptions").value;
     let ascDec = document.getElementById("ascDesc").value;
     
-    window.location="/Capstone/ReportServices?sortDailyReport=true&dailyReportDate=" + date + "&sortDailyReportBy=" + sortOption + "&orderOfSortDailyReport=" + ascDec;
+    window.location="/Capstone/reportServices?sortDailyReport=true&dailyReportDate=" + date + "&sortDailyReportBy=" + sortOption + "&orderOfSortDailyReport=" + ascDec;
 }
 
 /* 
@@ -209,9 +253,9 @@ function getWeeklyProductionReport(date)
 {
   let splitString = date.split(' ');
   let day = splitString[0];
-  let month = splitString[2];
-  let lastIndex = splitString[1].length;
-  let dayNumber = splitString[1].substring(0, --lastIndex);
+  let month = splitString[1];
+  let lastIndex = splitString[2].length;
+  let dayNumber = splitString[2].substring(0, --lastIndex);
   let year = splitString[3];
   let monthIndex = getMonthNumber(month);
 
@@ -219,7 +263,7 @@ function getWeeklyProductionReport(date)
   const startDate = getStartDate(currentDate, day);
   const endDate = getEndDate(currentDate, day);
   
-  window.location="/Capstone/ReportServices?getWeeklyReport=true&startDate=" + startDate + "&endDate=" + endDate;
+  window.location="/Capstone/reportServices?getWeeklyReport=true&startDate=" + startdate + "&endDate=" + endDate;
 }
 
 /* 
@@ -234,7 +278,19 @@ function getMonthlyProductionReport(date)
     let splitString = date.split(' ');
     let month = splitString[1];
     let year = splitString[3];
-    window.location="/Capstone/ReportServices?getMonthlyReport=true&month=" + month + "&year=" + year;
+    window.location="/Capstone/reportServices?getMonthlyReport=true&month=" + month + "&year=" + year;
+}
+
+/* 
+ * Send a request to get a daily production report and have the following attribute names in the URL:
+ * getDailyReport and date.
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getReportDetails(date)
+{
+    window.location="/Capstone/reportServices?getDailyReport=true&date=" + date;
 }
 
 </script>
