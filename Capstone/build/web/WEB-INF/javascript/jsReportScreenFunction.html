@@ -1,0 +1,296 @@
+<script language="Javascript">
+
+/* 
+ * Send a request to print a pdf of the daily production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function printDailyReportPDF(date) 
+{
+    window.location="/Capstone/reportServices?action=print&dailyReportDate=" + date;
+}
+
+/* 
+ * Send a request to print a pdf of the weekly production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function printWeeklyReportPDF(date) 
+{
+    window.location="/Capstone/reportServices?action=print&weeklyReportDate=" + date;
+}
+
+/* 
+ * Send a request to print a pdf of the monthly production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function printMonthlyReportPDF(date) 
+{
+    window.location="/Capstone/reportServices?action=print&monthlyReportDate=" + date;
+}
+
+/* 
+ * Send a request to get the previous production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getPreviousProductionReport(date) 
+{
+    window.location="/Capstone/reportServices?getPreviousReport=true&dailyReportDate=" + date;
+}
+
+/* 
+ * Send a request to get the next day production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getNextProductionReport(date) 
+{
+    window.location="/Capstone/reportServices?getNextDailyReport=true&dailyReportDate=" + date;
+}
+
+/* 
+ * Send a request to get the previous week production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getPreviousWeeklyProductionReport(date) 
+{
+    window.location="/Capstone/reportServices?getPreviousWeeklyReport=true&dailyReportDate=" + date;
+}
+
+/* 
+ * Send a request to get the next week production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getNextWeeklyProductionReport(date) 
+{
+    window.location="/Capstone/reportServices?getNextWeeklyReport=true&dailyReportDate=" + date;
+}
+
+/* 
+ * Send a request to get the previous month production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getPreviousMonthlyProductionReport(date) 
+{
+    window.location="/Capstone/reportServices?getPreviousMonthlyReport=true&monthYear=" + date;
+}
+
+/* 
+ * Send a request to get the next month production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getNextMonthlyProductionReport(date) 
+{
+    window.location="/Capstone/reportServices?getNextMonthlyReport=true&monthYear=" + date;
+}
+
+/*
+ * Send a request to get a sorted production report 
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getSortedProductionReport(date) 
+{
+    let sortOption = document.getElementById("sortbyOptions").value;
+    let ascDec = document.getElementById("ascDesc").value;
+    
+    window.location="/Capstone/reportServices?sortDailyReport=true&dailyReportDate=" + date + "&sortDailyReportBy=" + sortOption + "&orderOfSortDailyReport=" + ascDec;
+}
+
+/* 
+ * Method determine the month number of the week of daily production report with January starting at 0-index
+ * 
+ * @author Nhu Phan
+ * @param month The month of the daily production report in format as January, February etc.
+ */
+function getMonthNumber(month) {
+  let monthNumber = 0;
+
+  switch (month) {
+    case 'January':
+      monthNumber = 0;
+      break;
+    case 'February':
+      monthNumber = 1;
+      break;
+    case 'March':
+      monthNumber = 2;
+      break;
+    case 'April':
+      monthNumber = 3;
+      break;
+    case 'May':
+      monthNumber = 4;
+      break;
+    case 'June':
+      monthNumber = 5;
+      break;
+    case 'July':
+      monthNumber = 6;
+      break;
+    case 'August':
+      monthNumber = 7;
+      break;
+    case 'September':
+      monthNumber = 8;
+      break;
+    case 'October':
+      monthNumber = 9;
+      break;
+    case 'November':
+      monthNumber = 10;
+      break;
+    case 'December':
+      monthNumber = 11;
+      break;
+    default:
+      monthNumber = null;
+  }
+
+  return monthNumber;
+}
+
+/* 
+ * Method determine the start date of the week of daily production report
+ * 
+ * @author Nhu Phan
+ * @param currentDate The date of the daily production report
+ * @param day The day of the daily production report in format as Monday, Tuesday, etc.
+ */
+function getStartDate(currentDate, day) {
+  const startDate = new Date(currentDate);
+
+  switch (day) {
+    case 'Monday':
+      break;
+    case 'Tuesday':
+      startDate.setDate(startDate.getDate() - 1);
+      break;
+    case 'Wednesday':
+      startDate.setDate(startDate.getDate() - 2);
+      break;
+    case 'Thursday':
+      startDate.setDate(startDate.getDate() - 3);
+      break;
+    case 'Friday':
+      startDate.setDate(startDate.getDate() - 4);
+      break;
+    case 'Saturday':
+      startDate.setDate(startDate.getDate() - 5);
+      break;
+    case 'Sunday':
+      startDate.setDate(startDate.getDate() - 6);
+      break;
+    default:
+      startDate = null;
+  }
+
+  return startDate;
+}
+
+/* 
+ * Method determine the end date of the week of daily production report
+ * 
+ * @author Nhu Phan
+ * @param currentDate The date of the daily production report
+ * @param day The day of the daily production report in format as Monday, Tuesday, etc.
+ */
+function getEndDate(currentDate, day) {
+  const endDate = new Date(currentDate);
+
+  switch (day) {
+    case 'Monday':
+      endDate.setDate(endDate.getDate() + 6);
+      break;
+    case 'Tuesday':
+      endDate.setDate(endDate.getDate() + 5);
+      break;
+    case 'Wednesday':
+      endDate.setDate(endDate.getDate() + 4);
+      break;
+    case 'Thursday':
+      endDate.setDate(endDate.getDate() + 3);
+      break;
+    case 'Friday':
+      endDate.setDate(endDate.getDate() + 2);
+      break;
+    case 'Saturday':
+      endDate.setDate(endDate.getDate() + 1);
+      break;
+    case 'Sunday':
+      break;
+    default:
+      endDate = null;
+  }
+
+  return endDate;
+}
+
+/* 
+ * Send a request to get a weekly production report and have the following attribute names in the URL:
+ * getWeeklyReport, startDate and endDate.
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getWeeklyProductionReport(date) 
+{
+  let splitString = date.split(' ');
+  let day = splitString[0];
+  let month = splitString[1];
+  let lastIndex = splitString[2].length;
+  let dayNumber = splitString[2].substring(0, --lastIndex);
+  let year = splitString[3];
+  let monthIndex = getMonthNumber(month);
+
+  const currentDate = new Date(year, monthIndex, dayNumber);
+  const startDate = getStartDate(currentDate, day);
+  const endDate = getEndDate(currentDate, day);
+  
+  window.location="/Capstone/reportServices?getWeeklyReport=true&startDate=" + startdate + "&endDate=" + endDate;
+}
+
+/* 
+ * Send a request to get a monthly production report and have the following attribute names in the URL:
+ * getMonthlyReport, month and year.
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getMonthlyProductionReport(date) 
+{
+    let splitString = date.split(' ');
+    let month = splitString[1];
+    let year = splitString[3];
+    window.location="/Capstone/reportServices?getMonthlyReport=true&month=" + month + "&year=" + year;
+}
+
+/* 
+ * Send a request to get a daily production report and have the following attribute names in the URL:
+ * getDailyReport and date.
+ * 
+ * @author Nhu Phan
+ * @param date The date of the daily production report
+ */
+function getReportDetails(date)
+{
+    window.location="/Capstone/reportServices?getDailyReport=true&date=" + date;
+}
+
+</script>
