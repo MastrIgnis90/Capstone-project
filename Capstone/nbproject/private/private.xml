@@ -3,17 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/612600/Documents/NetBeansProjects/Capstone-project/Capstone/web/WEB-INF/reportWeeklyScreen.jsp</file>
-            <file>file:/C:/Users/612600/Documents/NetBeansProjects/Capstone-project/Capstone/web/WEB-INF/javascript/jsReportScreenFunction.html</file>
-            <file>file:/C:/Users/612600/Documents/NetBeansProjects/Capstone-project/Capstone/web/WEB-INF/reportMonthlyScreen.jsp</file>
-=======
-            <file>file:/C:/Users/Sebastian%20Wild/Documents/NetBeansProjects/Capstone-project/Capstone/src/java/blb/domain/orders/Order.java</file>
-            <file>file:/C:/Users/Sebastian%20Wild/Documents/NetBeansProjects/Capstone-project/Capstone/src/java/blb/domain/users/User.java</file>
-            <file>file:/C:/Users/Sebastian%20Wild/Documents/NetBeansProjects/Capstone-project/Capstone/web/WEB-INF/reportDailyScreen.jsp</file>
-            <file>file:/C:/Users/Sebastian%20Wild/Documents/NetBeansProjects/Capstone-project/Capstone/src/java/blb/web/ReportServices.java</file>
-            <file>file:/C:/Users/Sebastian%20Wild/Documents/NetBeansProjects/Capstone-project/Capstone/src/java/blb/domain/products/Product.java</file>
->>>>>>> f399932c281ec78de84ca000048753f12bb866fd
+            <file>file:/C:/Users/612600/Documents/NetBeansProjects/Capstone-project/Capstone/src/java/blb/database/DBOperations.java</file>
         </group>
     </open-files>
 </project-private>
