@@ -5,13 +5,13 @@
  */
 package blb.domain.products;
 
-import java.io.Serializable;
+
 
 /**
  *
  * @author Sebastian Wild
  */
-public class Product implements Serializable {
+public class Product {
 
     private int productId;
     private String productName;
