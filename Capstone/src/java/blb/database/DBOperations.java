@@ -9,6 +9,7 @@ import blb.domain.orders.Order;
 import blb.domain.products.Product;
 import blb.domain.users.Customer;
 import blb.domain.users.Employee;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -898,5 +899,257 @@ public class DBOperations {
         }
         
         return productionlist;
+    }
+    
+    /*
+     * PROCEDURE CALLERS 
+     */
+    
+    /**
+     * Calls the stored procedure for creating a commercial client order with up to four products.
+     * @param customer_num
+     * @param standing_order 
+     * @param order_notes
+     * @param product_name1
+     * @param product_quantity1
+     * @param product_name2
+     * @param product_quantity2
+     * @param product_name3
+     * @param product_quantity3
+     * @param product_name4
+     * @param product_quantity4
+     * @param product_notes
+     * @return true if the operation was successful
+     */
+    public boolean multiOrderCreationCommClient(int customer_num, char standing_order, String order_notes, String product_name1, int product_quantity1, String product_name2, int product_quantity2, String product_name3, int product_quantity3, String product_name4, int product_quantity4, String product_notes) {
+        boolean result = false;
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "{call P_multi_order_creation_commercial_client(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        
+        try {
+            Connection conn = cp.getConnection();
+            CallableStatement cs = conn.prepareCall(sql);
+            cs.setInt(1, customer_num);
+            cs.setString(2, Character.toString(standing_order));
+            cs.setString(3, order_notes);
+            cs.setString(4, product_name1);
+            cs.setInt(5, product_quantity1);
+            cs.setString(6, product_name2);
+            cs.setInt(7, product_quantity2);
+            cs.setString(8, product_name3);
+            cs.setInt(9, product_quantity3);
+            cs.setString(10, product_name4);
+            cs.setInt(11, product_quantity4);
+            cs.setString(12, product_notes);
+            int rowsaffected = cs.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            cs.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
+    
+    /**
+     * 
+     * @param customer_num
+     * @param standing_order
+     * @param order_notes
+     * @param product_name
+     * @param product_notes
+     * @return 
+     */
+    public boolean multiOrderCreationFortnightly(int customer_num, char standing_order, String order_notes, String product_name, String product_notes) {
+        boolean result = false;
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "{call P_multi_order_creation_every_two_weeks(?, ?, ?, ?, ?)}";
+        
+        try {
+            Connection conn = cp.getConnection();
+            CallableStatement cs = conn.prepareCall(sql);
+            cs.setInt(1, customer_num);
+            cs.setString(2, Character.toString(standing_order));
+            cs.setString(3, order_notes);
+            cs.setString(4, product_name);
+            cs.setString(5, product_notes);
+            int rowsaffected = cs.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            cs.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
+    
+    /**
+     * 
+     * @param customer_num
+     * @param standing_order
+     * @param order_notes
+     * @param product_name
+     * @param product_notes
+     * @return 
+     */
+    public boolean multiOrderCreationWeekly(int customer_num, char standing_order, String order_notes, String product_name, String product_notes) {
+        boolean result = false;
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "{call P_multi_order_creation_every_week(?, ?, ?, ?, ?)}";
+        
+        try {
+            Connection conn = cp.getConnection();
+            CallableStatement cs = conn.prepareCall(sql);
+            cs.setInt(1, customer_num);
+            cs.setString(2, Character.toString(standing_order));
+            cs.setString(3, order_notes);
+            cs.setString(4, product_name);
+            cs.setString(5, product_notes);
+            int rowsaffected = cs.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            cs.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
+    
+    /**
+     * 
+     * @param customer_num
+     * @param order_notes
+     * @param product_name
+     * @param product_notes
+     * @return 
+     */
+    public boolean createSingleOrderOneLoaf(int customer_num, String order_notes, String product_name, String product_notes) {
+        boolean result = false;
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "{call P_single_order_creation_one_loaf(?, ?, ?, ?)}";
+        
+        try {
+            Connection conn = cp.getConnection();
+            CallableStatement cs = conn.prepareCall(sql);
+            cs.setInt(1, customer_num);
+            cs.setString(2, order_notes);
+            cs.setString(3, product_name);
+            cs.setString(4, product_notes);
+            int rowsaffected = cs.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            cs.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
+    
+    /**
+     * 
+     * @param customer_num
+     * @param order_notes
+     * @param product_name1
+     * @param product_name2
+     * @param product_notes
+     * @return 
+     */
+    public boolean createSingleOrderTwoLoaf(int customer_num, String order_notes, String product_name1, String product_name2, String product_notes) {
+        boolean result = false;
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "{call P_single_order_creation_two_loaves(?, ?, ?, ?, ?)}";
+        
+        try {
+            Connection conn = cp.getConnection();
+            CallableStatement cs = conn.prepareCall(sql);
+            cs.setInt(1, customer_num);
+            cs.setString(2, order_notes);
+            cs.setString(3, product_name1);
+            cs.setString(4, product_name2);
+            cs.setString(5, product_notes);
+            int rowsaffected = cs.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            cs.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
+    
+    /**
+     * 
+     * @param customer_num
+     * @param order_notes
+     * @param product_name1
+     * @param product_name2
+     * @param product_name3
+     * @param product_notes
+     * @return 
+     */
+    public boolean createSingleOrderThreeLoaf(int customer_num, String order_notes, String product_name1, String product_name2, String product_name3, String product_notes) {
+        boolean result = false;
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "{call P_single_order_creation_one_loaf(?, ?, ?, ?, ?, ?)}";
+        
+        try {
+            Connection conn = cp.getConnection();
+            CallableStatement cs = conn.prepareCall(sql);
+            cs.setInt(1, customer_num);
+            cs.setString(2, order_notes);
+            cs.setString(3, product_name1);
+            cs.setString(4, product_name2);
+            cs.setString(5, product_name3);
+            cs.setString(6, product_notes);
+            int rowsaffected = cs.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            cs.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
     }
 }
