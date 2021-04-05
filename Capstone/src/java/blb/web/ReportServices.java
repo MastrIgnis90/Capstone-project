@@ -80,10 +80,12 @@ public class ReportServices extends HttpServlet {
         }else if(getPreviousReport){
             try {
                 request.setAttribute("reportDate", dh.prevDate(date));
+                request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
+                //System.out.println(dh.parseDatabase(date));
             } catch (ParseException ex) {
                 Logger.getLogger(ReportServices.class.getName()).log(Level.SEVERE, null, ex);
             }
-            request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
+            
             request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
         } else if(getNextDailyReport){
             try {

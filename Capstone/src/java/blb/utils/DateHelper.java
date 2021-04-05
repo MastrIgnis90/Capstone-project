@@ -65,4 +65,14 @@ public class DateHelper {
         return new SimpleDateFormat("EEEE MMM d, y").format(endDate);
     }
     
+    public String parseDatabase(String date) throws ParseException{
+        Date newDate = new SimpleDateFormat("EEEE d, MMMM y", Locale.ENGLISH).parse(date);
+        
+        return new SimpleDateFormat("yyyy-MM-dd").format(newDate);
+    }
+    
+    public String parseWeb(String date){
+        return null;
+    }
+    
 }
