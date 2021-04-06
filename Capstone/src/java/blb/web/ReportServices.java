@@ -80,18 +80,21 @@ public class ReportServices extends HttpServlet {
         }else if(getPreviousReport){
             try {
                 request.setAttribute("reportDate", dh.prevDate(date));
+                request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
+                
             } catch (ParseException ex) {
                 Logger.getLogger(ReportServices.class.getName()).log(Level.SEVERE, null, ex);
             }
-            request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
+            
             request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
         } else if(getNextDailyReport){
             try {
                 request.setAttribute("reportDate", dh.nextDate(date));
+                request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
             } catch (ParseException ex) {
                 Logger.getLogger(ReportServices.class.getName()).log(Level.SEVERE, null, ex);
             }
-            request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
+            
             request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
         } else if(sortDailyReport) {
             String sortDailyReportBy = request.getParameter("sortDailyReportBy");
