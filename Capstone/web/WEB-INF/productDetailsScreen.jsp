@@ -16,7 +16,6 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <%@include file="includes/externalCSSLinks.html"%>
         <title>Bridgeland Bread - Product Details</title>
-        <%@include file="javascript/jsProductScreenFunction.html"%>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">   
     </head>
     <body>        
