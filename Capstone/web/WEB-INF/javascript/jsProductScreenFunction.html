@@ -1,0 +1,40 @@
+<script language="Javascript">
+
+/* 
+ * Send a request to backend for sorted product listing (bread, subscription)
+ * 
+ * @author Nhu Phan
+ */
+function getSortedProduct() 
+{
+    let sortOption = document.getElementById("sortbyOptions").value;
+    let ascDesc = document.getElemenetById("ascDesc").value;
+    
+    window.location="/Capstone/productServices?sortProductBy=" + sortOption + "&orderOfSortProduct=" + ascDesc;
+}
+
+/* 
+ * Send a request to backend to redirect user to product details screen
+ * 
+ * @author Nhu Phan
+ * @param productId The id of the product to be deleted
+ */
+function editProduct(productId) 
+{    
+    alert("edit product: " + productId);
+    //window.location="/Capstone/productServices?action=edit&productId=" + productId;
+}
+
+/* 
+ * Send a request to backend to delete a single product
+ * 
+ * @author Nhu Phan
+ * @param productId The id of the product to be deleted
+ */
+function deleteProduct(productId) 
+{    
+    alert("delete product: " + productId);
+    //window.location="/Capstone/productServices?action=delete&productId=" + productId;
+}
+
+</script>
