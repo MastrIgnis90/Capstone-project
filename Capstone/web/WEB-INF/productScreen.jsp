@@ -15,7 +15,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <%@include file="includes/externalCSSLinks.html"%>
-        <title>Bridgeland Bread - Product Screen</title>
+        <title>Bridgeland Bread - Products</title>
         <%@include file="javascript/jsProductScreenFunction.html"%>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">   
     </head>
@@ -25,11 +25,6 @@
 
         <div class="container-fluid">
             <div class="row">
-                <%-- get report date, start and end date attributes from server --%>
-                <c:set var='reportDate' value='${requestScope.reportDate}'/>
-                <c:set var='startDate' value='${requestScope.startDate}'/>
-                <c:set var='endDate' value='${requestScope.endDate}'/>
-
                 <%-- manager side navigation menu --%>
                 <jsp:include page="includes/managerSideNavigationMenu.jsp" />
 
