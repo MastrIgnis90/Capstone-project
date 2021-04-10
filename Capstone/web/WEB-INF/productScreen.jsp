@@ -188,8 +188,8 @@
                                                    id="newProductName" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="newImage">Upload image</label>
-                                            <input type="file" class="form-control-file" id="newImage">
+                                            <label for="newProductImage">Upload image</label>
+                                            <input type="file" class="form-control-file" name="newProductImage" id="newProductImage">
                                         </div>
                                         <div class="form-group">
                                             <label for="newProductPrice" class="col-form-label">Price</label>
