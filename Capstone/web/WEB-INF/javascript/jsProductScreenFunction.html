@@ -21,8 +21,7 @@ function getSortedProduct()
  */
 function editProduct(productId) 
 {    
-    alert("edit product: " + productId);
-    //window.location="/Capstone/productServices?action=edit&productId=" + productId;
+    window.location="/Capstone/productServices?action=edit&productId=" + productId;
 }
 
 /* 
@@ -32,9 +31,10 @@ function editProduct(productId)
  * @param productId The id of the product to be deleted
  */
 function deleteProduct(productId) 
-{    
-    alert("delete product: " + productId);
-    //window.location="/Capstone/productServices?action=delete&productId=" + productId;
+{   
+    if(confirm("Delete product?")) {
+        window.location="/Capstone/productServices?action=delete&productId=" + productId;
+    } 
 }
 
 </script>
