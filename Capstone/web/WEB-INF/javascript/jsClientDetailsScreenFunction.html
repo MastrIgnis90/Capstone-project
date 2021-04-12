@@ -1,0 +1,40 @@
+<script language="Javascript">
+
+/* 
+ * Send a request to backend for sorted client order listing
+ * 
+ * @author Nhu Phan
+ */
+function getSortedOrder() 
+{
+    let sortOption = document.getElementById("sortbyOptions").value;
+    let ascDesc = document.getElemenetById("ascDesc").value;
+    
+    window.location="/Capstone/customerServices?sortOrderBy=" + sortOption + "&orderOfSortOrder=" + ascDesc;
+}
+
+/* 
+ * Send a request to backend to redirect user to order details screen
+ * 
+ * @author Nhu Phan
+ * @param orderId The id of the order to be edit
+ */
+function editOrder(orderId) 
+{    
+    window.location="/Capstone/customerServices?action=edit&orderId=" + orderId;
+}
+
+/* 
+ * Send a request to backend to delete a single order
+ * 
+ * @author Nhu Phan
+ * @param orderId The id of the order to be deleted
+ */
+function deleteOrder(orderId) 
+{   
+    if(confirm("Delete order?")) {
+        window.location="/Capstone/customerServices?action=delete&orderId=" + orderId;
+    }
+}
+
+</script>
