@@ -33,12 +33,19 @@ public class Controller extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         boolean getPreviousReport = Boolean.parseBoolean(request.getParameter("getPreviousReport"));
-        if(action==null) {
+        boolean goToDeliverySchedule = Boolean.parseBoolean(request.getParameter("goToDeliverySchedule"));
+        boolean goToDailyReport = Boolean.parseBoolean(request.getParameter("goToDailyReport"));
+        
+        if(goToDeliverySchedule) {
+            request.getRequestDispatcher("/WEB-INF/deliveryScheduleScreen.jsp").forward(request, response);
+        }else if(goToDailyReport){
+            request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
+        }else if(getPreviousReport) {
+            request.getRequestDispatcher("ReportServices").forward(request, response);
+        } else if(action==null) {
             request.getRequestDispatcher("/WEB-INF/LoginScreen.jsp").forward(request, response);
         } else if(action.equals("Login")) {
             request.getRequestDispatcher("LoginServices").forward(request, response);
-        } else if(getPreviousReport) {
-            request.getRequestDispatcher("ReportServices").forward(request, response);
         } 
     }
 

@@ -36,7 +36,7 @@ public class DBOperations {
         
         ConnectionPool cp = ConnectionPool.getInstance();
         
-        String sql = "select order_id, product_name, order_notes from orders natural join orderitems natural join products where delivery_date = ?";
+        String sql = "select order_id, order_notes from orders where delivery_date = ?";
         
          try {
             Connection conn = cp.getConnection();
@@ -44,8 +44,9 @@ public class DBOperations {
             st.setString(1, parseDate(date));
             ResultSet rs = st.executeQuery();
             while(rs.next()){
-                Order order = new Order(rs.getInt(1), rs.getString(2), rs.getString(3));
+                Order order = new Order(rs.getInt(1), "---", rs.getString(2));
                 dailyReportProductionList.add(order);
+                System.out.println(order);
             }
             rs.close();
             st.close();
@@ -72,6 +73,7 @@ public class DBOperations {
         ConnectionPool cp = ConnectionPool.getInstance();
         
         String sql = "SELECT * FROM bridgelandbakery.orderitems WHERE order_id = ? ";
+       
 
          try {
             Connection conn = cp.getConnection();
