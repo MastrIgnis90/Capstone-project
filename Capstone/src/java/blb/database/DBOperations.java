@@ -9,6 +9,7 @@ import blb.domain.orders.Order;
 import blb.domain.products.Product;
 import blb.domain.users.Customer;
 import blb.domain.users.Employee;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * This class contains all of the methods used by the application to communicate with the bridgeland bread database
  * @author Sebastian Wild, Alexander Peluso, Matthew Brydges
  * Updated: March 27, 2021
  */
@@ -60,7 +61,11 @@ public class DBOperations {
         return dailyReportProductionList;
     }
     
-    //provides the order describe to be displayed column two in the report
+    /**
+     * Provides the order information to be displayed in column two in the report
+     * @param orderNum
+     * @return 
+     */
     public String getOrderString (int orderNum){
         
         String order = "";
@@ -180,7 +185,7 @@ public class DBOperations {
     }
     
     /**
-     * Updates a customer entry in the database
+     * Updates a customer entry in the database with the information provided
      * @param id the CURRENT id of the customer (cannot be changed with this method)
      * @param firstname the new firstname
      * @param lastname the new lastname
@@ -357,7 +362,7 @@ public class DBOperations {
     }
     
     /**
-     * Updates a product in the database 
+     * Updates a product in the database with the information provided
      * @param id the CURRENT id of the product (can't be updated with this method)
      * @param name the new name for the product
      * @param price the new price of the product
@@ -402,7 +407,7 @@ public class DBOperations {
     }
     
     /**
-     * [POJO Version] updates the properties of a product in the database
+     * [POJO Version] updates the properties of a product in the database with the information provided
      * @param product represents the product with the new state to be updated
      * @return true if the action was successful
      */
@@ -515,7 +520,7 @@ public class DBOperations {
     }
     
     /**
-     * Updates an employee entry in the database
+     * Updates an employee entry in the database with the information provided
      * @param id the CURRENT id of the employee (can't be updated with this method)
      * @param email the new email for the employee
      * @param password the new password for the employee
@@ -555,7 +560,7 @@ public class DBOperations {
     }
     
     /**
-     * [POJO Version] Updates an employee entry in the database 
+     * [POJO Version] Updates an employee entry in the database with the information provided
      * @param employee represents the employee with updated information
      * @return true if the action was successful
      */
@@ -900,5 +905,381 @@ public class DBOperations {
         }
         
         return productionlist;
+    }
+    
+    /*
+     * PROCEDURE CALLERS 
+     */
+    
+    /**
+     * Calls the stored procedure for creating a commercial client order with up to four products. 
+     * This creates orders for new commercial clients, and for commercial clients without standing orders value
+	set to true, there will be another procedure taking care of that.
+	
+	The procedure is capable of taking in any combination of the 4 products, doesn't matter the combination, 
+	the not used values must be set to NULL for the product name and 0 for the quantity for the procedure
+	to work correctly.
+        * 
+     * @param customer_num
+     * @param standing_order 
+     * @param order_notes
+     * @param product_name1
+     * @param product_quantity1
+     * @param product_name2
+     * @param product_quantity2
+     * @param product_name3
+     * @param product_quantity3
+     * @param product_name4
+     * @param product_quantity4
+     * @param product_notes
+     * @return true if the operation was successful
+     */
+    public boolean multiOrderCreationCommClient(int customer_num, char standing_order, String order_notes, String product_name1, int product_quantity1, String product_name2, int product_quantity2, String product_name3, int product_quantity3, String product_name4, int product_quantity4, String product_notes) {
+        boolean result = false;
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "{call P_multi_order_creation_commercial_client(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        
+        try {
+            Connection conn = cp.getConnection();
+            CallableStatement cs = conn.prepareCall(sql);
+            cs.setInt(1, customer_num);
+            cs.setString(2, Character.toString(standing_order));
+            cs.setString(3, order_notes);
+            cs.setString(4, product_name1);
+            cs.setInt(5, product_quantity1);
+            cs.setString(6, product_name2);
+            cs.setInt(7, product_quantity2);
+            cs.setString(8, product_name3);
+            cs.setInt(9, product_quantity3);
+            cs.setString(10, product_name4);
+            cs.setInt(11, product_quantity4);
+            cs.setString(12, product_notes);
+            int rowsaffected = cs.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            cs.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Calls the stored procedure which creates the orders for any subscription that is
+	1 loaf every two week, for a price of $12.50 a month
+        * It takes in five values, the customer id, the standing_order value, which in theory should always
+	be a N, for no, and last the notes section. The last two values are for the order items procedure
+	they would be the product name, and the products if any.
+        * The procedure does some minor error handling as it will check if a customer number is valid.
+     * @param customer_num
+     * @param standing_order
+     * @param order_notes
+     * @param product_name
+     * @param product_notes
+     * @return true if the operation was successful
+     */
+    public boolean multiOrderCreationFortnightly(int customer_num, char standing_order, String order_notes, String product_name, String product_notes) {
+        boolean result = false;
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "{call P_multi_order_creation_every_two_weeks(?, ?, ?, ?, ?)}";
+        
+        try {
+            Connection conn = cp.getConnection();
+            CallableStatement cs = conn.prepareCall(sql);
+            cs.setInt(1, customer_num);
+            cs.setString(2, Character.toString(standing_order));
+            cs.setString(3, order_notes);
+            cs.setString(4, product_name);
+            cs.setString(5, product_notes);
+            int rowsaffected = cs.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            cs.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Calls the stored procedure which creates a weekly one loaf subscription
+     * It takes in five values, the customer id, the standing_order value, which in theory should always
+	be a N, for no, and last the notes section. The last two values are for the order items procedure
+	they would be the product name, and the products if any.
+
+	The procedure does some minor error handling as it will check if a customer number is valid.
+     * @param customer_num
+     * @param standing_order
+     * @param order_notes
+     * @param product_name
+     * @param product_notes
+     * @return true if the operation was successful
+     */
+    public boolean multiOrderCreationWeekly(int customer_num, char standing_order, String order_notes, String product_name, String product_notes) {
+        boolean result = false;
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "{call P_multi_order_creation_every_week(?, ?, ?, ?, ?)}";
+        
+        try {
+            Connection conn = cp.getConnection();
+            CallableStatement cs = conn.prepareCall(sql);
+            cs.setInt(1, customer_num);
+            cs.setString(2, Character.toString(standing_order));
+            cs.setString(3, order_notes);
+            cs.setString(4, product_name);
+            cs.setString(5, product_notes);
+            int rowsaffected = cs.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            cs.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Call the stored procedure for the creation of a single one loaf order
+
+	It takes in five values, the customer id, the standing_order value, which in theory should always
+	be a N, for no, and last the notes section. The last two values are for the order items procedure
+	they would be the product name, and the products if any.
+
+	The procedure does some minor error handling as it will check if a customer number is valid.
+     * @param customer_num
+     * @param order_notes
+     * @param product_name
+     * @param product_notes
+     * @return true if the operation was successful
+     */
+    public boolean createSingleOrderOneLoaf(int customer_num, String order_notes, String product_name, String product_notes) {
+        boolean result = false;
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "{call P_single_order_creation_one_loaf(?, ?, ?, ?)}";
+        
+        try {
+            Connection conn = cp.getConnection();
+            CallableStatement cs = conn.prepareCall(sql);
+            cs.setInt(1, customer_num);
+            cs.setString(2, order_notes);
+            cs.setString(3, product_name);
+            cs.setString(4, product_notes);
+            int rowsaffected = cs.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            cs.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Calls the stored procedure for the creation of a single two loaf order.
+     * The procedure does some minor error handling as it will check if a customer number is valid, and will
+     * additionally check if the two products provided are the same or not, creating the appropriate number of order items
+     * @param customer_num
+     * @param order_notes
+     * @param product_name1
+     * @param product_name2
+     * @param product_notes
+     * @return true if the operation was successful
+     */
+    public boolean createSingleOrderTwoLoaf(int customer_num, String order_notes, String product_name1, String product_name2, String product_notes) {
+        boolean result = false;
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "{call P_single_order_creation_two_loaves(?, ?, ?, ?, ?)}";
+        
+        try {
+            Connection conn = cp.getConnection();
+            CallableStatement cs = conn.prepareCall(sql);
+            cs.setInt(1, customer_num);
+            cs.setString(2, order_notes);
+            cs.setString(3, product_name1);
+            cs.setString(4, product_name2);
+            cs.setString(5, product_notes);
+            int rowsaffected = cs.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            cs.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Calls the stored procedure for the creation of a single three loaf order.
+     * 
+     * The procedure does some minor error handling as it will check if a customer number is valid, and will
+     * additionally check if the three products provided are the same or not, creating the appropriate number of order items
+     * 
+     * @param customer_num
+     * @param order_notes
+     * @param product_name1
+     * @param product_name2
+     * @param product_name3
+     * @param product_notes
+     * @return true if the operation was successful
+     */
+    public boolean createSingleOrderThreeLoaf(int customer_num, String order_notes, String product_name1, String product_name2, String product_name3, String product_notes) {
+        boolean result = false;
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "{call P_single_order_creation_one_loaf(?, ?, ?, ?, ?, ?)}";
+        
+        try {
+            Connection conn = cp.getConnection();
+            CallableStatement cs = conn.prepareCall(sql);
+            cs.setInt(1, customer_num);
+            cs.setString(2, order_notes);
+            cs.setString(3, product_name1);
+            cs.setString(4, product_name2);
+            cs.setString(5, product_name3);
+            cs.setString(6, product_notes);
+            int rowsaffected = cs.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            cs.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Calls the stored procedure for the creation of a weekly two loaf subscription.
+     * 
+     * The procedure does some minor error handling as it will check if a customer number is valid. Additionally,
+     * the procedure will check if the two products are the same or not, and will handle the creation of entries in the orderitems
+     * table accordingly.
+     * 
+     * @param customer_num
+     * @param standing_order
+     * @param order_notes
+     * @param product_name1
+     * @param product_name2
+     * @param product_notes
+     * @return true if the operation was successful
+     */
+    public boolean multiOrderCreationTwoLoavesWeekly(int customer_num, char standing_order, String order_notes, String product_name1, String product_name2, String product_notes) {
+        boolean result = false;
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "{call P_multi_order_creation_two_loaves_every_week(?, ?, ?, ?, ?, ?)}";
+        
+        try {
+            Connection conn = cp.getConnection();
+            CallableStatement cs = conn.prepareCall(sql);
+            cs.setInt(1, customer_num);
+            cs.setString(2, Character.toString(standing_order));
+            cs.setString(3, order_notes);
+            cs.setString(4, product_name1);
+            cs.setString(5, product_name2);
+            cs.setString(6, product_notes);
+            int rowsaffected = cs.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            cs.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
+    
+    /**
+     * This procedure is for the weekly three loaf subscription
+
+	It takes in five values, the customer id, the standing_order value, which in theory should always
+	be a N, for no, and last the notes section. The last two values are for the order items procedure
+	they would be the product name, and the products if any.
+
+	The procedure does some minor error handling as it will check if a customer number is valid.
+     * @param customer_num
+     * @param standing_order
+     * @param order_notes
+     * @param product_name1
+     * @param product_name2
+     * @param product_name3
+     * @param product_notes
+     * @return true if the operation was successful
+     */
+    public boolean multiOrderCreationThreeLoavesWeekly(int customer_num, char standing_order, String order_notes, String product_name1, String product_name2, String product_name3, String product_notes) {
+        boolean result = false;
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "{call P_multi_order_creation_every_week(?, ?, ?, ?, ?, ?, ?)}";
+        
+        try {
+            Connection conn = cp.getConnection();
+            CallableStatement cs = conn.prepareCall(sql);
+            cs.setInt(1, customer_num);
+            cs.setString(2, Character.toString(standing_order));
+            cs.setString(3, order_notes);
+            cs.setString(4, product_name1);
+            cs.setString(5, product_name2);
+            cs.setString(6, product_name3);
+            cs.setString(7, product_notes);
+            int rowsaffected = cs.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            cs.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
     }
 }
