@@ -1,0 +1,40 @@
+<script language="Javascript">
+
+/* 
+ * Send a request to backend for sorted client listing
+ * 
+ * @author Nhu Phan
+ */
+function getSortedClient() 
+{
+    let sortOption = document.getElementById("sortbyOptions").value;
+    let ascDesc = document.getElemenetById("ascDesc").value;
+    
+    window.location="/Capstone/customerServices?sortCustomerBy=" + sortOption + "&orderOfSortCustomer=" + ascDesc;
+}
+
+/* 
+ * Send a request to backend to redirect user to client details screen
+ * 
+ * @author Nhu Phan
+ * @param clientId The id of the client to be edit
+ */
+function editClient(clientId) 
+{    
+    window.location="/Capstone/customerServices?action=edit&customerId=" + clientId;
+}
+
+/* 
+ * Send a request to backend to delete a single client
+ * 
+ * @author Nhu Phan
+ * @param clientId The id of the client to be deleted
+ */
+function deleteClient(clientId) 
+{   
+    if(confirm("Delete client?")) {
+        window.location="/Capstone/customerServices?action=delete&customerId=" + clientId;
+    }
+}
+
+</script>
