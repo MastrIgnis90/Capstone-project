@@ -32,7 +32,7 @@ import javax.servlet.ServletOutputStream;
  *
  * @author Sebastian Wild
  */
-@WebServlet(name = "ReportServices", urlPatterns = {"/ReportServices"})
+@WebServlet(name = "ReportServices", urlPatterns = {"/reportServices"})
 public class ReportServices extends HttpServlet {
 
     /**
