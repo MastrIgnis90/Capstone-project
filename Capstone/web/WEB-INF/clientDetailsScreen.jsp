@@ -182,8 +182,8 @@
                                 <div class="modal-body">
                                     <form action="customerServices" method="POST">
                                         <div class="form-group">
-                                            <label for="clientId" class="col-form-label">Client ID</label>
-                                            <input type="text" class="form-control" name="clientId" id="clientId" value="${requestScope.customer.customerId}" disabled>
+                                            <label for="customerId" class="col-form-label">Client ID</label>
+                                            <input type="text" class="form-control" name="customerId" id="customerId" value="${requestScope.customer.customerId}" disabled>
                                         </div>
                                         <div class="form-group">
                                             <label for="newOrderBreadOptions">Sort by:</label>
@@ -197,7 +197,7 @@
                                         <div class="form-group">
                                             <label for="newOrderQuantity" class="col-form-label">Quantity</label>
                                             <input type="number" class="form-control" name="newOrderQuantity"
-                                                   id="orderQuantity" min="0" step=".1" required></input>
+                                                   id="newOrderQuantity" min="0" step=".1" required></input>
                                         </div>
                                         <div class="form-group">
                                             <label for="newOrderDeliveryDate">Delivery Date</label>
