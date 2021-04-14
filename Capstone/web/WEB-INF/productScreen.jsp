@@ -216,9 +216,9 @@
                                     <!-- Create new subscription form -->
                                     <form action="productServices" method="POST">
                                         <div class="form-group">
-                                            <label for="subscriptionDescription" class="col-form-label">Description</label>
-                                            <input type="text" class="form-control" name="subscriptionDescription"
-                                                   id="subscriptionDescription">
+                                            <label for="newSubscriptionDescription" class="col-form-label">Description</label>
+                                            <input type="text" class="form-control" name="newSubscriptionDescription"
+                                                   id="newSubscriptionDescription">
                                         </div>
                                         <div class="form-group">
                                             <label for="newSubscriptionPrice" class="col-form-label">Price</label>
