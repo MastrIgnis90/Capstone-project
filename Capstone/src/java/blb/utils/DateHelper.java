@@ -39,20 +39,33 @@ public class DateHelper {
     }
     
     public String prevWeekStart(String date) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE MMM d");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE MMM. d, yyyy", Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
         c.setTime(sdf.parse(date));
         c.add(Calendar.DATE, -7);
-       
-        return sdf.format(c.getTime());
+        return new SimpleDateFormat("EEEE MMM d").format(c.getTime());
     }
     
     public String prevWeekEnd(String date) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE MMM d, y");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE MMM. d, yyyy", Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
         c.setTime(sdf.parse(date));
         c.add(Calendar.DATE, -7);
-       
+        return sdf.format(c.getTime());
+    }
+    
+    public String nextWeekStart(String date) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE MMM. d, yyyy", Locale.ENGLISH);
+        Calendar c = Calendar.getInstance();
+        c.setTime(sdf.parse(date));
+        c.add(Calendar.DATE, 7);
+        return new SimpleDateFormat("EEEE MMM d").format(c.getTime());
+    }
+    public String nextWeekEnd(String date) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE MMM. d, yyyy", Locale.ENGLISH);
+        Calendar c = Calendar.getInstance();
+        c.setTime(sdf.parse(date));
+        c.add(Calendar.DATE, 7);
         return sdf.format(c.getTime());
     }
     
@@ -64,15 +77,25 @@ public class DateHelper {
         Date endDate = new SimpleDateFormat("EEE MMM dd yyyy '00:00:00' 'GMT'Z '('zzzz')'", Locale.ENGLISH).parse(date);
         return new SimpleDateFormat("EEEE MMM d, y").format(endDate);
     }
-    
-    public String parseDatabase(String date) throws ParseException{
-        Date newDate = new SimpleDateFormat("EEEE d, MMMM y", Locale.ENGLISH).parse(date);
-        
-        return new SimpleDateFormat("yyyy-MM-dd").format(newDate);
+    public String weekStartToDatabase(String date) throws ParseException {
+        Date newDate = new SimpleDateFormat("EEEE MMM. d", Locale.ENGLISH).parse(date);
+        return new SimpleDateFormat("EEEE d, MMMM y").format(newDate);
+    }
+    public String weekEndToDatabase(String date) throws ParseException {
+        Date newDate = new SimpleDateFormat("EEEE MMM. d, yyyy", Locale.ENGLISH).parse(date);
+        return new SimpleDateFormat("EEEE d, MMMM y").format(newDate);
     }
     
-    public String parseWeb(String date){
-        return null;
+    
+    
+    
+    
+    public Date parseDailyReport(String date) throws ParseException {
+        return new SimpleDateFormat("EEEE d, MMMM y").parse(date);
+    }
+    
+    public Date parseWeekStartReport(String date) throws ParseException {
+        return new SimpleDateFormat("EEEE MMM. d").parse(date);
     }
     
 }

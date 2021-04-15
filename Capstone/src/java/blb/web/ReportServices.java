@@ -7,6 +7,7 @@ package blb.web;
 
 import blb.database.DBOperations;
 import blb.domain.orders.Order;
+import blb.domain.products.ReportDay;
 import blb.utils.DateHelper;
 import blb.utils.GeneratePDF;
 import java.io.IOException;
@@ -60,6 +61,8 @@ public class ReportServices extends HttpServlet {
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         ArrayList<Order> orders;
+        
+        
         DBOperations dbops = new DBOperations();
         DateHelper dh = new DateHelper();
         
@@ -102,7 +105,7 @@ public class ReportServices extends HttpServlet {
             
             //order = dbops.getList(date, sortDailyReportBy, orderOfSortDailyReport);
         } else if(getWeeklyReport) {
-            try {
+            try {                
                 request.setAttribute("startDate", dh.weekStartDate(startDate));
                 request.setAttribute("endDate", dh.weekEndDate(endDate));
             } catch (ParseException ex) {
@@ -110,9 +113,33 @@ public class ReportServices extends HttpServlet {
             }
             
             request.getRequestDispatcher("/WEB-INF/reportWeeklyScreen.jsp").forward(request, response);
-        }
-        
-        else if(getMonthlyReport) {
+        } else if(getNextWeeklyReport) {
+            try {
+                request.setAttribute("startDate", dh.nextWeekStart(date));
+                request.setAttribute("endDate", dh.nextWeekEnd(date));
+            } catch (ParseException ex) {
+                Logger.getLogger(ReportServices.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            request.getRequestDispatcher("/WEB-INF/reportWeeklyScreen.jsp").forward(request, response);
+        } else if(getPreviousWeeklyReport) {
+            try {
+                String weekStart = dh.prevWeekStart(date);
+                String weekEnd = dh.prevWeekEnd(date);
+                request.setAttribute("startDate", weekStart);
+                request.setAttribute("endDate", weekEnd);
+                ArrayList<ReportDay> list = new ArrayList<>();
+                list.add(new ReportDay("reportDay", "reportDate", 5));
+                list.add(new ReportDay("reportDay", "reportDate", 4));
+                list.add(new ReportDay("reportDay", "reportDate", 3));
+                request.setAttribute("weekReportProductionList", list);
+                dbops.getCustomerWithOrdersByDateRange(dh.weekStartToDatabase(weekStart), dh.weekEndToDatabase(weekEnd));
+            } catch (ParseException ex) {
+                Logger.getLogger(ReportServices.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            request.getRequestDispatcher("/WEB-INF/reportWeeklyScreen.jsp").forward(request, response);
+        } else if(getMonthlyReport) {
             request.getRequestDispatcher("/WEB-INF/reportMonthlyScreen.jsp").forward(request, response);
         }
     }
