@@ -43,7 +43,7 @@
                     <div class="col-lg-6 col-md-2 d-flex justify-content-center">
                         <button type="button" 
                                 class="btn btn-outline-dark rounded"
-                                onclick="getPreviousWeeklyProductionReport('<c:out value='${startDate}'/>')"
+                                onclick="getPreviousWeeklyProductionReport('<c:out value='${endDate}'/>')"
                         >
                             <span class="material-icons">
                                 keyboard_arrow_left
@@ -56,7 +56,7 @@
                         </span>
                         <button type="button" 
                                 class="btn btn-outline-dark rounded"
-                                onclick="getNextWeeklyProductionReport('<c:out value='${startDate}'/>')"
+                                onclick="getNextWeeklyProductionReport('<c:out value='${endDate}'/>')"
                         >
                             <span class="material-icons">
                                 keyboard_arrow_right

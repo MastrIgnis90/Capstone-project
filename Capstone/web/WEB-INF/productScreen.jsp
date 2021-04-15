@@ -80,7 +80,7 @@
                             -->
                             <c:forEach var='product' items='${requestScope.breadProductList}' varStatus='i'>
                                 <div class="card">
-                                    <img class="card-img-top" src="${pageContext.request.contextPath}/<c:out value='${product.productImage}'/>" alt="product image">
+                                    <img class="card-img-top" src="${pageContext.request.contextPath}/web/resources/images.noImage.jpg'/>" alt="product image">
                                     <div class="card-body">
                                         <h5 class="card-title">${product.productName}</h5>
                                         <p class="card-text">$${product.productPrice}</p>

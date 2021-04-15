@@ -12,4 +12,12 @@
     <welcome-file-list>
         <welcome-file>Controller</welcome-file>
     </welcome-file-list>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/404ErrorScreen.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/500ErrorScreen.jsp</location>
+    </error-page>
 </web-app>

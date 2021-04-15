@@ -253,17 +253,21 @@ function getWeeklyProductionReport(date)
 {
   let splitString = date.split(' ');
   let day = splitString[0];
-  let month = splitString[1];
-  let lastIndex = splitString[2].length;
-  let dayNumber = splitString[2].substring(0, --lastIndex);
+  let month = splitString[2];
+  let lastIndex = splitString[1].length;
+  let dayNumber = splitString[1].substring(0, --lastIndex);
   let year = splitString[3];
   let monthIndex = getMonthNumber(month);
+  console.log(day);
+  console.log(month);
+  console.log(year);
+  console.log("hello");
 
   const currentDate = new Date(year, monthIndex, dayNumber);
   const startDate = getStartDate(currentDate, day);
   const endDate = getEndDate(currentDate, day);
   
-  window.location="/Capstone/reportServices?getWeeklyReport=true&startDate=" + startdate + "&endDate=" + endDate;
+  window.location="/Capstone/reportServices?getWeeklyReport=true&startDate=" + startDate + "&endDate=" + endDate;
 }
 
 /* 
@@ -290,7 +294,7 @@ function getMonthlyProductionReport(date)
  */
 function getReportDetails(date)
 {
-    window.location="/Capstone/reportServices?getDailyReport=true&date=" + date;
+    window.location="/Capstone/reportServices?getDailyReport=true&dailyReportDate=" + date;
 }
 
 </script>

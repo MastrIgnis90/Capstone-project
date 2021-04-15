@@ -5,7 +5,6 @@
  */
 package blb.web;
 
-import blb.database.DBOperations;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -18,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Sebastian Wild
  */
-@WebServlet(name = "Controller", urlPatterns = {"/Controller"})
-public class Controller extends HttpServlet {
+@WebServlet(name = "productServices", urlPatterns = {"/productServices"})
+public class productServices extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,29 +32,9 @@ public class Controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        boolean getPreviousReport = Boolean.parseBoolean(request.getParameter("getPreviousReport"));
-        boolean goToDeliverySchedule = Boolean.parseBoolean(request.getParameter("goToDeliverySchedule"));
-        boolean goToDailyReport = Boolean.parseBoolean(request.getParameter("goToDailyReport"));
-        boolean goToManageProducts = Boolean.parseBoolean(request.getParameter("goToManageProducts"));
-        boolean goToManageClients = Boolean.parseBoolean(request.getParameter("goToManageClients"));
-        DBOperations dbops = new DBOperations();
-        
-        if(goToDeliverySchedule) {
-            request.getRequestDispatcher("/WEB-INF/deliveryScheduleScreen.jsp").forward(request, response);
-        }else if(goToDailyReport){
-            request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
-        }else if(getPreviousReport) {
-            request.getRequestDispatcher("ReportServices").forward(request, response);
-        } else if(goToManageProducts) {
-            request.setAttribute("breadProductList", dbops.getBread());
-            request.getRequestDispatcher("/WEB-INF/productScreen.jsp").forward(request, response);
-        } else if(goToManageClients) {
-            request.getRequestDispatcher("/WEB-INF/clientDetailsScreen.jsp").forward(request, response);
-        } else if(action==null) {
-            request.getRequestDispatcher("/WEB-INF/LoginScreen.jsp").forward(request, response);
-        } else if(action.equals("Login")) {
-            request.getRequestDispatcher("LoginServices").forward(request, response);
-        } 
+        if(action.equals("edit")){
+          request.getRequestDispatcher("/WEB-INF/productDetailsScreen.jsp").forward(request, response);  
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

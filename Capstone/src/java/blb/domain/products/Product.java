@@ -33,6 +33,15 @@ public class Product {
         this.productStatus = productStatus;
         this.productQuantity = productQuantity;
     }
+    public Product(int productId, String productName, double productPrice){
+        this.productId = productId;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productCategory = "bread";
+        this.productDescription = "---";
+        this.productStatus = "in stock";
+        this.productQuantity = 100;
+    }
 
     public int getProductId() {
         return productId;
