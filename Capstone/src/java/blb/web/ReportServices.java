@@ -80,7 +80,7 @@ public class ReportServices extends HttpServlet {
         }else if(getPreviousReport){
             try {
                 request.setAttribute("reportDate", dh.prevDate(date));
-                request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
+                request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(dh.prevDate(date)));
                 
             } catch (ParseException ex) {
                 Logger.getLogger(ReportServices.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,7 +90,7 @@ public class ReportServices extends HttpServlet {
         } else if(getNextDailyReport){
             try {
                 request.setAttribute("reportDate", dh.nextDate(date));
-                request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
+                request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(dh.nextDate(date)));
             } catch (ParseException ex) {
                 Logger.getLogger(ReportServices.class.getName()).log(Level.SEVERE, null, ex);
             }

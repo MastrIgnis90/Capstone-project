@@ -35,6 +35,8 @@ public class Controller extends HttpServlet {
         boolean getPreviousReport = Boolean.parseBoolean(request.getParameter("getPreviousReport"));
         boolean goToDeliverySchedule = Boolean.parseBoolean(request.getParameter("goToDeliverySchedule"));
         boolean goToDailyReport = Boolean.parseBoolean(request.getParameter("goToDailyReport"));
+        boolean goToManageProducts = Boolean.parseBoolean(request.getParameter("goToManageProducts"));
+        boolean goToManageClients = Boolean.parseBoolean(request.getParameter("goToManageClients"));
         
         if(goToDeliverySchedule) {
             request.getRequestDispatcher("/WEB-INF/deliveryScheduleScreen.jsp").forward(request, response);
@@ -42,6 +44,10 @@ public class Controller extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
         }else if(getPreviousReport) {
             request.getRequestDispatcher("ReportServices").forward(request, response);
+        } else if(goToManageProducts) {
+            request.getRequestDispatcher("/WEB-INF/productDetailsScreen.jsp").forward(request, response);
+        } else if(goToManageClients) {
+            request.getRequestDispatcher("/WEB-INF/clientDetailsScreen.jsp").forward(request, response);
         } else if(action==null) {
             request.getRequestDispatcher("/WEB-INF/LoginScreen.jsp").forward(request, response);
         } else if(action.equals("Login")) {
