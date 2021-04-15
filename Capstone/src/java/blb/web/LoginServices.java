@@ -39,19 +39,37 @@ public class LoginServices extends HttpServlet {
         String username = request.getParameter("email");
         String password = request.getParameter("password");
         DBOperations dbops = new DBOperations();
+        String logout = request.getParameter("logout");
         
-        
+        int authUserResult = dbops.authUser(username, password);
             
-           
-        if(username.trim().equals("") || password.trim().equals("")){// nothing supplied
+        if (logout!=null) {
+            request.setAttribute("message", "Logged out");
+            request.getRequestDispatcher("/WEB-INF/LoginScreen.jsp").forward(request, response);
+        } else if (username == null || password == null) {
             request.setAttribute("message", "Both username and password are required");
             request.getRequestDispatcher("/WEB-INF/LoginScreen.jsp").forward(request, response);
-        } else if(username.trim().equals("john@john") && password.trim().equals("password")){//!!!!!!!!! CHANGE TO DBOPS!!!!!!!
-            
-            String date = new SimpleDateFormat("EEEE d, MMMM y").format(new Date());
-            request.setAttribute("reportDate", date);
-            request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
-            request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
+        }
+        else if(username.trim().equals("") || password.trim().equals("")){// nothing supplied
+            request.setAttribute("message", "Both username and password are required");
+            request.getRequestDispatcher("/WEB-INF/LoginScreen.jsp").forward(request, response);
+        } else if(authUserResult != -1){
+            switch (authUserResult) {
+                case 0://Regular User
+                    //We have no screens for regular clients at this time
+                    request.getRequestDispatcher("/WEB-INF/LoginScreen.jsp").forward(request, response);
+                    break;
+                case 1://Manager
+                    String date = new SimpleDateFormat("EEEE d, MMMM y").format(new Date());
+                    request.setAttribute("reportDate", date);
+                    request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
+                    request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
+                    break;
+                case 2://Admin
+                    //We have no screens for admins at this time
+                    request.getRequestDispatcher("/WEB-INF/LoginScreen.jsp").forward(request, response);
+                    break;
+            }
             
             
         } else { //invalid username or password

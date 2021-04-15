@@ -5,8 +5,11 @@
  */
 package blb.web;
 
+import blb.database.DBOperations;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,12 +38,24 @@ public class Controller extends HttpServlet {
         boolean getPreviousReport = Boolean.parseBoolean(request.getParameter("getPreviousReport"));
         boolean goToDeliverySchedule = Boolean.parseBoolean(request.getParameter("goToDeliverySchedule"));
         boolean goToDailyReport = Boolean.parseBoolean(request.getParameter("goToDailyReport"));
+        boolean goToManageClients = Boolean.parseBoolean(request.getParameter("goToManageClients"));
+        boolean goToManageProducts = Boolean.parseBoolean(request.getParameter("goToManageProducts"));
+        
+        DBOperations dbops = new DBOperations();
         
         if(goToDeliverySchedule) {
             request.getRequestDispatcher("/WEB-INF/deliveryScheduleScreen.jsp").forward(request, response);
         }else if(goToDailyReport){
+            String date = new SimpleDateFormat("EEEE d, MMMM y").format(new Date());
+            request.setAttribute("reportDate", date);
+            request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
             request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
-        }else if(getPreviousReport) {
+        } else if (goToManageClients) {
+            request.getRequestDispatcher("customerServices").forward(request, response);
+        } else if (goToManageProducts) {
+            
+        }
+        else if(getPreviousReport) {
             request.getRequestDispatcher("ReportServices").forward(request, response);
         } else if(action==null) {
             request.getRequestDispatcher("/WEB-INF/LoginScreen.jsp").forward(request, response);
