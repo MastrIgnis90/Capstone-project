@@ -19,7 +19,7 @@ public class Customer {
     private String postalCode;
     private String email;
     private String password;
-    private int phoneNumber;
+    private long phoneNumber;
     private String community;
     private char status;
     private char customerType;
@@ -97,11 +97,11 @@ public class Customer {
         this.password = password;
     }
 
-    public int getPhoneNumber() {
+    public long getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

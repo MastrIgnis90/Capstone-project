@@ -189,7 +189,7 @@ public class DBOperations {
             stmnt.setString(5, customer.getCommunity());
             stmnt.setString(6, customer.getPostalCode());
             stmnt.setString(7, customer.getEmail());
-            stmnt.setInt(8, customer.getPhoneNumber());
+            stmnt.setLong(8, customer.getPhoneNumber());
             stmnt.setString(9, Character.toString(customer.getStatus()));
             
             int rowsaffected = stmnt.executeUpdate();
@@ -262,6 +262,53 @@ public class DBOperations {
     }
     
     /**
+     * Updates a customer entry in the database with the information provided
+     * @param id the CURRENT id of the customer (cannot be changed with this method)
+     * @param firstname the new firstname
+     * @param lastname the new lastname
+     * @param address the new address
+     * @param postalcode the new postal code
+     * @param email the new email
+     * @param phonenumber the new phone number
+     * @return true if the operation was successful
+     */
+    public boolean updateCustomer(int id, String firstname, String lastname, String address, String postalcode, String email, long phonenumber) {
+        
+        boolean result = false;
+        String sql = "update customer set (lastname = ?, firstname = ?, street_address = ?, postal_code = ?, email = ?, phone_number = ?) "
+                + "where customer_id = ?";
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        try {
+            Connection conn = cp.getConnection();
+            PreparedStatement stmnt = conn.prepareStatement(sql);
+            
+            stmnt.setString(1, lastname);
+            stmnt.setString(2, firstname);
+            stmnt.setString(3, address);
+            stmnt.setString(4, postalcode);
+            stmnt.setString(5, email);
+            stmnt.setLong(6, phonenumber);
+            
+            stmnt.setInt(7, id);
+            
+            int rowsaffected = stmnt.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            stmnt.close();
+            cp.freeConnection(conn);
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
+    
+    /**
      * [POJO Version] updates a customer entry in the database
      * @param customer represents the customer with new state to be updated
      * @return true if the operation was successful
@@ -284,7 +331,7 @@ public class DBOperations {
             stmnt.setString(5, customer.getCommunity());
             stmnt.setString(6, customer.getPostalCode());
             stmnt.setString(7, customer.getEmail());
-            stmnt.setInt(8, customer.getPhoneNumber());
+            stmnt.setLong(8, customer.getPhoneNumber());
             stmnt.setString(9, Character.toString(customer.getStatus()));
             
             stmnt.setInt(10, customer.getCustomerId());
@@ -706,7 +753,7 @@ public class DBOperations {
         
         ConnectionPool cp = ConnectionPool.getInstance();
         
-        String sql1 = "select count(customer_id) from customer where customer_email = ? AND customer_password = ?";
+        String sql1 = "select count(customer_id) from customer where email = ? AND customer_password = ?";
         String sql2 = "select employee_access_level from employeeauthentication where employee_email = ? AND employee_password = ?";
         try {
             Connection conn = cp.getConnection();
@@ -1300,6 +1347,250 @@ public class DBOperations {
             cp.freeConnection(conn);
         }
         catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
+    
+    public ArrayList<Customer> getCustomersForManager() {
+        ArrayList<Customer> customerList = new ArrayList<>();
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "select customer_id, first_name, last_name, customer_status, customer_type, phone_number from customer";
+        
+        try {
+            Connection conn = cp.getConnection();
+            PreparedStatement st = conn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            
+            while(rs.next()) {
+                Customer customer = new Customer();
+                customer.setCustomerId(rs.getInt(1));
+                customer.setFirstName(rs.getString(2));
+                customer.setLastName(rs.getString(3));
+                customer.setStatus(rs.getString(4).charAt(0));
+                customer.setCustomerType(rs.getString(5).charAt(0));
+                customer.setPhoneNumber(rs.getLong(6));
+                customerList.add(customer);
+            }
+            rs.close();
+            st.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return customerList;
+    }
+    
+    public ArrayList<Customer> searchCustomerFirstName(String name) {
+        ArrayList<Customer> customerList = new ArrayList<>();
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "select customer_id, first_name, last_name, customer_status, customer_type, phone_number from customer where first_name = ?";
+        
+        try {
+            Connection conn = cp.getConnection();
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, name);
+            ResultSet rs = st.executeQuery();
+            
+            while(rs.next()) {
+                Customer customer = new Customer();
+                customer.setCustomerId(rs.getInt(1));
+                customer.setFirstName(rs.getString(2));
+                customer.setLastName(rs.getString(3));
+                customer.setStatus(rs.getString(4).charAt(0));
+                customer.setCustomerType(rs.getString(5).charAt(0));
+                customer.setPhoneNumber(rs.getLong(6));
+                customerList.add(customer);
+            }
+            rs.close();
+            st.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return customerList;
+    }
+    
+    public ArrayList<Customer> searchCustomerLastName(String name) {
+        ArrayList<Customer> customerList = new ArrayList<>();
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "select customer_id, first_name, last_name, customer_status, customer_type, phone_number from customer where last_name = ?";
+        
+        try {
+            Connection conn = cp.getConnection();
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, name);
+            ResultSet rs = st.executeQuery();
+            
+            while(rs.next()) {
+                Customer customer = new Customer();
+                customer.setCustomerId(rs.getInt(1));
+                customer.setFirstName(rs.getString(2));
+                customer.setLastName(rs.getString(3));
+                customer.setStatus(rs.getString(4).charAt(0));
+                customer.setCustomerType(rs.getString(5).charAt(0));
+                customer.setPhoneNumber(rs.getLong(6));
+                customerList.add(customer);
+            }
+            rs.close();
+            st.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return customerList;
+    }
+    
+    public ArrayList<Customer> sortCustomerList(String sortBy, String order) {
+        ArrayList<Customer> customerList = new ArrayList<>();
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "select customer_id, first_name, last_name, customer_status, customer_type, phone_number from customer order by ? ? ";
+        
+        try {
+            Connection conn = cp.getConnection();
+            PreparedStatement st = conn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            
+            while(rs.next()) {
+                Customer customer = new Customer();
+                customer.setCustomerId(rs.getInt(1));
+                customer.setFirstName(rs.getString(2));
+                customer.setLastName(rs.getString(3));
+                customer.setStatus(rs.getString(4).charAt(0));
+                customer.setCustomerType(rs.getString(5).charAt(0));
+                customer.setPhoneNumber(rs.getLong(6));
+                customerList.add(customer);
+            }
+            rs.close();
+            st.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return customerList;
+    }
+    
+    public boolean deleteCustomer(int customerId) {
+        boolean result = false;
+        
+        String sql = "delete from customers where customer_id = ?";
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        try {
+            Connection conn = cp.getConnection();
+            PreparedStatement stmnt = conn.prepareStatement(sql);
+            
+            stmnt.setInt(1, customerId);
+            
+            int rowsaffected = stmnt.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            stmnt.close();
+            cp.freeConnection(conn);
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
+    
+    public Customer getCustomerById(int customerId) {
+        Customer customer = new Customer();
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "select customer_id, first_name, last_name, customer_status, customer_type, phone_number from customer where customer_id = ?";
+        
+        try {
+            Connection conn = cp.getConnection();
+            PreparedStatement st = conn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            
+            while(rs.next()) {
+                customer.setCustomerId(rs.getInt(1));
+                customer.setFirstName(rs.getString(2));
+                customer.setLastName(rs.getString(3));
+                customer.setStatus(rs.getString(4).charAt(0));
+                customer.setCustomerType(rs.getString(5).charAt(0));
+                customer.setPhoneNumber(rs.getLong(6));
+            }
+            rs.close();
+            st.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return customer;
+    }
+    
+    public ArrayList<Order> getOrdersForCustomer(int customerId) {
+        ArrayList<Order> orderList = new ArrayList<>();
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "select order_id, order_date, price_total, standing_order from order where customer_id = ? ";
+        
+        try {
+            Connection conn = cp.getConnection();
+            PreparedStatement st = conn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            
+            while(rs.next()) {
+                Order order = new Order();
+                order.setOrderNum(rs.getInt(1));
+                order.setOrderDate(rs.getDate(2).toString());
+                order.setPrice(rs.getDouble(3));
+                order.setStandingOrder(rs.getString(4).charAt(0));
+                orderList.add(order);
+            }
+            rs.close();
+            st.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return orderList;
+    }
+    
+    public boolean createNewOrder(int id, String product, String deliveryDate, String note) {
+        boolean result = false;
+        String sql = "insert into orders (lastname, firstname, customer_type, street_address, community, postal_code, email, phone_number, customer_status) "
+                + "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        try {
+            Connection conn = cp.getConnection();
+            PreparedStatement stmnt = conn.prepareStatement(sql);
+            
+            int rowsaffected = stmnt.executeUpdate();
+            
+            if (rowsaffected > 0)
+                result = true;
+            
+            stmnt.close();
+            cp.freeConnection(conn);
+            
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
         
