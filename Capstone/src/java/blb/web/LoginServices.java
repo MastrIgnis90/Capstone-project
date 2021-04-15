@@ -60,7 +60,7 @@ public class LoginServices extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/LoginScreen.jsp").forward(request, response);
                     break;
                 case 1://Manager
-                    String date = new SimpleDateFormat("EEEE d, MMMM y").format(new Date());
+                    String date = new SimpleDateFormat("EEEE MMMM d, y").format(new Date());
                     request.setAttribute("reportDate", date);
                     request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
                     request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
