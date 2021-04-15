@@ -7,6 +7,7 @@ package blb.database;
 
 import blb.domain.orders.Order;
 import blb.domain.products.Product;
+import blb.domain.products.ReportDay;
 import blb.domain.users.Customer;
 import blb.domain.users.Employee;
 import java.sql.CallableStatement;
@@ -46,7 +47,6 @@ public class DBOperations {
             while(rs.next()){
                 Order order = new Order(rs.getInt(1), "---", rs.getString(2));
                 dailyReportProductionList.add(order);
-                System.out.println(order);
             }
             rs.close();
             st.close();
@@ -59,6 +59,29 @@ public class DBOperations {
         }
         
         return dailyReportProductionList;
+    }
+    
+    public ArrayList<Product> getBread() {
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = "select product_name, product_price from products where category = 'Bread';";
+            
+        ConnectionPool cp = ConnectionPool.getInstance();
+        try {           
+            Connection conn = cp.getConnection();
+            PreparedStatement st = conn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            int i = 1;
+            while(rs.next()){
+                list.add(new Product(i++, rs.getString(1), rs.getDouble(2)));
+            }
+            rs.close();
+            st.close();
+            cp.freeConnection(conn);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
     
     /**

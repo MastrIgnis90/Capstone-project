@@ -29,7 +29,7 @@ public class ConnectionPool {
         
         try {
             InitialContext ic = new InitialContext();
-            dataSource = (DataSource) ic.lookup("java:/comp/env/jdbc/bridgelandbakery"); 
+            dataSource = (DataSource) ic.lookup("java:/comp/env/jdbc/bridgelandbread"); 
         }
         catch (NamingException ex) {
             ex.printStackTrace();

@@ -182,12 +182,12 @@
                                 <div class="modal-body">
                                     <form action="customerServices" method="POST">
                                         <div class="form-group">
-                                            <label for="clientId" class="col-form-label">Client ID</label>
-                                            <input type="text" class="form-control" name="clientId" id="clientId" value="${requestScope.customer.customerId}" disabled>
+                                            <label for="customerId" class="col-form-label">Client ID</label>
+                                            <input type="text" class="form-control" name="customerId" id="customerId" value="${requestScope.customer.customerId}" disabled>
                                         </div>
                                         <div class="form-group">
-                                            <label for="breadOptions">Sort by:</label>
-                                            <select class="selectpicker" name="breadOptions" id="breadOptions">
+                                            <label for="newOrderBreadOptions">Sort by:</label>
+                                            <select class="selectpicker" name="newOrderBreadOptions" id="newOrderBreadOptions">
                                                 <option>White Sourdough</option>
                                                 <option>House-Milled Einkorn</option>
                                                 <option>Salt</option>
@@ -195,13 +195,13 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="orderQuantity" class="col-form-label">Quantity</label>
-                                            <input type="number" class="form-control" name="orderQuantity"
-                                                   id="orderQuantity" min="0" step=".1" required></input>
+                                            <label for="newOrderQuantity" class="col-form-label">Quantity</label>
+                                            <input type="number" class="form-control" name="newOrderQuantity"
+                                                   id="newOrderQuantity" min="0" step=".1" required></input>
                                         </div>
                                         <div class="form-group">
-                                            <label for="orderDeliveryDate">Delivery Date</label>
-                                            <input type="date" name="orderDeliveryDate" id="orderDeliveryDate"
+                                            <label for="newOrderDeliveryDate">Delivery Date</label>
+                                            <input type="date" name="newOrderDeliveryDate" id="newOrderDeliveryDate"
                                                    min="2020-01-01">
                                         </div>
                                         <div class="form-group">

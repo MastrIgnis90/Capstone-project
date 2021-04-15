@@ -80,7 +80,7 @@
                             -->
                             <c:forEach var='product' items='${requestScope.breadProductList}' varStatus='i'>
                                 <div class="card">
-                                    <img class="card-img-top" src="${pageContext.request.contextPath}/<c:out value='${product.productImage}'/>" alt="product image">
+                                    <img class="card-img-top" src="${pageContext.request.contextPath}/web/resources/images.noImage.jpg'/>" alt="product image">
                                     <div class="card-body">
                                         <h5 class="card-title">${product.productName}</h5>
                                         <p class="card-text">$${product.productPrice}</p>
@@ -216,9 +216,9 @@
                                     <!-- Create new subscription form -->
                                     <form action="productServices" method="POST">
                                         <div class="form-group">
-                                            <label for="subscriptionDescription" class="col-form-label">Description</label>
-                                            <input type="text" class="form-control" name="subscriptionDescription"
-                                                   id="subscriptionDescription">
+                                            <label for="newSubscriptionDescription" class="col-form-label">Description</label>
+                                            <input type="text" class="form-control" name="newSubscriptionDescription"
+                                                   id="newSubscriptionDescription">
                                         </div>
                                         <div class="form-group">
                                             <label for="newSubscriptionPrice" class="col-form-label">Price</label>
