@@ -115,11 +115,11 @@ public class CustomerServices extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/clientScreen.jsp").forward(request, response);
             }
         } else if (updateCustomerFirstName != null
-//                && updateCustomerLastName != null 
-//                && updateCustomerAddress != null 
-//                && updateCustomerEmail != null
-//                && updateCustomerPostalCode != null 
-//                && updateCustomerPhoneNumber != null
+                && updateCustomerLastName != null 
+                && updateCustomerAddress != null 
+                && updateCustomerEmail != null
+                && updateCustomerPostalCode != null 
+                && updateCustomerPhoneNumber != null
                 ) {
             
             dbops.updateCustomer(customerId, updateCustomerFirstName, updateCustomerLastName, updateCustomerAddress, updateCustomerPostalCode, updateCustomerEmail, Long.parseLong(updateCustomerPhoneNumber));
@@ -128,11 +128,17 @@ public class CustomerServices extends HttpServlet {
             ArrayList<Order> orderList = dbops.getOrdersForCustomer(customerId);
             request.setAttribute("orderList", orderList);
             request.getRequestDispatcher("/WEB-INF/clientDetailsScreen.jsp").forward(request, response);
-        } else if (newOrderBreadOptions!=null
-                && newOrderQuantity!=null
-                && newOrderDeliveryDate!=null
-                && newOrderNote!=null) {
-            
+        } else if (newOrderBreadOptions != null
+                && newOrderQuantity != null
+                && newOrderDeliveryDate != null
+                && newOrderNote != null
+                ) {
+            dbops.multiOrderCreationWeekly(customerId, 'N', newOrderNote, newOrderBreadOptions, null);
+            Customer customer = dbops.getCustomerById(customerId);
+            request.setAttribute("customer", customer);
+            ArrayList<Order> orderList = dbops.getOrdersForCustomer(customerId);
+            request.setAttribute("orderList", orderList);
+            request.getRequestDispatcher("/WEB-INF/clientDetailsScreen.jsp").forward(request, response);
         }
         else {
             request.setAttribute("customerList", customerList);

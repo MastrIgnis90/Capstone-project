@@ -182,7 +182,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="customerServices" method="POST">
+                                    <form id="neworderform" action="customerServices" method="POST">
                                         <div class="form-group">
                                             <label for="customerId" class="col-form-label">Client ID</label>
                                             <input type="text" class="form-control" name="customerId" id="customerId" value="${requestScope.customer.customerId}" disabled>
@@ -211,11 +211,13 @@
                                             <textarea type="text" class="form-control" name="newOrderNote"
                                                       id="newOrderNote"></textarea>
                                         </div>
+                                        <input type="hidden" class="form-control" name="customerId" id="customerId"
+                                       value="${requestScope.customer.customerId}">
                                     </form>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Add New Order</button>
+                                    <button type="submit" class="btn btn-primary" form="neworderform">Add New Order</button>
                                 </div>
                             </div>
                         </div>
