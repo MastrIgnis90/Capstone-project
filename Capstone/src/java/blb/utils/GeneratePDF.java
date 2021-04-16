@@ -25,22 +25,17 @@ import java.util.logging.Logger;
  *
  * @author Sebastian Wild
  */
-public class GeneratePDF {//unfinished
+public class GeneratePDF {
     public static ByteArrayOutputStream getpdfFile(ArrayList<Order> orders){
         
         Document doc = new Document(PageSize.A4.rotate());
         ByteArrayOutputStream baus = new ByteArrayOutputStream();
         
         try {
-            PdfPTable table = new PdfPTable(3);
+            PdfPTable table = new PdfPTable(2);
             Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
             
             PdfPCell hcell;
-            
-            hcell = new PdfPCell(new Phrase("Order Number", headFont));
-            hcell.setHorizontalAlignment(Element.ALIGN_LEFT);
-            hcell.setVerticalAlignment(Element.ALIGN_CENTER);
-            table.addCell(hcell);
             
             hcell= new PdfPCell(new Phrase("Order", headFont));
             hcell.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -54,11 +49,6 @@ public class GeneratePDF {//unfinished
             
             for (Order order: orders) {
                 PdfPCell cell;
-                
-                cell = new PdfPCell(new Phrase(order.getOrderNum()));
-                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(cell);
                 
                 cell = new PdfPCell(new Phrase(order.getProduct()));
                 cell.setVerticalAlignment(Element.ALIGN_LEFT);

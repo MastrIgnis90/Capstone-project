@@ -49,7 +49,7 @@ public class ReportServices extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         boolean getPreviousReport = Boolean.parseBoolean(request.getParameter("getPreviousReport"));
         boolean getDailyReport = Boolean.parseBoolean(request.getParameter("getDailyReport"));
         boolean getNextDailyReport = Boolean.parseBoolean(request.getParameter("getNextDailyReport"));
@@ -65,74 +65,76 @@ public class ReportServices extends HttpServlet {
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         ArrayList<Order> orders;
-        
-        if (date==null) {
+
+        if (date == null) {
             date = new SimpleDateFormat("EEEE MMMM d, y").format(new Date());
             //request.setAttribute("reportDate", date);
         } else if (date.equals("")) {
             date = new SimpleDateFormat("EEEE MMMM d, y").format(new Date());
         }
-        
+
         DBOperations dbops = new DBOperations();
         DateHelper dh = new DateHelper();
-        
-        if(print){
+
+        if (print) {
             response.setContentType("application/pdf;charset=UTF-8");
             response.addHeader("Content-Disposition", "inline; filename=" + "orders.pdf");
             ServletOutputStream out = response.getOutputStream();
             orders = dbops.getDailyReportProductionList(date);
             ByteArrayOutputStream baos = GeneratePDF.getpdfFile(orders);
             baos.writeTo(out);
-            
-        } else if(getDailyReport) {
-            
+
+        } else if (getDailyReport) {
+
             request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));
             request.setAttribute("reportDate", date);
             request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
-            
-        }else if(getPreviousReport){
+
+        } else if (getPreviousReport) {
             try {
                 request.setAttribute("reportDate", dh.prevDate(date));
                 request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(dh.prevDate(date)));
-                
+
             } catch (ParseException ex) {
                 Logger.getLogger(ReportServices.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
-        } else if(getNextDailyReport){
+        } else if (getNextDailyReport) {
             try {
                 request.setAttribute("reportDate", dh.nextDate(date));
                 request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(dh.nextDate(date)));
             } catch (ParseException ex) {
                 Logger.getLogger(ReportServices.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
-        } else if(sortDailyReport) {
+        } else if (sortDailyReport) {
             String sortDailyReportBy = request.getParameter("sortDailyReportBy");
             String orderOfSortDailyReport = request.getParameter("orderOfSortDailyReport");
             
-            //order = dbops.getList(date, sortDailyReportBy, orderOfSortDailyReport);
-        } else if(getWeeklyReport) {
-            try {                
+            request.setAttribute("reportDate", date);
+            request.setAttribute("dailyReportProductionList", dbops.getSortedList(date, sortDailyReportBy, orderOfSortDailyReport));
+            request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
+        } else if (getWeeklyReport) {
+            try {
                 request.setAttribute("startDate", dh.weekStartDate(startDate));
                 request.setAttribute("endDate", dh.weekEndDate(endDate));
             } catch (ParseException ex) {
                 Logger.getLogger(ReportServices.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             request.getRequestDispatcher("/WEB-INF/reportWeeklyScreen.jsp").forward(request, response);
-        } else if(getNextWeeklyReport) {
+        } else if (getNextWeeklyReport) {
             try {
                 request.setAttribute("startDate", dh.nextWeekStart(date));
                 request.setAttribute("endDate", dh.nextWeekEnd(date));
             } catch (ParseException ex) {
                 Logger.getLogger(ReportServices.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             request.getRequestDispatcher("/WEB-INF/reportWeeklyScreen.jsp").forward(request, response);
-        } else if(getPreviousWeeklyReport) {
+        } else if (getPreviousWeeklyReport) {
             try {
                 String weekStart = dh.prevWeekStart(date);
                 String weekEnd = dh.prevWeekEnd(date);
@@ -147,12 +149,15 @@ public class ReportServices extends HttpServlet {
             } catch (ParseException ex) {
                 Logger.getLogger(ReportServices.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             request.getRequestDispatcher("/WEB-INF/reportWeeklyScreen.jsp").forward(request, response);
-        } else if(getMonthlyReport) {
+        } else if (getMonthlyReport) {
             String month = request.getParameter("month");
             String year = request.getParameter("year");
             
+            String monthOG = request.getParameter("month");
+            String yearOG = request.getParameter("year");
+
             if (month == null || year == null) {
                 Calendar calendar = Calendar.getInstance();
                 month = Month.of(calendar.get(Calendar.MONTH)).getDisplayName(TextStyle.FULL, Locale.ENGLISH);
@@ -163,7 +168,10 @@ public class ReportServices extends HttpServlet {
                 year = String.valueOf(calendar.get(Calendar.YEAR));
             }
             try {
-                ArrayList<ReportDay> list = dbops.getReportMonthlyOrders(month, year);
+                
+//                monthOG.toUpperCase();
+                
+//                ArrayList<ReportDay> list = dbops.getReportMonthlyOrders(month, year);
                 request.setAttribute("monthReportProductionList", list);
 
                 String reportMonthDate = month + ", " + year;
@@ -178,30 +186,30 @@ public class ReportServices extends HttpServlet {
             String[] monthYear = monthYearString.split(",");
             String month = monthYear[0];
             String year = monthYear[1];
-            
+
             try {
                 String[] prevMonth = dh.prevMonth(month, year);
                 ArrayList<ReportDay> list = dbops.getReportMonthlyOrders(prevMonth[0], prevMonth[1]);
                 request.setAttribute("monthReportProductionList", list);
-            
+
                 String reportMonthDate = prevMonth[0] + ", " + prevMonth[1];
                 request.setAttribute("reportMonthDate", reportMonthDate);
                 request.getRequestDispatcher("/WEB-INF/reportMonthlyScreen.jsp").forward(request, response);
             } catch (ParseException ex) {
                 request.getRequestDispatcher("/WEB-INF/500ErrorScreen.jsp").forward(request, response);
             }
-            
+
         } else if (getNextMonthlyReport) {
             String monthYearString = request.getParameter("monthYear");
             String[] monthYear = monthYearString.split(",");
             String month = monthYear[0];
             String year = monthYear[1];
-            
+
             try {
                 String[] nextMonth = dh.nextMonth(month, year);
                 ArrayList<ReportDay> list = dbops.getReportMonthlyOrders(nextMonth[0], nextMonth[1]);
                 request.setAttribute("monthReportProductionList", list);
-            
+
                 String reportMonthDate = nextMonth[0] + ", " + nextMonth[1];
                 request.setAttribute("reportMonthDate", reportMonthDate);
                 request.getRequestDispatcher("/WEB-INF/reportMonthlyScreen.jsp").forward(request, response);

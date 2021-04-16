@@ -52,9 +52,9 @@ public class Controller extends HttpServlet {
         } else if (goToManageClients) {
             request.getRequestDispatcher("customerServices").forward(request, response);
         } else if (goToManageProducts) {
-            
-        }
-        else if(getPreviousReport) {
+            request.setAttribute("breadProductList", dbops.getBread());
+            request.getRequestDispatcher("/WEB-INF/productScreen.jsp").forward(request, response);
+        } else if(getPreviousReport) {
             request.getRequestDispatcher("ReportServices").forward(request, response);
         } else if(goToManageProducts) {
             request.setAttribute("breadProductList", dbops.getBread());
