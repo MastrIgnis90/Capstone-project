@@ -738,7 +738,7 @@ public class DBOperations {
         ConnectionPool cp = ConnectionPool.getInstance();
 
         String sql = "select order_id, first_name, last_name, street_address, postal_code, community "
-                + "from customer natural join orders where delivery_date = ? order by community";
+                + "from customer natural join orders where delivery_date = ? orders by community";
 
         try {
             Connection conn = cp.getConnection();
@@ -1628,7 +1628,7 @@ public class DBOperations {
 
         ConnectionPool cp = ConnectionPool.getInstance();
 
-        String sql = "select order_id, order_date, price_total, standing_order from order where customer_id = ? ";
+        String sql = "select order_id, order_date, price_total, standing_order from orders where customer_id = ? ";
 
         try {
             Connection conn = cp.getConnection();
