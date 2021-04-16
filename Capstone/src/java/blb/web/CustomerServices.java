@@ -94,13 +94,15 @@ public class CustomerServices extends HttpServlet {
                 && newCustomerPostalCode != null 
                 && newCustomerPhoneNumber != null) {
             
-            Customer customer = new Customer();
-            customer.setFirstName(newCustomerFirstName);
-            customer.setLastName(newCustomerLastName);
-            customer.setAddress(newCustomerAddress);
-            customer.setPostalCode(newCustomerPostalCode);
-            customer.setPhoneNumber(Long.parseLong(newCustomerPhoneNumber));
-            dbops.addCustomer(customer);
+//            Customer customer = new Customer();
+//            customer.setFirstName(newCustomerFirstName);
+//            customer.setLastName(newCustomerLastName);
+//            customer.setAddress(newCustomerAddress);
+//            customer.setPostalCode(newCustomerPostalCode);
+//            customer.setPhoneNumber(Long.parseLong(newCustomerPhoneNumber));
+//            dbops.addCustomer(customer);
+            dbops.addCustomer(newCustomerFirstName, newCustomerLastName, newCustomerAddress, 'P', newCustomerPostalCode, "", "", "", Long.parseLong(newCustomerPhoneNumber), 'A');
+            customerList = dbops.getCustomersForManager();
             request.setAttribute("customerList", customerList);
             request.getRequestDispatcher("/WEB-INF/clientScreen.jsp").forward(request, response);
         } else if (action != null) {
