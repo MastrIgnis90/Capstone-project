@@ -42,7 +42,7 @@ public class LoginServices extends HttpServlet {
         String logout = request.getParameter("logout");
         
         int authUserResult = dbops.authUser(username, password);
-            
+        System.out.println("HELLO?\n\n\n\n\n\n\n");
         if (logout!=null) {
             request.setAttribute("message", "Logged out");
             request.getRequestDispatcher("/WEB-INF/LoginScreen.jsp").forward(request, response);
@@ -60,6 +60,7 @@ public class LoginServices extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/LoginScreen.jsp").forward(request, response);
                     break;
                 case 1://Manager
+                    
                     String date = new SimpleDateFormat("EEEE MMMM d, y").format(new Date());
                     request.setAttribute("reportDate", date);
                     request.setAttribute("dailyReportProductionList", dbops.getDailyReportProductionList(date));

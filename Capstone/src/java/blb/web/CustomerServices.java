@@ -94,23 +94,25 @@ public class CustomerServices extends HttpServlet {
                 && newCustomerPostalCode != null 
                 && newCustomerPhoneNumber != null) {
             
-            Customer customer = new Customer();
-            customer.setFirstName(newCustomerFirstName);
-            customer.setLastName(newCustomerLastName);
-            customer.setAddress(newCustomerAddress);
-            customer.setPostalCode(newCustomerPostalCode);
-            customer.setPhoneNumber(Long.parseLong(newCustomerPhoneNumber));
-            dbops.addCustomer(customer);
+//            Customer customer = new Customer();
+//            customer.setFirstName(newCustomerFirstName);
+//            customer.setLastName(newCustomerLastName);
+//            customer.setAddress(newCustomerAddress);
+//            customer.setPostalCode(newCustomerPostalCode);
+//            customer.setPhoneNumber(Long.parseLong(newCustomerPhoneNumber));
+//            dbops.addCustomer(customer);
+            dbops.addCustomer(newCustomerFirstName, newCustomerLastName, newCustomerAddress, 'P', newCustomerPostalCode, "", "", "", Long.parseLong(newCustomerPhoneNumber), 'A');
+            customerList = dbops.getCustomersForManager();
             request.setAttribute("customerList", customerList);
             request.getRequestDispatcher("/WEB-INF/clientScreen.jsp").forward(request, response);
         } else if (action != null) {
             if (action.equals("delete") && customerIdParam!=null) {
                 dbops.deleteCustomer(customerId);
+                customerList = dbops.getCustomersForManager();
                 request.setAttribute("customerList", customerList);
                 request.getRequestDispatcher("/WEB-INF/clientScreen.jsp").forward(request, response);
             } else if (action.equals("edit") && customerIdParam!=null) {
                 Customer customer = dbops.getCustomerById(customerId);
-                System.out.println("Customer that is being edited: " + customer);
                 request.setAttribute("customer", customer);
                 ArrayList<Order> orderList = dbops.getOrdersForCustomer(customerId);
                 request.setAttribute("orderList", orderList);

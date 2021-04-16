@@ -17,8 +17,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.Month;
+import java.time.MonthDay;
+import java.time.YearMonth;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -138,10 +145,10 @@ public class DBOperations {
      * @param status
      * @return true if the action was successful
      */
-    public boolean addCustomer(String firstname, String lastname, String address, char customertype, String postalcode, String community, String email, String password, int phonenumber, char status) {
+    public boolean addCustomer(String firstname, String lastname, String address, char customertype, String postalcode, String community, String email, String password, long phonenumber, char status) {
         boolean result = false;
         String sql = "insert into bridgelandbread.customer (last_name, first_name, customer_password,customer_type, street_address, community, postal_code, email, phone_number, customer_status) "
-                + "values (?, ?, 'bread', ?, ?, ?, ?, ?, ?, ?)";
+                + "values (?, ?, 'bread', ?, ?, ?, ?, ?, ?, ?);";
 
         ConnectionPool cp = ConnectionPool.getInstance();
 
@@ -156,7 +163,7 @@ public class DBOperations {
             stmnt.setString(5, community);
             stmnt.setString(6, postalcode);
             stmnt.setString(7, email);
-            stmnt.setInt(8, phonenumber);
+            stmnt.setLong(8, phonenumber);
             stmnt.setString(9, Character.toString(status));
 
             int rowsaffected = stmnt.executeUpdate();
@@ -1561,7 +1568,7 @@ public class DBOperations {
     public boolean deleteCustomer(int customerId) {
         boolean result = false;
 
-        String sql = "delete from customers where customer_id = ?";
+        String sql = "delete from bridgelandbread.customer where customer_id = ?;";
 
         ConnectionPool cp = ConnectionPool.getInstance();
 
@@ -1592,7 +1599,7 @@ public class DBOperations {
 
         ConnectionPool cp = ConnectionPool.getInstance();
 
-        String sql = "select customer_id, first_name, last_name, customer_status, customer_type, phone_number from customer where customer_id = ?";
+        String sql = "select customer_id, first_name, last_name, customer_status, customer_type, phone_number from bridgelandbread.customer where customer_id = ?";
 
         try {
             Connection conn = cp.getConnection();
@@ -1676,9 +1683,24 @@ public class DBOperations {
         ArrayList<ReportDay> list = new ArrayList<>();
 
         ConnectionPool cp = ConnectionPool.getInstance();
-
-        String sql = "select count(order_id), delivery_date, DAYNAME(delivery_date) from orders where MONTHNAME(delivery_date) LIKE ? AND YEAR(delivery_date) = ?";
-
+        
+        String sql = "select count(delivery_date), delivery_date, DAYNAME(delivery_date) from orders where MONTHNAME(delivery_date) LIKE ? AND YEAR(delivery_date) = ? group by(delivery_date)";
+        
+//        Date tempdate = new SimpleDateFormat("d MMMM yyyy", Locale.ENGLISH).parse(1 + " " + month + " " + year);
+//        Calendar cal = Calendar.getInstance();
+//        cal.clear();
+//        cal.setTime(tempdate);
+//        YearMonth yearMonthObject = YearMonth.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH));
+//        int daysInMonth = yearMonthObject.lengthOfMonth();
+//        for (int i = 0; i < daysInMonth; i++) {
+//            ReportDay day = new ReportDay();
+//            day.setTotalOrderNumber(0);
+//            day.setReportDay(MonthDay.of(cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_WEEK) + i).getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+//            day.setReportDate(tempdate.toString());
+//            list.add(day);
+//            tempdate.
+//        }
+        
         try {
             Connection conn = cp.getConnection();
             PreparedStatement st = conn.prepareStatement(sql);
@@ -1690,9 +1712,9 @@ public class DBOperations {
                 ReportDay reportDay = new ReportDay();
                 reportDay.setTotalOrderNumber(rs.getInt(1));
                 Date date = rs.getDate(2);
+                int daynum = date.getDay();
                 reportDay.setReportDate(new SimpleDateFormat("EEEE MMMM d, y").format(date));
                 String dayName = rs.getString(3);
-                System.out.println("dayName in getReportMonthlyOrders: " + dayName);
                 if (dayName != null) {
                     switch (dayName) {
                         case "Monday":

@@ -146,7 +146,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="customerServices" method="POST">
+                                <form id="form" action="customerServices" method="POST">
                                     <div class="form-group">
                                         <label for="newCustomerFirstName" class="col-form-label">First Name</label>
                                         <input type="text" class="form-control" name="newCustomerFirstName"
@@ -176,7 +176,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Add New Client</button>
+                                <button type="submit" class="btn btn-primary" form="form">Add New Client</button>
                             </div>
                         </div>
                     </div>
