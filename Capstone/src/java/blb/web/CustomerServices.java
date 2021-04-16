@@ -110,7 +110,6 @@ public class CustomerServices extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/clientScreen.jsp").forward(request, response);
             } else if (action.equals("edit") && customerIdParam!=null) {
                 Customer customer = dbops.getCustomerById(customerId);
-                System.out.println("Customer that is being edited: " + customer);
                 request.setAttribute("customer", customer);
                 ArrayList<Order> orderList = dbops.getOrdersForCustomer(customerId);
                 request.setAttribute("orderList", orderList);

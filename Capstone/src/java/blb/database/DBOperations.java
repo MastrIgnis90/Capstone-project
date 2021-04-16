@@ -17,8 +17,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.Month;
+import java.time.MonthDay;
+import java.time.YearMonth;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -1602,7 +1609,22 @@ public class DBOperations {
         
         ConnectionPool cp = ConnectionPool.getInstance();
         
-        String sql = "select count(order_id), delivery_date, DAYNAME(delivery_date) from orders where MONTHNAME(delivery_date) LIKE ? AND YEAR(delivery_date) = ?";
+        String sql = "select count(delivery_date), delivery_date, DAYNAME(delivery_date) from orders where MONTHNAME(delivery_date) LIKE ? AND YEAR(delivery_date) = ? group by(delivery_date)";
+        
+//        Date tempdate = new SimpleDateFormat("d MMMM yyyy", Locale.ENGLISH).parse(1 + " " + month + " " + year);
+//        Calendar cal = Calendar.getInstance();
+//        cal.clear();
+//        cal.setTime(tempdate);
+//        YearMonth yearMonthObject = YearMonth.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH));
+//        int daysInMonth = yearMonthObject.lengthOfMonth();
+//        for (int i = 0; i < daysInMonth; i++) {
+//            ReportDay day = new ReportDay();
+//            day.setTotalOrderNumber(0);
+//            day.setReportDay(MonthDay.of(cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_WEEK) + i).getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+//            day.setReportDate(tempdate.toString());
+//            list.add(day);
+//            tempdate.
+//        }
         
         try {
             Connection conn = cp.getConnection();
@@ -1615,9 +1637,9 @@ public class DBOperations {
                 ReportDay reportDay = new ReportDay();
                 reportDay.setTotalOrderNumber(rs.getInt(1));
                 Date date = rs.getDate(2);
+                int daynum = date.getDay();
                 reportDay.setReportDate(new SimpleDateFormat("EEEE MMMM d, y").format(date));
                 String dayName = rs.getString(3);
-                System.out.println("dayName in getReportMonthlyOrders: " + dayName);
                 if (dayName != null) {
                     switch (dayName) {
                         case "Monday":
