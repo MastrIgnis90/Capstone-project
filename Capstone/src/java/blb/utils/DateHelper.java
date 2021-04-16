@@ -114,12 +114,4 @@ public class DateHelper {
         
         return result;
     }
-    
-    public Date parseDailyReport(String date) throws ParseException {
-        return new SimpleDateFormat("EEEE d, MMMM y").parse(date);
-    }
-    
-    public Date parseWeekStartReport(String date) throws ParseException {
-        return new SimpleDateFormat("EEEE MMM. d").parse(date);
-    }
 }
