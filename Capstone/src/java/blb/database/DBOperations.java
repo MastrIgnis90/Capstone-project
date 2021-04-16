@@ -148,7 +148,7 @@ public class DBOperations {
     public boolean addCustomer(String firstname, String lastname, String address, char customertype, String postalcode, String community, String email, String password, long phonenumber, char status) {
         boolean result = false;
         String sql = "insert into bridgelandbread.customer (last_name, first_name, customer_password,customer_type, street_address, community, postal_code, email, phone_number, customer_status) "
-                + "values (?, ?, 'bread', ?, ?, ?, ?, ?, ?, ?)";
+                + "values (?, ?, 'bread', ?, ?, ?, ?, ?, ?, ?);";
 
         ConnectionPool cp = ConnectionPool.getInstance();
 
@@ -1568,7 +1568,7 @@ public class DBOperations {
     public boolean deleteCustomer(int customerId) {
         boolean result = false;
 
-        String sql = "delete from customers where customer_id = ?";
+        String sql = "delete from bridgelandbread.customer where customer_id = ?;";
 
         ConnectionPool cp = ConnectionPool.getInstance();
 
@@ -1599,7 +1599,7 @@ public class DBOperations {
 
         ConnectionPool cp = ConnectionPool.getInstance();
 
-        String sql = "select customer_id, first_name, last_name, customer_status, customer_type, phone_number from customer where customer_id = ?";
+        String sql = "select customer_id, first_name, last_name, customer_status, customer_type, phone_number from bridgelandbread.customer where customer_id = ?";
 
         try {
             Connection conn = cp.getConnection();

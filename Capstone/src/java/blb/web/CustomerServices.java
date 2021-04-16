@@ -108,6 +108,7 @@ public class CustomerServices extends HttpServlet {
         } else if (action != null) {
             if (action.equals("delete") && customerIdParam!=null) {
                 dbops.deleteCustomer(customerId);
+                customerList = dbops.getCustomersForManager();
                 request.setAttribute("customerList", customerList);
                 request.getRequestDispatcher("/WEB-INF/clientScreen.jsp").forward(request, response);
             } else if (action.equals("edit") && customerIdParam!=null) {
