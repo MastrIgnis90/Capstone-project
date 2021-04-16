@@ -40,6 +40,8 @@ public class CustomerServices extends HttpServlet {
         String action = request.getParameter("action");
         String customerIdParam = request.getParameter("customerId");
         
+        String orderIdParam = request.getParameter("orderId");
+        
         String sortCustomerBy = request.getParameter("sortCustomerBy");
         String orderOfSortCustomer = request.getParameter("orderOfSortCustomer");
         
@@ -93,30 +95,41 @@ public class CustomerServices extends HttpServlet {
                 && newCustomerAddress != null 
                 && newCustomerPostalCode != null 
                 && newCustomerPhoneNumber != null) {
-            
-//            Customer customer = new Customer();
-//            customer.setFirstName(newCustomerFirstName);
-//            customer.setLastName(newCustomerLastName);
-//            customer.setAddress(newCustomerAddress);
-//            customer.setPostalCode(newCustomerPostalCode);
-//            customer.setPhoneNumber(Long.parseLong(newCustomerPhoneNumber));
-//            dbops.addCustomer(customer);
+
             dbops.addCustomer(newCustomerFirstName, newCustomerLastName, newCustomerAddress, 'P', newCustomerPostalCode, "", "", "", Long.parseLong(newCustomerPhoneNumber), 'A');
             customerList = dbops.getCustomersForManager();
             request.setAttribute("customerList", customerList);
             request.getRequestDispatcher("/WEB-INF/clientScreen.jsp").forward(request, response);
         } else if (action != null) {
-            if (action.equals("delete") && customerIdParam!=null) {
-                dbops.deleteCustomer(customerId);
-                customerList = dbops.getCustomersForManager();
-                request.setAttribute("customerList", customerList);
-                request.getRequestDispatcher("/WEB-INF/clientScreen.jsp").forward(request, response);
-            } else if (action.equals("edit") && customerIdParam!=null) {
-                Customer customer = dbops.getCustomerById(customerId);
-                request.setAttribute("customer", customer);
-                ArrayList<Order> orderList = dbops.getOrdersForCustomer(customerId);
-                request.setAttribute("orderList", orderList);
-                request.getRequestDispatcher("/WEB-INF/clientDetailsScreen.jsp").forward(request, response);
+            if (action.equals("delete")) {
+                if (orderIdParam != null) {
+                    int orderId = Integer.parseInt(orderIdParam);
+                    dbops.deleteOrder(orderId);
+                    Customer customer = dbops.getCustomerById(customerId);
+                    request.setAttribute("customer", customer);
+                    ArrayList<Order> orderList = dbops.getOrdersForCustomer(customerId);
+                    request.setAttribute("orderList", orderList);
+                    request.getRequestDispatcher("/WEB-INF/clientDetailsScreen.jsp").forward(request, response);    
+                } else {
+                    dbops.deleteCustomer(customerId);
+                    customerList = dbops.getCustomersForManager();
+                    request.setAttribute("customerList", customerList);
+                    request.getRequestDispatcher("/WEB-INF/clientScreen.jsp").forward(request, response);
+                }
+            } else if (action.equals("edit")) {
+                
+//                if (orderIdParam != null) {
+//                    int orderId = Integer.parseInt(orderIdParam);
+//                    Order order = dbops.getOrderById(orderId);
+//                    request.setAttribute("order", order);
+//                    request.getRequestDispatcher("/WEB-INF/orderDetailsScreen.jsp").forward(request, response);
+//                } else {
+                    Customer customer = dbops.getCustomerById(customerId);
+                    request.setAttribute("customer", customer);
+                    ArrayList<Order> orderList = dbops.getOrdersForCustomer(customerId);
+                    request.setAttribute("orderList", orderList);
+                    request.getRequestDispatcher("/WEB-INF/clientDetailsScreen.jsp").forward(request, response);
+ //               }
             } else {
                 request.setAttribute("customerList", customerList);
                 request.getRequestDispatcher("/WEB-INF/clientScreen.jsp").forward(request, response);
@@ -126,20 +139,26 @@ public class CustomerServices extends HttpServlet {
                 && updateCustomerAddress != null 
                 && updateCustomerEmail != null
                 && updateCustomerPostalCode != null 
-                && updateCustomerPhoneNumber != null) {
+                && updateCustomerPhoneNumber != null
+                ) {
             
-            dbops.updateCustomer(customerId, updateCustomerFirstName, updateCustomerLastName, updateCustomerAddress, updateCustomerEmail, updateCustomerPostalCode, Long.parseLong(updateCustomerPhoneNumber) );
+            dbops.updateCustomer(customerId, updateCustomerFirstName, updateCustomerLastName, updateCustomerAddress, updateCustomerPostalCode, updateCustomerEmail, Long.parseLong(updateCustomerPhoneNumber));
             Customer customer = dbops.getCustomerById(customerId);
-            System.out.println("Customer that is being edited: " + customer);
             request.setAttribute("customer", customer);
             ArrayList<Order> orderList = dbops.getOrdersForCustomer(customerId);
             request.setAttribute("orderList", orderList);
             request.getRequestDispatcher("/WEB-INF/clientDetailsScreen.jsp").forward(request, response);
-        } else if (newOrderBreadOptions!=null
-                && newOrderQuantity!=null
-                && newOrderDeliveryDate!=null
-                && newOrderNote!=null) {
-            
+        } else if (newOrderBreadOptions != null
+                && newOrderQuantity != null
+                && newOrderDeliveryDate != null
+                && newOrderNote != null
+                ) {
+            dbops.multiOrderCreationWeekly(customerId, 'N', newOrderNote, newOrderBreadOptions, null);
+            Customer customer = dbops.getCustomerById(customerId);
+            request.setAttribute("customer", customer);
+            ArrayList<Order> orderList = dbops.getOrdersForCustomer(customerId);
+            request.setAttribute("orderList", orderList);
+            request.getRequestDispatcher("/WEB-INF/clientDetailsScreen.jsp").forward(request, response);
         }
         else {
             request.setAttribute("customerList", customerList);

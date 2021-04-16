@@ -10,6 +10,7 @@ import blb.domain.products.Product;
 import blb.domain.products.ReportDay;
 import blb.domain.users.Customer;
 import blb.domain.users.Employee;
+import blb.domain.users.User;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -299,8 +300,7 @@ public class DBOperations {
     public boolean updateCustomer(int id, String firstname, String lastname, String address, String postalcode, String email, long phonenumber) {
 
         boolean result = false;
-        String sql = "update customer set (lastname = ?, firstname = ?, street_address = ?, postal_code = ?, email = ?, phone_number = ?) "
-                + "where customer_id = ?";
+        String sql = "update customer set last_name = ?, first_name = ?, street_address = ?, postal_code = ?, email = ?, phone_number = ? where customer_id = ?";
 
         ConnectionPool cp = ConnectionPool.getInstance();
 
@@ -738,7 +738,7 @@ public class DBOperations {
         ConnectionPool cp = ConnectionPool.getInstance();
 
         String sql = "select order_id, first_name, last_name, street_address, postal_code, community "
-                + "from customer natural join orders where delivery_date = ? order by community";
+                + "from customer natural join orders where delivery_date = ? orders by community";
 
         try {
             Connection conn = cp.getConnection();
@@ -1599,20 +1599,25 @@ public class DBOperations {
 
         ConnectionPool cp = ConnectionPool.getInstance();
 
-        String sql = "select customer_id, first_name, last_name, customer_status, customer_type, phone_number from bridgelandbread.customer where customer_id = ?";
+        String sql = "select customer_id, first_name, last_name, street_address, postal_code, email, customer_status, customer_type, phone_number from bridgelandbread.customer where customer_id = ?";
 
         try {
             Connection conn = cp.getConnection();
             PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, customerId);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
+                
                 customer.setCustomerId(rs.getInt(1));
                 customer.setFirstName(rs.getString(2));
                 customer.setLastName(rs.getString(3));
-                customer.setStatus(rs.getString(4).charAt(0));
-                customer.setCustomerType(rs.getString(5).charAt(0));
-                customer.setPhoneNumber(rs.getLong(6));
+                customer.setAddress(rs.getString(4));
+                customer.setPostalCode(rs.getString(5));
+                customer.setEmail(rs.getString(6));
+                customer.setStatus(rs.getString(7).charAt(0));
+                customer.setCustomerType(rs.getString(8).charAt(0));
+                customer.setPhoneNumber(rs.getLong(9));
             }
             rs.close();
             st.close();
@@ -1628,11 +1633,12 @@ public class DBOperations {
 
         ConnectionPool cp = ConnectionPool.getInstance();
 
-        String sql = "select order_id, order_date, price_total, standing_order from order where customer_id = ? ";
+        String sql = "select order_id, order_date, price_total, standing_order from orders where customer_id = ? ";
 
         try {
             Connection conn = cp.getConnection();
             PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, customerId);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
@@ -1750,5 +1756,81 @@ public class DBOperations {
             ex.printStackTrace();
         }
         return list;
+    }
+    
+    
+    public boolean deleteOrder(int orderid) {
+        boolean result = false;
+        
+        String sql = "delete from bridgelandbread.orders where order_id = ?;";
+        String sql2 = "delete from bridgelandbread.orderitems where order_id = ?;";
+
+        ConnectionPool cp = ConnectionPool.getInstance();
+
+        try {
+            Connection conn = cp.getConnection();
+            PreparedStatement stmnt = conn.prepareStatement(sql);
+
+            stmnt.setInt(1, orderid);
+
+            int rowsaffected = stmnt.executeUpdate();
+
+            if (rowsaffected > 0) {
+                result = true;
+            }
+            
+            stmnt = conn.prepareStatement(sql2);
+
+            stmnt.setInt(1, orderid);
+            
+            rowsaffected = stmnt.executeUpdate();
+
+            if (rowsaffected > 0) {
+                result = true;
+            }
+
+            stmnt.close();
+            cp.freeConnection(conn);
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
+    }
+    
+    public Order getOrderById(int orderId) {
+        Order order = new Order();
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+
+        String sql = "select order_id, customer_id, order_date, delivery_date, price_total, standing_order, order_notes from bridgelandbread.orders where order_id = ?";
+
+        try {
+            Connection conn = cp.getConnection();
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, orderId);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                
+                order.setOrderNum(rs.getInt(1));
+                User user = new User();
+                user.setUserId(rs.getInt(2));
+                order.setUser(user);
+                order.setOrderDate(rs.getDate(3).toString());
+                order.setPrice(rs.getInt(5));
+                order.setStandingOrder(rs.getString(6).charAt(0));
+                order.setNotes(rs.getString(7));
+                
+            }
+            rs.close();
+            st.close();
+            cp.freeConnection(conn);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return order;
     }
 }
