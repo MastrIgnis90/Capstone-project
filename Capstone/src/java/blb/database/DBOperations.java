@@ -299,8 +299,7 @@ public class DBOperations {
     public boolean updateCustomer(int id, String firstname, String lastname, String address, String postalcode, String email, long phonenumber) {
 
         boolean result = false;
-        String sql = "update customer set (lastname = ?, firstname = ?, street_address = ?, postal_code = ?, email = ?, phone_number = ?) "
-                + "where customer_id = ?";
+        String sql = "update customer set last_name = ?, first_name = ?, street_address = ?, postal_code = ?, email = ?, phone_number = ? where customer_id = ?";
 
         ConnectionPool cp = ConnectionPool.getInstance();
 
@@ -1599,20 +1598,25 @@ public class DBOperations {
 
         ConnectionPool cp = ConnectionPool.getInstance();
 
-        String sql = "select customer_id, first_name, last_name, customer_status, customer_type, phone_number from bridgelandbread.customer where customer_id = ?";
+        String sql = "select customer_id, first_name, last_name, street_address, postal_code, email, customer_status, customer_type, phone_number from bridgelandbread.customer where customer_id = ?";
 
         try {
             Connection conn = cp.getConnection();
             PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, customerId);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
+                
                 customer.setCustomerId(rs.getInt(1));
                 customer.setFirstName(rs.getString(2));
                 customer.setLastName(rs.getString(3));
-                customer.setStatus(rs.getString(4).charAt(0));
-                customer.setCustomerType(rs.getString(5).charAt(0));
-                customer.setPhoneNumber(rs.getLong(6));
+                customer.setAddress(rs.getString(4));
+                customer.setPostalCode(rs.getString(5));
+                customer.setEmail(rs.getString(6));
+                customer.setStatus(rs.getString(7).charAt(0));
+                customer.setCustomerType(rs.getString(8).charAt(0));
+                customer.setPhoneNumber(rs.getLong(9));
             }
             rs.close();
             st.close();
@@ -1633,6 +1637,7 @@ public class DBOperations {
         try {
             Connection conn = cp.getConnection();
             PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, customerId);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {

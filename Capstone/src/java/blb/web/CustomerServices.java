@@ -115,15 +115,15 @@ public class CustomerServices extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/clientScreen.jsp").forward(request, response);
             }
         } else if (updateCustomerFirstName != null
-                && updateCustomerLastName != null 
-                && updateCustomerAddress != null 
-                && updateCustomerEmail != null
-                && updateCustomerPostalCode != null 
-                && updateCustomerPhoneNumber != null) {
+//                && updateCustomerLastName != null 
+//                && updateCustomerAddress != null 
+//                && updateCustomerEmail != null
+//                && updateCustomerPostalCode != null 
+//                && updateCustomerPhoneNumber != null
+                ) {
             
             dbops.updateCustomer(customerId, updateCustomerFirstName, updateCustomerLastName, updateCustomerAddress, updateCustomerEmail, updateCustomerPostalCode, Long.parseLong(updateCustomerPhoneNumber) );
             Customer customer = dbops.getCustomerById(customerId);
-            System.out.println("Customer that is being edited: " + customer);
             request.setAttribute("customer", customer);
             ArrayList<Order> orderList = dbops.getOrdersForCustomer(customerId);
             request.setAttribute("orderList", orderList);

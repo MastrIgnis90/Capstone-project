@@ -114,7 +114,7 @@ public class ReportServices extends HttpServlet {
             String orderOfSortDailyReport = request.getParameter("orderOfSortDailyReport");
             
             request.setAttribute("reportDate", date);
-            request.setAttribute("dailyReportProductionList", dbops.getSortedList(date, sortDailyReportBy, orderOfSortDailyReport));
+//            request.setAttribute("dailyReportProductionList", dbops.getSortedList(date, sortDailyReportBy, orderOfSortDailyReport));
             request.getRequestDispatcher("/WEB-INF/reportDailyScreen.jsp").forward(request, response);
         } else if (getWeeklyReport) {
             try {
@@ -167,20 +167,20 @@ public class ReportServices extends HttpServlet {
                 month = Month.of(calendar.get(Calendar.MONTH)).getDisplayName(TextStyle.FULL, Locale.ENGLISH);
                 year = String.valueOf(calendar.get(Calendar.YEAR));
             }
-            try {
+//            try {
                 
 //                monthOG.toUpperCase();
                 
 //                ArrayList<ReportDay> list = dbops.getReportMonthlyOrders(month, year);
-                request.setAttribute("monthReportProductionList", list);
+//                request.setAttribute("monthReportProductionList", list);
 
                 String reportMonthDate = month + ", " + year;
                 request.setAttribute("reportMonthDate", reportMonthDate);
 
                 request.getRequestDispatcher("/WEB-INF/reportMonthlyScreen.jsp").forward(request, response);
-            } catch (ParseException ex) {
-                request.getRequestDispatcher("/WEB-INF/500ErrorScreen.jsp").forward(request, response);
-            }
+//            } catch (ParseException ex) {
+//                request.getRequestDispatcher("/WEB-INF/500ErrorScreen.jsp").forward(request, response);
+//            }
         } else if (getPreviousMonthlyReport) {
             String monthYearString = request.getParameter("monthYear");
             String[] monthYear = monthYearString.split(",");
