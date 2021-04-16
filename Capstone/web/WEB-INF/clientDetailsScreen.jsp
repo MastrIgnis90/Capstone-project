@@ -77,6 +77,8 @@
                                 <input type="tel" class="form-control" name="updateCustomerPhoneNumber" id="updateCustomerPhoneNumber"
                                        value="${requestScope.customer.phoneNumber}" required>
                             </div>
+                            <input type="hidden" class="form-control" name="customerId" id="customerId"
+                                       value="${requestScope.customer.customerId}">
                             <button type="submit" class="btn btn-primary">Save Changes</button>
                         </form>
                     </div>

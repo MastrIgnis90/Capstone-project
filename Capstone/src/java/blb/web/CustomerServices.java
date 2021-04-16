@@ -122,7 +122,7 @@ public class CustomerServices extends HttpServlet {
 //                && updateCustomerPhoneNumber != null
                 ) {
             
-            dbops.updateCustomer(customerId, updateCustomerFirstName, updateCustomerLastName, updateCustomerAddress, updateCustomerEmail, updateCustomerPostalCode, Long.parseLong(updateCustomerPhoneNumber) );
+            dbops.updateCustomer(customerId, updateCustomerFirstName, updateCustomerLastName, updateCustomerAddress, updateCustomerPostalCode, updateCustomerEmail, Long.parseLong(updateCustomerPhoneNumber));
             Customer customer = dbops.getCustomerById(customerId);
             request.setAttribute("customer", customer);
             ArrayList<Order> orderList = dbops.getOrdersForCustomer(customerId);
