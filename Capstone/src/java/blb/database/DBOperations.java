@@ -26,8 +26,7 @@ import java.util.logging.Logger;
  * This class contains all of the methods used by the application to communicate
  * with the bridgeland bread database
  *
- * @author Sebastian Wild, Alexander Peluso, Matthew Brydges Updated: March 27,
- * 2021
+ * @author Sebastian Wild, Alexander Peluso, Matthew Brydges, Nhu Phan
  */
 public class DBOperations {
 
@@ -105,7 +104,7 @@ public class DBOperations {
 
         ConnectionPool cp = ConnectionPool.getInstance();
 
-        String sql = "SELECT * FROM bridgelandbakery.orderitems WHERE order_id = ? ";
+        String sql = "SELECT * FROM bridgelandbread.orderitems WHERE order_id = ?;";
 
         try {
             Connection conn = cp.getConnection();
@@ -141,8 +140,8 @@ public class DBOperations {
      */
     public boolean addCustomer(String firstname, String lastname, String address, char customertype, String postalcode, String community, String email, String password, int phonenumber, char status) {
         boolean result = false;
-        String sql = "insert into customer (lastname, firstname, customer_type, street_address, community, postal_code, email, phone_number, customer_status) "
-                + "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into bridgelandbread.customer (last_name, first_name, customer_password,customer_type, street_address, community, postal_code, email, phone_number, customer_status) "
+                + "values (?, ?, 'bread', ?, ?, ?, ?, ?, ?, ?)";
 
         ConnectionPool cp = ConnectionPool.getInstance();
 
