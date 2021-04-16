@@ -1596,4 +1596,63 @@ public class DBOperations {
         
         return result;
     }
+    
+    public ArrayList<ReportDay> getReportMonthlyOrders(String month, String year) throws ParseException {
+        ArrayList<ReportDay> list = new ArrayList<>();
+        
+        ConnectionPool cp = ConnectionPool.getInstance();
+        
+        String sql = "select count(order_id), delivery_date, DAYNAME(delivery_date) from orders where MONTHNAME(delivery_date) LIKE ? AND YEAR(delivery_date) = ?";
+        
+        try {
+            Connection conn = cp.getConnection();
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, month);
+            st.setInt(2, Integer.parseInt(year));
+            ResultSet rs = st.executeQuery();
+            
+            while(rs.next()) {
+                ReportDay reportDay = new ReportDay();
+                reportDay.setTotalOrderNumber(rs.getInt(1));
+                Date date = rs.getDate(2);
+                reportDay.setReportDate(new SimpleDateFormat("EEEE MMMM d, y").format(date));
+                String dayName = rs.getString(3);
+                System.out.println("dayName in getReportMonthlyOrders: " + dayName);
+                if (dayName != null) {
+                    switch (dayName) {
+                        case "Monday":
+                            dayName = "mon";
+                            break;
+                        case "Tuesday":
+                            dayName = "tues";
+                            break;
+                        case "Wednesday":
+                            dayName = "wed";
+                            break;
+                        case "Thursday":
+                            dayName = "thurs";
+                            break;
+                        case "Friday":
+                            dayName = "fri";
+                            break;
+                        case "Saturday":
+                            dayName = "sat";
+                            break;
+                        case "Sunday":
+                            dayName = "sun";
+                            break;
+                    }
+                    reportDay.setReportDay(dayName);
+                    list.add(reportDay);
+                }
+            }
+            rs.close();
+            st.close();
+            cp.freeConnection(conn);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return list;
+    }
 }
