@@ -8,7 +8,7 @@
  */
 function printDailyReportPDF(date) 
 {
-    window.location="/Capstone/reportServices?action=print&dailyReportDate=" + date;
+    window.location="/Capstone/reportServices?print=true&dailyReportDate=" + date;
 }
 
 /* 
@@ -258,10 +258,6 @@ function getWeeklyProductionReport(date)
   let dayNumber = splitString[1].substring(0, --lastIndex);
   let year = splitString[3];
   let monthIndex = getMonthNumber(month);
-  console.log(day);
-  console.log(month);
-  console.log(year);
-  console.log("hello");
 
   const currentDate = new Date(year, monthIndex, dayNumber);
   const startDate = getStartDate(currentDate, day);
