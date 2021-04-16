@@ -7,6 +7,8 @@ package blb.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Month;
+import java.time.format.TextStyle;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -20,7 +22,7 @@ public class DateHelper {
     
     public String nextDate(String date) throws ParseException {
         
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE d, MMMM y");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE MMMM d, y");
         Calendar c = Calendar.getInstance();
         c.setTime(sdf.parse(date));
         c.add(Calendar.DATE, 1);
@@ -30,7 +32,7 @@ public class DateHelper {
     
     public String prevDate(String date) throws ParseException {
         
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE d, MMMM y");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE MMMM d, y");
         Calendar c = Calendar.getInstance();
         c.setTime(sdf.parse(date));
         c.add(Calendar.DATE, -1);
@@ -87,8 +89,31 @@ public class DateHelper {
     }
     
     
+    public String[] nextMonth(String month, String year) throws ParseException {
+        Date date = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH).parse(month + year);
+        Calendar cal = Calendar.getInstance();
+        cal.clear();
+        cal.setTime(date);
+        cal.add(Calendar.MONTH, 1);
+        String newMonth = Month.of(cal.get(Calendar.MONTH) + 1).getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        String newYear = String.valueOf(cal.get(Calendar.YEAR));
+        String[] result = {newMonth, newYear};
+        
+        return result;
+    }
     
-    
+    public String[] prevMonth(String month, String year) throws ParseException {
+        Date date = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH).parse(month + year);
+        Calendar cal = Calendar.getInstance();
+        cal.clear();
+        cal.setTime(date);
+        cal.add(Calendar.MONTH, -1);
+        String newMonth = Month.of(cal.get(Calendar.MONTH) + 1).getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        String newYear = String.valueOf(cal.get(Calendar.YEAR));
+        String[] result = {newMonth, newYear};
+        
+        return result;
+    }
     
     public Date parseDailyReport(String date) throws ParseException {
         return new SimpleDateFormat("EEEE d, MMMM y").parse(date);
@@ -97,5 +122,4 @@ public class DateHelper {
     public Date parseWeekStartReport(String date) throws ParseException {
         return new SimpleDateFormat("EEEE MMM. d").parse(date);
     }
-    
 }
